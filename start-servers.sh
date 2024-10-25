@@ -11,3 +11,6 @@ cd ../frontend
 npm run dev &
 
 echo "Both backend and frontend servers are running."
+
+
+
