@@ -2,6 +2,7 @@
 
 import express from "express";
 import userRoutes from "./routes/userRoutes";
+import flashCardRoutes from "./routes/flashCardRoutes"
 import dotenv from "dotenv";
 
 dotenv.config();
@@ -11,8 +12,9 @@ const PORT = process.env.PORT || 5000;
 
 app.use(express.json());
 
-// User routes
+// User, flashCard routes
 app.use("src/routes/userRoutes.ts", userRoutes);
+app.use("src/routes/flashCardRoutes.ts", flashCardRoutes)
 
 // Start the server
 app.listen(PORT, () => {
