@@ -6,7 +6,7 @@ cd backend
 npm run dev &
 
 # Start frontend server
-echo "Starting frontend (Next.js) server..."
+echo "Starting frontend (Vite) server..."
 cd ../frontend
 npm run dev &
 

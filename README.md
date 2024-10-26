@@ -27,7 +27,7 @@ Run the script:
 This script will:
 
 Start the backend (Express) server using app.ts, located in the src directory.
-Start the frontend (Next.js) development server.
+Start the frontend (Vite) development server.
 
 Note:
 Ensure that your backend's package.json includes the following scripts to run properly:
@@ -58,3 +58,7 @@ Pushes the committed changes to the main branch of the remote repository.
 Note:
 Ensure you have a valid commit message when running the script, as it will prompt for one if none is provided.
 This script simplifies the process of version control, allowing you to commit and push your changes with a single command.
+
+## Design Idea
+
+https://www.figma.com/proto/JJdzsSv74qRGv2TT2jgCln/Flashcard-web-app?node-id=1-2&starting-point-node-id=1%3A2
