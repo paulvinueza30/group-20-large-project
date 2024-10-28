@@ -1,35 +1,152 @@
-import React from "react";
-import { GoHome } from "react-icons/go";
-import { PiCardsLight } from "react-icons/pi";
-import { IoPieChartOutline } from "react-icons/io5";
-import { CiUser } from "react-icons/ci";
-import { IoIosLogOut } from "react-icons/io";
-import { Link } from "react-router-dom";
+import {
+  ArrowRightIcon,
+  ArrowLeftIcon,
+  HomeIcon,
+  ChartPieIcon,
+  UserIcon,
+  SunIcon,
+  ChartBarSquareIcon,
+  ArrowRightStartOnRectangleIcon,
+} from "@heroicons/react/24/outline";
+import { ReactNode, useState } from "react";
+import SidebarItem from "./SidebarItem";
+import Logo from "../assets/logo.webp";
+import { useLocation } from "react-router-dom";
 
-function Sidebar() {
-  const layout = [
-    { label: "Dashboard", icon: <GoHome size={30} />, to: "/" },
-    { label: "Decks", icon: <PiCardsLight size={30} />, to: "/decks" },
-    { label: "Stats", icon: <IoPieChartOutline size={30} />, to: "/" },
-    { label: "Profile", icon: <CiUser size={30} />, to: "/profile" },
-    { label: "Logout", icon: <IoIosLogOut size={30} />, to: "/" },
-  ];
+interface SidebarProps {
+  children: ReactNode;
+  expanded: boolean;
+  handleToggle: () => void;
+}
 
+function Sidebar({ children, expanded, handleToggle }: SidebarProps) {
   return (
-    <div className="flex flex-col p-2 bg-slate-200">
-      <div className="pb-6 pt-2">Group 20 Flashcard app</div>
-      {layout.map(({ icon, label, to }) => (
-        <React.Fragment key={label}>
-          <Link to={to}>
-            <div className="p-5 flex flex-row">
-              <span className="pr-2">{icon}</span>
-              <button>{label}</button>
+    <div className="relative">
+      <div
+        className={`fixed inset-0 -z-10 block bg-gray-400 ${
+          expanded ? "block sm:hidden" : "hidden"
+        }`}
+      />
+      <aside
+        className={`box-border h-screen transition-all ${
+          expanded ? "w-5/6 sm:w-64" : "w-0 sm:w-20"
+        }`}
+      >
+        <nav className="flex h-full flex-col border-r bg-white shadow-sm">
+          <div className="flex items-center justify-between p-4 pb-2">
+            <img
+              src={Logo}
+              className={`overflow-hidden transition-all ${
+                expanded ? "w-10" : "w-0"
+              }`}
+              alt=""
+            />
+            <h1
+              className={`overflow-hidden font-bold ${
+                expanded ? "w-30" : "w-0"
+              }`}
+            >
+              Group 20
+            </h1>
+            <div className={`${expanded ? "" : "hidden sm:block"}`}>
+              <button
+                onClick={handleToggle}
+                className="rounded-lg bg-gray-50 p-1.5 hover:bg-gray-100"
+              >
+                {expanded ? (
+                  <ArrowRightIcon className="h-6 w-6" />
+                ) : (
+                  <ArrowLeftIcon className="h-6 w-6" />
+                )}
+              </button>
             </div>
-          </Link>
-        </React.Fragment>
-      ))}
+          </div>
+          <ul className="flex-1 px-3">{children}</ul>
+          <div className="flex border-t p-3">
+            <div
+              className={`flex items-center justify-between overflow-hidden transition-all ${
+                expanded ? "ml-3 w-52" : "w-0"
+              }`}
+            >
+              <div>
+                <div className="leading-4 flex items-center">
+                  <ArrowRightStartOnRectangleIcon className="h-6 w-6" />
+                  <h4 className="text-primary-500 pl-2">Log out</h4>
+                </div>
+                <div className="leading-4 flex items-center pt-2">
+                  <SunIcon className="h-6 w-6" />
+                  <h4 className="text-primary-500 pl-2">Light Mode</h4>
+                </div>
+              </div>
+            </div>
+          </div>
+        </nav>
+      </aside>
     </div>
   );
 }
 
-export default Sidebar;
+export default function MakeSidebar() {
+  const location = useLocation();
+
+  const [expanded, setExpanded] = useState(() => {
+    const saved = localStorage.getItem("navbarCollapsed");
+    return saved ? JSON.parse(saved) : false; // default to false
+  });
+
+  const handleToggle = () => {
+    setExpanded((prev: any) => {
+      const newState = !prev;
+      localStorage.setItem("navbarCollapsed", JSON.stringify(newState));
+      return newState;
+    });
+  };
+
+  const navBarItems = [
+    {
+      icon: <HomeIcon />,
+      text: "Dashboard",
+      to: "/",
+    },
+    {
+      icon: <ChartBarSquareIcon />,
+      subMenu: [
+        {
+          icon: <></>,
+          text: "Deck Name 1",
+          to: "/decks",
+        },
+        {
+          icon: <></>,
+          text: "Deck Name 2",
+          to: "/decks",
+        },
+      ],
+      text: "Decks",
+      to: "/decks",
+    },
+    {
+      icon: <ChartPieIcon />,
+      text: "Stats",
+      to: "/stats",
+    },
+    {
+      icon: <UserIcon />,
+      text: "Profile",
+      to: "/profile",
+    },
+  ];
+
+  return (
+    <Sidebar expanded={expanded} handleToggle={handleToggle}>
+      {navBarItems.map((item, index) => (
+        <SidebarItem
+          key={index}
+          expanded={expanded}
+          {...item}
+          active={location.pathname === item.to}
+        />
+      ))}
+    </Sidebar>
+  );
+}

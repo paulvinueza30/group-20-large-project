@@ -1,11 +1,12 @@
-import Sidebar from "../components/Sidebar";
+import MakeSidebar from "../components/Sidebar";
 
+// TODO: fix columns size when sidebar is not expanded
 function Profile() {
   return (
     <>
       <div className="grid grid-cols-5 grid-rows-5 gap-4">
         <div className="row-span-5">
-          <Sidebar />
+          <MakeSidebar />
         </div>
         <div className="col-span-4 row-span-3">
           <h1>Profile Page</h1>
