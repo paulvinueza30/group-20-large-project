@@ -8,7 +8,7 @@ import {
   ChartBarSquareIcon,
   ArrowRightStartOnRectangleIcon,
 } from "@heroicons/react/24/outline";
-import { ReactNode, useState } from "react";
+import { ReactNode, useEffect, useState } from "react";
 import SidebarItem from "./SidebarItem";
 import Logo from "../assets/logo.webp";
 import { useLocation } from "react-router-dom";
@@ -86,13 +86,17 @@ function Sidebar({ children, expanded, handleToggle }: SidebarProps) {
   );
 }
 
-export default function MakeSidebar() {
+export default function MakeSidebar({sendSizeChange} : any) {
   const location = useLocation();
 
   const [expanded, setExpanded] = useState(() => {
     const saved = localStorage.getItem("navbarCollapsed");
-    return saved ? JSON.parse(saved) : false; // default to false
+    return saved ? JSON.parse(saved) : true; // default to true
   });
+
+  useEffect(() => {
+    sendSizeChange(expanded);
+  }, [expanded, sendSizeChange]); // Call sendSizeChange when expanded changes
 
   const handleToggle = () => {
     setExpanded((prev: any) => {
