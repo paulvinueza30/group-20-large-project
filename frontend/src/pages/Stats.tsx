@@ -1,4 +1,4 @@
-import SideGrid from "../components/SideGrid";
+import SideGrid from "../components/sidebar/SideGrid";
 
 // TODO: Add components
 function Stats() {

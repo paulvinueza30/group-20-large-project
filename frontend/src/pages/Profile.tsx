@@ -1,4 +1,4 @@
-import SideGrid from "../components/SideGrid";
+import SideGrid from "../components/sidebar/SideGrid";
 
 // TODO: Add components
 function Profile() {
@@ -6,13 +6,19 @@ function Profile() {
     <>
       <div className="flex">
         <SideGrid />
-
         <div className="flex w-full ml-20">
-          <div className="grid grid-cols-2 gap-4 w-full">
-            <div className="border-2 h-full w-full">Profile Page</div>
-            <div className="border-2 h-full grid grid-rows-2">
-              <div className="border">grid col 2 container</div>
-              <div className="border flex-grow">grid col2 container 2</div>
+          <div className="grid grid-cols-5 grid-rows-5 gap-4 w-full">
+            <div className="col-span-5">
+              <h1>Profile</h1>
+            </div>
+            <div className="col-span-2 row-span-2 row-start-2">2</div>
+            <div className="col-span-2 row-span-2 col-start-3 row-start-2">
+              3
+            </div>
+            <div className="row-span-2 col-start-5 row-start-2">4</div>
+            <div className="col-span-3 row-span-2 row-start-4">5</div>
+            <div className="col-span-2 row-span-2 col-start-4 row-start-4">
+              6
             </div>
           </div>
         </div>

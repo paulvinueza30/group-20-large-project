@@ -10,7 +10,7 @@ import {
 } from "@heroicons/react/24/outline";
 import { ReactNode, useEffect, useState } from "react";
 import SidebarItem from "./SidebarItem";
-import Logo from "../assets/logo.webp";
+import Logo from "../../assets/logo.webp";
 import { useLocation } from "react-router-dom";
 
 interface SidebarProps {
@@ -86,7 +86,7 @@ function Sidebar({ children, expanded, handleToggle }: SidebarProps) {
   );
 }
 
-export default function MakeSidebar({sendSizeChange} : any) {
+export default function MakeSidebar({ sendSizeChange }: any) {
   const location = useLocation();
 
   const [expanded, setExpanded] = useState(() => {
