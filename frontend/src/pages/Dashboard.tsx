@@ -1,23 +1,11 @@
-import { useState } from "react";
-import MakeSidebar from "../components/Sidebar";
+import SideGrid from "../components/SideGrid";
 
-// TODO: fix columns size when sidebar is not expanded
+// TODO: Add components
 function Dashboard() {
-  const [sidebarSize, setSidebarSize] = useState(true);
-
-  const getSizeChange = (sizedata: boolean) => {
-    setSidebarSize(sizedata);
-  };
-
   return (
     <>
       <div className="flex">
-        <aside className="min-h-screen">
-          <div className={`min-h-screen shadow-lg ${sidebarSize ? "w-56" : "w-20"} duration-300 ease-in-out`}>
-            <MakeSidebar sendSizeChange={getSizeChange} />
-          </div>
-        </aside>
-
+        <SideGrid />
         <div className={"flex flex-grow ml-20"}>
           <div className="grid grid-cols-2 gap-4 w-full">
             <div className="border-2 h-full w-full">
