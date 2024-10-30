@@ -1,9 +1,7 @@
-// TODO: More user funcs?
-
 import { Request, Response } from "express";
 import User from "../models/userModel";
 import bcrypt from "bcrypt";
-import passport from "passport";
+import passport from "../config/passport-config";
 
 // Register user
 export const registerUser = async (
@@ -27,7 +25,22 @@ export const registerUser = async (
       email,
       password: hashedPassword,
     });
-    return res.status(201).json(user);
+
+    // Automatically log in the user after registration
+    req.logIn(user, (err) => {
+      if (err) {
+        console.error("Error logging in user: ", err);
+        return res.status(500).json({ message: "Internal server error" });
+      }
+
+      return res.status(201).json({
+        _id: user._id,
+        name: user.name,
+        userName: user.userName,
+        email: user.email,
+        createdAt: user.createdAt,
+      });
+    });
   } catch (error) {
     console.error("Error in register user: ", error);
     return res.status(500).json({ message: "Internal server error" });
@@ -52,7 +65,17 @@ export const loginUser = (
       if (err) {
         return next(err);
       }
-      return res.status(200).json({ message: "Login successful", user });
+
+      return res.status(200).json({
+        message: "Login successful",
+        user: {
+          _id: user._id,
+          name: user.name,
+          userName: user.userName,
+          email: user.email,
+          createdAt: user.createdAt,
+        },
+      });
     });
   })(req, res, next);
 };

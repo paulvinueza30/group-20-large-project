@@ -5,25 +5,30 @@ import { IUser } from "../interfaces/IUser";
 import bcrypt from "bcrypt";
 
 passport.use(
-  new LocalStrategy(async (userName, password, done) => {
-    try {
-      const user = await User.findOne({ userName });
-      if (!user) {
-        return done(null, false, { message: "Incorrect username." });
-      }
+  new LocalStrategy(
+    {
+      usernameField: "userName",
+      passwordField: "password",
+    },
+    async (userName, password, done) => {
+      try {
+        const user = await User.findOne({ userName });
+        if (!user) {
+          return done(null, false, { message: "Incorrect username." });
+        }
 
-      const isMatch = await bcrypt.compare(password, user.password);
-      if (!isMatch) {
-        return done(null, false, { message: "Incorrect password." });
-      }
+        const isMatch = await bcrypt.compare(password, user.password);
+        if (!isMatch) {
+          return done(null, false, { message: "Incorrect password." });
+        }
 
-      return done(null, user);
-    } catch (error) {
-      return done(error);
+        return done(null, user);
+      } catch (error) {
+        return done(error);
+      }
     }
-  })
+  )
 );
-
 passport.serializeUser((user: IUser, done) => {
   done(null, user._id);
 });
