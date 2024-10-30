@@ -1,11 +1,11 @@
 // import "./App.css";
 import "tailwindcss/tailwind.css";
-import Dashboard from "./pages/Dashboard";
+import Home from "./pages/Home";
 
 function App() {
   return (
     <>
-      <Dashboard></Dashboard>
+      <Home />
     </>
   );
 }

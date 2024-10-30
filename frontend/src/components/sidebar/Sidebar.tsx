@@ -69,10 +69,10 @@ function Sidebar({ children, expanded, handleToggle }: SidebarProps) {
               }`}
             >
               <div>
-                <div className="leading-4 flex items-center">
+                <a href="/" className="leading-4 flex items-center">
                   <ArrowRightStartOnRectangleIcon className="h-6 w-6" />
                   <h4 className="text-primary-500 pl-2">Log out</h4>
-                </div>
+                </a>
                 <div className="leading-4 flex items-center pt-2">
                   <SunIcon className="h-6 w-6" />
                   <h4 className="text-primary-500 pl-2">Light Mode</h4>
@@ -110,7 +110,7 @@ export default function MakeSidebar({ sendSizeChange }: any) {
     {
       icon: <HomeIcon />,
       text: "Dashboard",
-      to: "/",
+      to: "/dashboard",
     },
     {
       icon: <ChartBarSquareIcon />,

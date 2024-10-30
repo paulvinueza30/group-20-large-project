@@ -1,5 +1,3 @@
-import React from "react";
-
 function FlashCard() {
   return (
     <div className="border-4 p-20">
