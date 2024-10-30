@@ -5,4 +5,5 @@ export interface IFlashCard extends Document {
     backSide: string;
     category: string;
     createdAt: Date;
+    editedAt: Date;
 }

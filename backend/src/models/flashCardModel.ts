@@ -18,6 +18,10 @@ const flashCardSchema = new Schema<IFlashCard>({
         type: Date,
         default: Date.now,
     },
+    editedAt: {
+        type: Date,
+        default: null,
+    },
 });
 
 const flashCard = model<IFlashCard>("flashCard", flashCardSchema);

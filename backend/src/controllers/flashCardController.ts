@@ -4,8 +4,8 @@ import flashCard from "../models/flashCardModel";
 //create flashCard
 export const createFlashCard = async (req: Request, res: Response): Promise<void> => {
     try {
-        const { frontSide, backSide, category, createdAt } = req.body;
-        const newFlashCard = new flashCard({ frontSide, backSide, category, createdAt});
+        const { frontSide, backSide, category } = req.body;
+        const newFlashCard = new flashCard({ frontSide, backSide, category });
         await newFlashCard.save();
         res.status(201).json({ message: "Flashcard created successfully", flashCard: newFlashCard });
     } catch (error) {
@@ -16,10 +16,13 @@ export const createFlashCard = async (req: Request, res: Response): Promise<void
 export const editFlashCard = async (req: Request, res: Response): Promise<void> => {
     try {
         const { id } = req.params;
-        const { frontSide, backSide, category, createdAt } = req.body;
+        const updateData = {
+            ...req.body,
+            editedAt: Date.now() 
+          };
         const updatedFlashCard = await flashCard.findByIdAndUpdate(
           id,
-          { frontSide, backSide, category, createdAt },
+          updateData,
           { new: true }
         );
 
