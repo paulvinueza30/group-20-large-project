@@ -12,7 +12,7 @@ function SideGrid() {
     <aside className="min-h-screen">
       <div
         className={`min-h-screen shadow-lg ${
-          sidebarSize ? "w-56" : "w-20"
+          sidebarSize ? "w-56" : "w-10"
         } duration-300 ease-in-out`}
       >
         <MakeSidebar sendSizeChange={getSizeChange} />
