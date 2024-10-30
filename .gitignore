@@ -1,5 +1,6 @@
+*.vscode/
 .vscode/
 
-/backend/.env
+*.env
 
 **/node_modules

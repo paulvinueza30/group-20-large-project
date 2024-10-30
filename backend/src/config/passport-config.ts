@@ -4,15 +4,19 @@ import User from "../models/userModel";
 import { IUser } from "../interfaces/IUser";
 import bcrypt from "bcrypt";
 
+// Utility function to check if the login input is an email
+const isEmail = (login: string): boolean => /\S+@\S+\.\S+/.test(login);
+
 passport.use(
   new LocalStrategy(
     {
-      usernameField: "userName",
+      usernameField: "login",
       passwordField: "password",
     },
-    async (userName, password, done) => {
+    async (login, password, done) => {
       try {
-        const user = await User.findOne({ userName });
+        const query = isEmail(login) ? { email: login } : { userName: login };
+        const user = await User.findOne(query);
         if (!user) {
           return done(null, false, { message: "Incorrect username." });
         }
