@@ -8,15 +8,18 @@ const toDoSchema = new Schema<IToDo>({
   },
   markDone: {
     type: Boolean,
-    required: true,
+    default: false,
   },
   createdAt: {
     type: Date,
     default: Date.now,
+  },
+  editedAt: {
+    type: Date,
+    default: null,
   },
 });
 
 const toDo = model<IToDo>("toDo", toDoSchema);
 
 export default toDo;
-
