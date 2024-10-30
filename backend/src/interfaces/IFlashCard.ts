@@ -6,4 +6,6 @@ export interface IFlashCard extends Document {
     category: string;
     createdAt: Date;
     editedAt: Date;
+    dueDate: Date;
+    interval: Number;
 }
