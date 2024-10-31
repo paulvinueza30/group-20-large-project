@@ -69,3 +69,13 @@ export const toDoDone = async (req: Request, res: Response): Promise<void> => {
 	res.status(500).json({ message: "Failed to toggle task", error });
     }
 };
+
+// Retrieve all to dos
+export const getToDo = async (req: Request, res: Response): Promise<void> => {
+    try {
+	const toDolist = await toDo.find();
+	res.status(200).json({ message: "To Do list retrieved", toDolist });
+    } catch (error) {
+	res.status(500).json({ message: "Failed to retrieve To Do list", error });
+    }
+};
