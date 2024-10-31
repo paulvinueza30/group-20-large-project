@@ -30,7 +30,7 @@ export const editToDo = async (id: string, toDoData: {todo: string}) => {
 
 export const deleteToDo = async (id: string) => {
    try {
-     const response = await axios.post('${TODO_API_URL}/deleteToDo', todoData, {
+     const response = await axios.post('${TODO_API_URL}/deleteToDo', {id}, {
         withCredentials: true,
      });
      return response.data;
@@ -43,7 +43,7 @@ export const deleteToDo = async (id: string) => {
 
 export const toDoDone = async (id: string) => {
    try {
-     const response = await axios.post('${TODO_API_URL}/toDoDone', {}, {
+     const response = await axios.post('${TODO_API_URL}/toDoDone', {id}, {
         withCredentials: true,
      });
      return response.data;
@@ -51,5 +51,16 @@ export const toDoDone = async (id: string) => {
      throw error.response
        ? error.response.data
        : new Error("Internal server error");
+   }
+};
+
+export const getToDo = async () => {
+   try {
+     const response = await axios.get('${TODO_API_URL}/getToDo', {
+	withCredentials: true,
+     });
+     return response.data;
+   } catch (error) {
+     throw error;
    }
 };
