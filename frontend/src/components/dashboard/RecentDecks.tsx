@@ -5,13 +5,13 @@ function RecentDecks() {
     { name: "Linux", count: 6 },
     { name: "Computer Science", count: 20 },
   ];
-  const cardStyle = `relative rounded-xl w-2/5 h-3/6 p-16 bg-purple-600 ${
-    deckInfo.length < 3 ? "m-6" : "m-4"
+  const cardStyle = `relative rounded-xl w-2/5 h-3/6 p-16 bg-purple-600 md:h-2/6${
+    deckInfo.length < 3 ? "m-6" : "m-4 md:mb-2"
   }`;
 
   return (
     <div>
-      <h3 className="text-center p-4  text-lg font-bold">Recent Decks</h3>
+      <h3 className="text-center p-4 text-lg font-bold">Recent Decks</h3>
       <div className="flex flex-wrap justify-evenly content-stretch">
         {deckInfo.map(({ name, count }) => (
           <a href="/decks" className={cardStyle} key={name}>

@@ -32,7 +32,7 @@ function Sidebar({ children, expanded, handleToggle }: SidebarProps) {
           expanded ? "w-5/6 sm:w-64" : "w-0 sm:w-20"
         }`}
       >
-        <nav className="flex h-full flex-col border-r bg-white shadow-sm">
+        <nav className="flex h-full md:h-[1000px] flex-col border-r bg-white shadow-sm">
           <div className="flex items-center justify-between p-4 pb-2">
             <img
               src={Logo}

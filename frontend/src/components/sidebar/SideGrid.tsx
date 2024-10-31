@@ -9,7 +9,7 @@ function SideGrid() {
   };
 
   return (
-    <aside className="min-h-screen">
+    <aside className="h-screen md:h-[1000px] border-4">
       <div
         className={`min-h-screen shadow-lg ${
           sidebarSize ? "w-56" : "w-10"

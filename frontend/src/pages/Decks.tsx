@@ -12,7 +12,7 @@ function Decks() {
       <div className="flex justify-start">
         <SideGrid />
         <div className="ml-20 mr-[30px] w-full">
-          <div className="grid grid-cols-6 grid-rows-8 gap-x-[30px] gap-y-[30px] min-h-screen overflow-hidden">
+          <div className="grid grid-cols-6 grid-rows-8 lg:gap-x-[30px] lg:gap-y-[30px] min-h-screen overflow-hidden">
             <div className="col-span-6 row-span-1 col-start-1 row-start-1 h-1 ">
               <h1 className="font-bold text-4xl pt-14 ">Deck - Name of Deck</h1>
             </div>

@@ -15,11 +15,11 @@ const RadarCharti = () => {
     <div className=" w-42 h-42 ">
       <h3 className="text-center p-2 text-lg font-bold">Current Level</h3>
       <RadarChart
-        height={350}
-        width={350}
+        width={300}
+        height={300}
         outerRadius="80%"
         data={data}
-        className="pl-2"
+        className="pl-2 w-10 h-10"
       >
         <PolarGrid />
         <PolarAngleAxis dataKey="name" />
