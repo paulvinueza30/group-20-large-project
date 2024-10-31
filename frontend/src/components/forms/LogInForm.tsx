@@ -17,7 +17,7 @@ function LogInForm() {
       <a href="#" className="text-sm">
         Forgot Password?
       </a>
-      <a href="/dashboard" className="rounded p-4 bg-purple-600 text-white">
+      <a href="/dashboard" className="rounded p-4 bg-primary text-white">
         Log In
       </a>
     </form>

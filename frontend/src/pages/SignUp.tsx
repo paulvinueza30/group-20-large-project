@@ -11,7 +11,7 @@ function SignUp() {
         <SignUpForm />
       </div>
       <div className="col-span-2 row-span-4 col-start-4 row-start-2">Image</div>
-      <div className="col-span-6 row-start-6 bg-purple-800">5</div>
+      <div className="col-span-6 row-start-6 bg-primary">5</div>
     </div>
   );
 }

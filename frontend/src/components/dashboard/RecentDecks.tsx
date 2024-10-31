@@ -18,7 +18,7 @@ function RecentDecks() {
             <h3 className="text-lg font-semibold absolute top-[5px] left-[12px] text-white">
               {name}
             </h3>
-            <span className="absolute bottom-0 left-[12px] mb-2 p-1 pl-4 pr-4 rounded-full bg-purple-400">
+            <span className="absolute bottom-0 left-[12px] mb-2 p-1 pl-4 pr-4 rounded-full bg-tertiary">
               {count} cards
             </span>
           </a>

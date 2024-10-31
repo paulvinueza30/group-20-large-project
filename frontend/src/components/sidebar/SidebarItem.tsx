@@ -66,8 +66,8 @@ export default function SidebarItem({
          py-4 font-medium transition-colors
          ${
            active && !subMenu
-             ? "text-primary-500 bg-gradient-to-tr from-indigo-200 to-indigo-100"
-             : "text-gray-600 hover:bg-indigo-50"
+             ? "text-white bg-primary"
+             : "text-gray-600 hover:bg-tertiary"
          }
          ${!expanded && "hidden sm:flex"}
      `}

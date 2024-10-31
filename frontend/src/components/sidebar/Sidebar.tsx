@@ -123,7 +123,7 @@ export default function MakeSidebar({ sendSizeChange }: any) {
         {
           icon: <></>,
           text: "Deck Name 2",
-          to: "/decks",
+          to: "",
         },
       ],
       text: "Decks",

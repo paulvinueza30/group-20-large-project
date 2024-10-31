@@ -21,7 +21,7 @@ function SignUpForm() {
           <input type={type} placeholder={placeholder} className={inputStyle} />
         </div>
       ))}
-      <a href="/dashboard" className="rounded p-4 bg-purple-600 text-white">
+      <a href="/dashboard" className="rounded p-4 bg-primary text-white">
         Sign Up
       </a>
     </form>

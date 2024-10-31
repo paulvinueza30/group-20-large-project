@@ -5,4 +5,10 @@
 .sub-menu {
     overflow: hidden;
     transition: height 300ms;
-  }
+
+}
+
+@font-face {
+  font-family: "pixel";
+  src: url("./font/Jersey25-Regular.ttf");
+}
