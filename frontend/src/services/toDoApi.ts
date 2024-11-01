@@ -4,7 +4,7 @@ const TODO_API_URL = `${process.env.REACT_APP_API_URL}/todos` || "http://localho
 
 export const createToDo = async (toDoData: {todo: string}) => {
    try {
-     const response = await axios.post('${TODO_API_URL}/createToDo', todoData, {
+     const response = await axios.post(`${TODO_API_URL}/createToDo`, toDoData, {
 	withCredentials: true,
      });
      return response.data;
@@ -17,7 +17,7 @@ export const createToDo = async (toDoData: {todo: string}) => {
 
 export const editToDo = async (id: string, toDoData: {todo: string}) => {
    try {
-     const response = await axios.post('${TODO_API_URL}/editToDo', todoData, {
+     const response = await axios.post(`${TODO_API_URL}/editToDo`, toDoData, {
         withCredentials: true,
      });
      return response.data;
@@ -30,7 +30,7 @@ export const editToDo = async (id: string, toDoData: {todo: string}) => {
 
 export const deleteToDo = async (id: string) => {
    try {
-     const response = await axios.post('${TODO_API_URL}/deleteToDo', {id}, {
+     const response = await axios.post(`${TODO_API_URL}/deleteToDo`, {id}, {
         withCredentials: true,
      });
      return response.data;
@@ -43,7 +43,7 @@ export const deleteToDo = async (id: string) => {
 
 export const toDoDone = async (id: string) => {
    try {
-     const response = await axios.post('${TODO_API_URL}/toDoDone', {id}, {
+     const response = await axios.post(`${TODO_API_URL}/toDoDone`, {id}, {
         withCredentials: true,
      });
      return response.data;
@@ -56,7 +56,7 @@ export const toDoDone = async (id: string) => {
 
 export const getToDo = async () => {
    try {
-     const response = await axios.get('${TODO_API_URL}/getToDo', {
+     const response = await axios.get(`${TODO_API_URL}/getToDo`, {
 	withCredentials: true,
      });
      return response.data;
