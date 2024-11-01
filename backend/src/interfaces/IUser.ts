@@ -6,4 +6,5 @@ export interface IUser extends Document {
   email: string;
   password: string;
   createdAt: Date;
+  updateDueDate(feedback: 'Forgot' | 'Hard' | 'Good' | 'Easy'): Promise<IFlashCard>;
 }

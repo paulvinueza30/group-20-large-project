@@ -8,4 +8,5 @@ export interface IFlashCard extends Document {
     editedAt: Date;
     dueDate: Date;
     interval: Number;
+    updateDueDate(feedback: 'Forgot' | 'Hard' | 'Good' | 'Easy'): Promise<IFlashCard>;
 }
