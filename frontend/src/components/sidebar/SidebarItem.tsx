@@ -9,6 +9,7 @@ interface SidebarItemProps {
   to: string;
   expanded: boolean;
   subMenu?: SubMenuItemProps[] | null;
+  color?: string;
 }
 
 // We're assuming that the sub-menu items will not have further sub-menu items therefore, it cannot be expanded
@@ -18,7 +19,7 @@ interface SubMenuItemProps extends Omit<SidebarItemProps, "expanded"> {
 }
 
 // This component is used to render the sub-menu items when hovered
-function HoveredSubMenuItem({ icon, text, active }: SubMenuItemProps) {
+function HoveredSubMenuItem({ icon, text, active, color }: SubMenuItemProps) {
   return (
     <div
       className={`my-2 rounded-md p-2${
@@ -28,7 +29,7 @@ function HoveredSubMenuItem({ icon, text, active }: SubMenuItemProps) {
       <div className="flex items-center justify-center ">
         <span className="text-primary-500 h-6 w-6 ">{icon}</span>
         <span className="text-primary-500 ml-3 w-28 text-start">{text}</span>
-        <div className="bg-primary-200 h-1" />
+        <div className="h-1" style={{ backgroundColor: color }} />
       </div>
     </div>
   );
@@ -41,6 +42,7 @@ export default function SidebarItem({
   to,
   expanded = false,
   subMenu = null,
+  color,
 }: SidebarItemProps) {
   const [expandSubMenu, setExpandSubMenu] = useState(false);
 
@@ -66,11 +68,14 @@ export default function SidebarItem({
          py-4 font-medium transition-colors
          ${
            active && !subMenu
-             ? "text-white bg-primary"
+             ? `text-white bg-primary`
              : "text-gray-600 hover:bg-tertiary"
          }
          ${!expanded && "hidden sm:flex"}
-     `}
+        `}
+          style={{
+            backgroundColor: active && !subMenu ? color : undefined, // Use inline style for background color
+          }}
           onClick={() => setExpandSubMenu((curr) => expanded && !curr)}
         >
           <span className="h-6 w-6">{icon}</span>
@@ -116,6 +121,7 @@ export default function SidebarItem({
                       text={item.text}
                       icon={item.icon}
                       to={"/"}
+                      color=""
                     />
                   ))}
             </div>
@@ -134,6 +140,7 @@ export default function SidebarItem({
               {...item}
               expanded={expanded}
               active={location.pathname === item.to}
+              color={color}
             />
           ))}
       </ul>

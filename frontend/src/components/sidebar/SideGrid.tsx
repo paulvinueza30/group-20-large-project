@@ -1,7 +1,7 @@
 import { useState } from "react";
 import MakeSidebar from "./Sidebar";
 
-function SideGrid() {
+function SideGrid({ color }: any) {
   const [sidebarSize, setSidebarSize] = useState(true);
 
   const getSizeChange = (sizedata: boolean) => {
@@ -15,7 +15,7 @@ function SideGrid() {
           sidebarSize ? "w-56" : "w-10"
         } duration-300 ease-in-out`}
       >
-        <MakeSidebar sendSizeChange={getSizeChange} />
+        <MakeSidebar sendSizeChange={getSizeChange} color={color} />
       </div>
     </aside>
   );

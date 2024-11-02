@@ -86,7 +86,7 @@ function Sidebar({ children, expanded, handleToggle }: SidebarProps) {
   );
 }
 
-export default function MakeSidebar({ sendSizeChange }: any) {
+export default function MakeSidebar({ sendSizeChange, color }: any) {
   const location = useLocation();
 
   const [expanded, setExpanded] = useState(() => {
@@ -149,6 +149,7 @@ export default function MakeSidebar({ sendSizeChange }: any) {
           expanded={expanded}
           {...item}
           active={location.pathname === item.to}
+          color={color}
         />
       ))}
     </Sidebar>

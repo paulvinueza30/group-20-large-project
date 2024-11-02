@@ -1,6 +1,6 @@
 import { Radar, RadarChart, PolarGrid, PolarAngleAxis } from "recharts";
 
-const RadarCharti = () => {
+const RadarCharti = ({ color }: any) => {
   // Sample data
   const data = [
     { name: "A", x: 21 },
@@ -23,7 +23,7 @@ const RadarCharti = () => {
       >
         <PolarGrid />
         <PolarAngleAxis dataKey="name" />
-        <Radar dataKey="x" stroke="purple" fill="purple" fillOpacity={0.5} />
+        <Radar dataKey="x" stroke={color} fill={color} fillOpacity={0.5} />
       </RadarChart>
     </div>
   );
