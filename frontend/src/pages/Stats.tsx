@@ -1,6 +1,8 @@
 import SideGrid from "../components/sidebar/SideGrid";
 
 // TODO: Add components
+// Honestly still not sure what will be displayed here
+// Maybe indivudual decks stats like how Anki does
 function Stats() {
   return (
     <>

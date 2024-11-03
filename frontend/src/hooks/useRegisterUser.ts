@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { registerUser } from "../services/userApi"; // Adjust the import path accordingly
+import { registerUser } from "../services/userApi";
 
 const useRegisterUser = () => {
   const [loading, setLoading] = useState(false);
@@ -17,6 +17,7 @@ const useRegisterUser = () => {
     setSuccess(false);
 
     try {
+      // Gets the response back from the API
       await registerUser(userData);
       setSuccess(true);
     } catch (error: any) {

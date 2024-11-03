@@ -1,10 +1,10 @@
 import { useState } from "react";
-import RadarCharti from "../components/dashboard/RadarCharti";
 import SideGrid from "../components/sidebar/SideGrid";
 import FlashCard from "../components/FlashCard";
 
 // TODO: Add components
 function Decks() {
+  // Handles the show answer buttton
   const [showBackCard, setShowBackCard] = useState(false);
 
   return (

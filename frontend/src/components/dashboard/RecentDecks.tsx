@@ -1,6 +1,8 @@
 import React from "react";
 
+// TODO: connect to API
 function RecentDecks({ Pcolor, Scolor }: any) {
+  // Mockdata for testing
   const deckInfo = [
     { name: "Programming Languages", count: 10 },
     { name: "Algorithms", count: 34 },

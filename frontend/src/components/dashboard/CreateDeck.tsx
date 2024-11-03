@@ -1,7 +1,7 @@
 import Image from "../../assets/CreateCropped.png";
 import { PlusCircleIcon } from "@heroicons/react/24/outline";
 
-// TODO: Fix image size properly
+// TODO: Fix image size properly, work on the button and connection
 function CreateDeck() {
   return (
     <div className="max-w-sm bg-slate-100">

@@ -1,6 +1,7 @@
 import LogInForm from "../components/forms/LogInForm";
 import NavBar from "../components/NavBar";
 
+// TODO: Add picture, improve loginform styling
 function Login() {
   return (
     <div className="grid grid-cols-6 grid-rows-6 gap-4 h-screen">

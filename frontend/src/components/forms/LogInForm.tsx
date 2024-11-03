@@ -1,17 +1,23 @@
 import React, { useState } from "react";
-import useLoginUser from "../../hooks/useLoginUser"; // Adjust the import path accordingly
+import useLoginUser from "../../hooks/useLoginUser";
 import { useNavigate } from "react-router-dom";
 
 const LoginForm: React.FC = () => {
+  // Gets the info from useLoginUser hook
   const { login, loading, error, success } = useLoginUser();
+  // Form variables
   const [formData, setFormData] = useState({ login: "", password: "" });
-  const navigate = useNavigate(); // Initialize useNavigate
 
+  // Router-dom hook used to change to another page
+  const navigate = useNavigate();
+
+  // Updates the formData variable when the user types in the input
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
+  // Sends the data back to the login hook
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
@@ -21,6 +27,7 @@ const LoginForm: React.FC = () => {
     }
   };
 
+  // Navigates to the dashboard
   if (success) {
     navigate("/dashboard");
   }
@@ -50,8 +57,10 @@ const LoginForm: React.FC = () => {
         disabled={loading}
         className="bg-primary p-2 text-white rounded-xl px-4 mt-3"
       >
+        {/* Text changes while the API loads */}
         {loading ? "Logging in..." : "Login"}
       </button>
+      {/* Displays an error message */}
       {error && <div style={{ color: "red" }}>{error}</div>}
     </form>
   );

@@ -1,6 +1,7 @@
 import SignUpForm from "../components/forms/SignUpForm";
 import NavBar from "../components/NavBar";
 
+// TODO: add picture, improve signupform styling
 function SignUp() {
   return (
     <div className="grid grid-cols-6 grid-rows-6 gap-4 h-screen">

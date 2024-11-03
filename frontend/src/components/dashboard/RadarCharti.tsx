@@ -1,5 +1,6 @@
 import { Radar, RadarChart, PolarGrid, PolarAngleAxis } from "recharts";
 
+// TODO: connect to API
 const RadarCharti = ({ color }: any) => {
   // Sample data
   const data = [

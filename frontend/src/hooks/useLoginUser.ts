@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { loginUser } from "../services/userApi"; // Adjust the import path accordingly
+import { loginUser } from "../services/userApi";
 
 const useLoginUser = () => {
   const [loading, setLoading] = useState(false);
@@ -12,6 +12,7 @@ const useLoginUser = () => {
     setSuccess(false);
 
     try {
+      // Gets the response back from the API
       const response = await loginUser(userData);
       setSuccess(true); // Set success only if login is successful
       return response; // Return response for further handling if needed

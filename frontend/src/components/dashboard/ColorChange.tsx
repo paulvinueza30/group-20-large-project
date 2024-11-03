@@ -1,5 +1,4 @@
-import React, { useState } from "react";
-
+// From Typescript, sets the type of the color values that we are sending to the dashboard page
 interface Props {
   Pcolor: string;
   Scolor: string;

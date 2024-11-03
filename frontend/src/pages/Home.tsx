@@ -1,5 +1,6 @@
 import NavBar from "../components/NavBar";
 
+// TODO: Add picture, features, and teams
 function Home() {
   return (
     <div className="grid grid-cols-6 grid-rows-10 gap-4">
