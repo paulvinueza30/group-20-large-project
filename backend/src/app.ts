@@ -6,12 +6,21 @@ import toDoRoutes from "./routes/toDoRoutes";
 import dotenv from "dotenv";
 import passport from "passport";
 import session from "express-session";
+import cors from "cors";
 
 // Load environment variables
 dotenv.config({ path: "./src/.env" });
 
+// const cors = require("cors");
 const app = express();
 const PORT = process.env.PORT || 5000;
+
+app.use(
+  cors({
+    origin: "http://localhost:5173", // Allow requests from this origin
+    credentials: true, // If you want to allow cookies or HTTP authentication
+  })
+);
 
 // Middleware setup
 app.use(express.json());
