@@ -1,5 +1,5 @@
 import { Schema, model } from "mongoose";
-import {IToDo} from "../interfaces/IToDo";
+import { IToDo } from "../interfaces/IToDo";
 
 const toDoSchema = new Schema<IToDo>({
   toDo: {
@@ -20,6 +20,5 @@ const toDoSchema = new Schema<IToDo>({
   },
 });
 
-const toDo = model<IToDo>("toDo", toDoSchema);
-
-export default toDo;
+const ToDo = model<IToDo>("ToDo", toDoSchema);
+export default ToDo;
