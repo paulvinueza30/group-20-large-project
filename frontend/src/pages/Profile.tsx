@@ -1,4 +1,5 @@
 import SideGrid from "../components/sidebar/SideGrid";
+import TodoList from "../components/todo/TodoList";
 
 // TODO: Add components
 function Profile() {
@@ -13,7 +14,7 @@ function Profile() {
             </div>
             <div className="col-span-2 row-span-2 row-start-2">2</div>
             <div className="col-span-2 row-span-2 col-start-3 row-start-2">
-              3
+              <TodoList />
             </div>
             <div className="row-span-2 col-start-5 row-start-2">4</div>
             <div className="col-span-3 row-span-2 row-start-4">5</div>

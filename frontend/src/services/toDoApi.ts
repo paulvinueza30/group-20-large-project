@@ -2,7 +2,7 @@ import axios from "axios";
 
 const TODO_API_URL = `${process.env.REACT_APP_API_URL}/todos` || "http://localhost:5000/api/todos";
 
-export const createToDo = async (toDoData: {todo: string}) => {
+export const createToDo = async (toDoData: {toDo: string}) => {
    try {
      const response = await axios.post(`${TODO_API_URL}/createToDo`, toDoData, {
 	withCredentials: true,
