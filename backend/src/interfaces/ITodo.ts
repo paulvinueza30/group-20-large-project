@@ -1,8 +1,8 @@
 import { Document, Types } from "mongoose";
 
-export interface IToDo extends Document {
+export interface ITodo extends Document {
   userId: Types.ObjectId;
-  toDo: string;
+  todo: string;
   markDone?: boolean;
   createdAt?: Date;
   editedAt?: Date | null;

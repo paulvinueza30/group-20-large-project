@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import mongoose from "mongoose";
 import { IUser } from "../interfaces/IUser";
-import ToDo from "../models/toDoModel";
+import Todo from "../models/todoModel";
 
 // Create new To Dos
 export const createTodo = async (
@@ -9,10 +9,10 @@ export const createTodo = async (
   res: Response
 ): Promise<void> => {
   try {
-    const { toDo } = req.body;
+    const { Todo } = req.body;
     const user = req.user as IUser;
 
-    if (!toDo) {
+    if (!Todo) {
       res.status(400).json({ message: "To Do task is required" });
       return;
     }
@@ -21,44 +21,44 @@ export const createTodo = async (
       res.status(401).json({ message: "Unauthorized: No user found." });
       return;
     }
-    const newToDo = new ToDo({ toDo, userId: user._id });
-    await newToDo.save();
+    const newTodo = new Todo({ Todo, userId: user._id });
+    await newTodo.save();
 
     res
       .status(201)
-      .json({ message: "To Do task added successfully", toDo: newToDo });
+      .json({ message: "To Do task added successfully", Todo: newTodo });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Failed to add To Do task", error });
   }
 };
-// Edit todo
+// Edit Todo
 export const editTodo = async (req: Request, res: Response): Promise<void> => {
   try {
-    const { id: todoId } = req.params;
-    const { toDo } = req.body;
+    const { id: TodoId } = req.params;
+    const { Todo } = req.body;
     const user = req.user as IUser;
 
     // Validate input
-    if (!toDo) {
+    if (!Todo) {
       res.status(400).json({ message: "Updated To Do task is required" });
       return;
     }
 
-    const updatedToDo = await ToDo.findOneAndUpdate(
-      { _id: todoId, userId: user._id },
-      { toDo },
+    const updatedTodo = await Todo.findOneAndUpdate(
+      { _id: TodoId, userId: user._id },
+      { Todo },
       { new: true }
     );
 
-    if (!updatedToDo) {
+    if (!updatedTodo) {
       res.status(404).json({ message: "To Do task not found or unauthorized" });
       return;
     }
 
     res
       .status(200)
-      .json({ message: "To Do task updated successfully", toDo: updatedToDo });
+      .json({ message: "To Do task updated successfully", Todo: updatedTodo });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Failed to update To Do task", error });
@@ -71,15 +71,15 @@ export const deleteTodo = async (
   res: Response
 ): Promise<void> => {
   try {
-    const { id: todoId } = req.params;
+    const { id: TodoId } = req.params;
     const user = req.user as IUser;
 
-    const deletedToDo = await ToDo.findOneAndDelete({
-      _id: todoId,
+    const deletedTodo = await Todo.findOneAndDelete({
+      _id: TodoId,
       userId: user._id,
     });
 
-    if (!deletedToDo) {
+    if (!deletedTodo) {
       res.status(404).json({ message: "To Do task not found or unauthorized" });
       return;
     }
@@ -94,38 +94,38 @@ export const deleteTodo = async (
 // Toggle task as done / not done
 export const todoDone = async (req: Request, res: Response): Promise<void> => {
   try {
-    const { id: todoId } = req.params;
+    const { id: TodoId } = req.params;
     const user = req.user as IUser;
 
     // Validate the ObjectId format
-    if (!mongoose.isValidObjectId(todoId)) {
+    if (!mongoose.isValidObjectId(TodoId)) {
       res.status(400).json({ message: "Invalid To Do ID format" });
       return;
     }
 
-    const existToDo = await ToDo.findOne({ _id: todoId, userId: user._id });
+    const existTodo = await Todo.findOne({ _id: TodoId, userId: user._id });
 
-    if (!existToDo) {
+    if (!existTodo) {
       res.status(404).json({ message: "To Do task not found or unauthorized" });
       return;
     }
 
-    existToDo.markDone = !existToDo.markDone;
-    await existToDo.save();
+    existTodo.markDone = !existTodo.markDone;
+    await existTodo.save();
 
-    res.status(200).json({ message: "To Do task toggled", toDo: existToDo });
+    res.status(200).json({ message: "To Do task toggled", Todo: existTodo });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Failed to toggle task", error });
   }
 };
-// Retrieve user todos
+// Retrieve user Todos
 export const getTodos = async (req: Request, res: Response): Promise<void> => {
   try {
     const user = req.user as IUser;
 
-    const toDolist = await ToDo.find({ userId: user._id });
-    res.status(200).json({ message: "To Do list retrieved", toDolist });
+    const Todolist = await Todo.find({ userId: user._id });
+    res.status(200).json({ message: "To Do list retrieved", Todolist });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Failed to retrieve To Do list", error });
