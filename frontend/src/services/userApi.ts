@@ -2,6 +2,7 @@ import axios from "axios";
 
 const USER_API_URL =
   `${process.env.REACT_APP_API_URL}/users` || "http://localhost:5000/api/users";
+
 // Register user
 export const registerUser = async (userData: {
   name: string;

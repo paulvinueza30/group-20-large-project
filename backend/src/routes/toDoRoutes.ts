@@ -1,19 +1,19 @@
 import express from "express";
 import {
-  createToDo,
-  editToDo,
-  deleteToDo,
-  toDoDone,
-  getToDo,
+  createTodo,
+  editTodo,
+  deleteTodo,
+  todoDone,
+  getTodos,
 } from "../controllers/toDoController";
 import { isAuthenticated } from "../middlewares/authMiddleware";
 
 const router = express.Router();
 
-router.post("/createToDo", isAuthenticated, createToDo);
-router.put("/editToDo/:id", isAuthenticated, editToDo);
-router.delete("/deleteToDo/:id", deleteToDo);
-router.put("/toDoDone/:id", isAuthenticated, toDoDone);
-router.get("/getToDo", isAuthenticated, getToDo);
+router.post("/createTodo", isAuthenticated, createTodo);
+router.put("/editTodo/:id", isAuthenticated, editTodo);
+router.delete("/deleteTodo/:id", isAuthenticated, deleteTodo);
+router.put("/todoDone/:id", isAuthenticated, todoDone);
+router.get("/getTodos", isAuthenticated, getTodos);
 
 export default router;

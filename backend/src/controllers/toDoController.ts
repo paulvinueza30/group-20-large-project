@@ -4,7 +4,7 @@ import { IUser } from "../interfaces/IUser";
 import ToDo from "../models/toDoModel";
 
 // Create new To Dos
-export const createToDo = async (
+export const createTodo = async (
   req: Request,
   res: Response
 ): Promise<void> => {
@@ -33,7 +33,7 @@ export const createToDo = async (
   }
 };
 // Edit todo
-export const editToDo = async (req: Request, res: Response): Promise<void> => {
+export const editTodo = async (req: Request, res: Response): Promise<void> => {
   try {
     const { id: todoId } = req.params;
     const { toDo } = req.body;
@@ -66,7 +66,7 @@ export const editToDo = async (req: Request, res: Response): Promise<void> => {
 };
 
 // Delete task from To Do list
-export const deleteToDo = async (
+export const deleteTodo = async (
   req: Request,
   res: Response
 ): Promise<void> => {
@@ -92,7 +92,7 @@ export const deleteToDo = async (
 };
 
 // Toggle task as done / not done
-export const toDoDone = async (req: Request, res: Response): Promise<void> => {
+export const todoDone = async (req: Request, res: Response): Promise<void> => {
   try {
     const { id: todoId } = req.params;
     const user = req.user as IUser;
@@ -120,7 +120,7 @@ export const toDoDone = async (req: Request, res: Response): Promise<void> => {
   }
 };
 // Retrieve user todos
-export const getToDo = async (req: Request, res: Response): Promise<void> => {
+export const getTodos = async (req: Request, res: Response): Promise<void> => {
   try {
     const user = req.user as IUser;
 
