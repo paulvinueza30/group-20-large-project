@@ -1,10 +1,10 @@
-import React from 'react';
-import useGetTodo from '../../hooks/useGetTodo';
-
+import React, { useState } from "react";
+import useGetTodo from "../../hooks/useGetTodo";
 
 const TodoItem: React.FC = () => {
-  const { todos, loading, error } = useGetTodo();
+  const [markedDone, setMarkedDone] = useState(Boolean);
 
+  const { toDolist, loading, error } = useGetTodo();
   if (loading) {
     return <div>Loading...</div>;
   }
@@ -15,9 +15,23 @@ const TodoItem: React.FC = () => {
 
   return (
     <ul>
-      {/* {todos.map((todo) => (
-        <li key={todo.id} className='bg-white rounded-xl'> <input type="checkbox" className="bg-secondary w-4 h-4 accent-primary"/> {todo.title}</li>
-      ))} */}
+      {toDolist.map((todo) => (
+        <li key={todo._id} className="bg-white rounded-xl">
+          <input
+            type="checkbox"
+            className="bg-secondary w-4 h-4 accent-primary"
+            checked={markedDone == todo.markDone}
+            onChange={() => {
+              setMarkedDone(!markedDone);
+            }}
+          />
+          {!markedDone ? (
+            <span className="line-through ml-2">{todo.toDo}</span>
+          ) : (
+            <span className="ml-2">{todo.toDo}</span>
+          )}
+        </li>
+      ))}
     </ul>
   );
 };

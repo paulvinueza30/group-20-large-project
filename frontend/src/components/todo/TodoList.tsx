@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
-import TodoItem from './TodoItem';
-import useCreateTodo from '../../hooks/useCreateTodo';
+import React, { useState } from "react";
+import TodoItem from "./TodoItem";
+import useCreateTodo from "../../hooks/useCreateTodo";
+import { PlusIcon } from "@heroicons/react/24/outline";
 
 function TodoList() {
   const { create, loading, error } = useCreateTodo();
@@ -22,11 +23,14 @@ function TodoList() {
   };
 
   return (
-    <div className='p-2'>
-      <h2 className='text-center font-bold text-xl py-2'>Todo List</h2>
-      <form onSubmit={handleSubmit}>
+    <div className="p-2">
+      <h2 className="text-center font-bold text-xl py-2">Todo List</h2>
+      <ul>
+        <TodoItem />
+      </ul>
+      <form onSubmit={handleSubmit} className="flex mt-4">
         <input
-          className="border-2 p-2 my-2"
+          className="border-2 m-s"
           name="toDo"
           value={toDoData.toDo}
           onChange={handleChange}
@@ -35,15 +39,12 @@ function TodoList() {
         <button
           type="submit"
           disabled={loading}
-          className="bg-primary p-2 text-white rounded-xl px-4 mt-3"
+          className="bg-primary ml-4 text-white rounded-full p-4"
         >
-          {loading ? "Adding..." : "Add To Do"}
+          <PlusIcon className="h-4 w-4 text-white" />
         </button>
-        {error && <div style={{ color: "red" }}>{error}</div>}
       </form>
-      <ul>
-        {/* Render TodoItem components here*/}
-      </ul>
+      {error && <div style={{ color: "red" }}>{error}</div>}
     </div>
   );
 }
