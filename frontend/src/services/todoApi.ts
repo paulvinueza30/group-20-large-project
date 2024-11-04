@@ -6,7 +6,7 @@ const TODO_API_URL =
 // Create a new todo
 export const createTodo = async (toDoData: { toDo: string }) => {
   try {
-    const response = await axios.post(`${TODO_API_URL}/createToDo`, toDoData, {
+    const response = await axios.post(`${TODO_API_URL}/createTodo`, toDoData, {
       withCredentials: true,
     });
     return response.data;

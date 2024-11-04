@@ -2,7 +2,7 @@ import express from "express";
 import mongoose from "mongoose";
 import userRoutes from "./routes/userRoutes";
 import flashCardRoutes from "./routes/flashCardRoutes";
-import toDoRoutes from "./routes/toDoRoutes";
+import toDoRoutes from "./routes/todoRoutes";
 import dotenv from "dotenv";
 import passport from "passport";
 import session from "express-session";

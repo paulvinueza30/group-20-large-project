@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { getToDo } from "../services/toDoApi";
+import { getTodos } from "../services/todoApi";
 
 interface Todo {
   _id: string;
@@ -25,7 +25,7 @@ const useGetTodo = (): TodoState => {
   useEffect(() => {
     const fetchTodos = async () => {
       try {
-        const data = await getToDo();
+        const data = await getTodos();
         setTodos({ toDolist: data.toDolist, loading: false, error: null });
       } catch (error: any) {
         setTodos({ toDolist: [], loading: false, error: error.message });

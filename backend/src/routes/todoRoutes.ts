@@ -5,7 +5,7 @@ import {
   deleteTodo,
   todoDone,
   getTodos,
-} from "../controllers/toDoController";
+} from "../controllers/todoController";
 import { isAuthenticated } from "../middlewares/authMiddleware";
 
 const router = express.Router();
