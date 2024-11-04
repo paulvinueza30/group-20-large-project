@@ -5,6 +5,7 @@ import {
   ChartPieIcon,
   UserIcon,
   SunIcon,
+  MoonIcon,
   ChartBarSquareIcon,
   ArrowRightStartOnRectangleIcon,
 } from "@heroicons/react/24/outline";
@@ -12,6 +13,7 @@ import { ReactNode, useEffect, useState } from "react";
 import SidebarItem from "./SidebarItem";
 import Logo from "../../assets/logo.webp";
 import { useLocation } from "react-router-dom";
+import { spawn } from "child_process";
 
 interface SidebarProps {
   children: ReactNode;
@@ -20,10 +22,20 @@ interface SidebarProps {
 }
 
 function Sidebar({ children, expanded, handleToggle }: SidebarProps) {
+  function handleClick() {
+    if (localStorage.theme === "dark" || !("theme" in localStorage)) {
+      document.documentElement.classList.add("dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+    }
+
+    localStorage.theme = localStorage.theme === "dark" ? "light" : "dark";
+  }
+
   return (
     <div className="relative">
       <div
-        className={`fixed inset-0 -z-10 block bg-gray-400 ${
+        className={`fixed inset-0 -z-10 block bg-gray-400 dark:bg-gray-900${
           expanded ? "block sm:hidden" : "hidden"
         }`}
       />
@@ -32,7 +44,7 @@ function Sidebar({ children, expanded, handleToggle }: SidebarProps) {
           expanded ? "w-5/6 sm:w-64" : "w-0 sm:w-20"
         }`}
       >
-        <nav className="flex h-full md:h-[1000px] flex-col border-r bg-white shadow-sm">
+        <nav className="flex h-full md:h-[1000px] flex-col border-r bg-white dark:bg-gray-900 shadow-sm">
           <div className="flex items-center justify-between p-4 pb-2">
             <img
               src={Logo}
@@ -42,7 +54,7 @@ function Sidebar({ children, expanded, handleToggle }: SidebarProps) {
               alt=""
             />
             <h1
-              className={`overflow-hidden font-bold ${
+              className={`overflow-hidden font-bold dark:text-white ${
                 expanded ? "w-30" : "w-0"
               }`}
             >
@@ -51,7 +63,7 @@ function Sidebar({ children, expanded, handleToggle }: SidebarProps) {
             <div className={`${expanded ? "" : "hidden sm:block"}`}>
               <button
                 onClick={handleToggle}
-                className="rounded-lg bg-gray-50 p-1.5 hover:bg-gray-100"
+                className="rounded-lg bg-gray-50 dark:bg-gray-800 p-1.5 hover:bg-gray-100"
               >
                 {expanded ? (
                   <ArrowRightIcon className="h-6 w-6" />
@@ -69,13 +81,24 @@ function Sidebar({ children, expanded, handleToggle }: SidebarProps) {
               }`}
             >
               <div>
-                <a href="/" className="leading-4 flex items-center">
+                <a
+                  href="/"
+                  className="leading-4 flex items-center dark:text-white"
+                >
                   <ArrowRightStartOnRectangleIcon className="h-6 w-6" />
                   <h4 className="text-primary-500 pl-2">Log out</h4>
                 </a>
                 <div className="leading-4 flex items-center pt-2">
-                  <SunIcon className="h-6 w-6" />
-                  <h4 className="text-primary-500 pl-2">Light Mode</h4>
+                  <div className="flex" onClick={handleClick}>
+                    <div className="flex-initial w-64 dark:text-white">
+                      Light Mode (Dark/Light)
+                      {localStorage.theme === "light" ? (
+                        <SunIcon className="w-6 h-6" />
+                      ) : (
+                        <MoonIcon className="w-6 h-6" />
+                      )}
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>

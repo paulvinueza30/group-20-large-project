@@ -4,7 +4,7 @@ import { PlusCircleIcon } from "@heroicons/react/24/outline";
 // TODO: Fix image size properly, work on the button and connection
 function CreateDeck() {
   return (
-    <div className="max-w-sm bg-slate-100">
+    <div className="max-w-sm bg-slate-100 dark:bg-slate-600">
       <img className="rounded-t-lg h-[250px] w-full" src={Image} />
 
       <div className="p-5">
@@ -12,7 +12,7 @@ function CreateDeck() {
         <div className="flex justify-between">
           <input
             placeholder="Enter Deck Name"
-            className="text-lg pr-2 border-2"
+            className="text-lg pr-2 border-2 dark:bg-slate-200"
             type="text"
           />
           <PlusCircleIcon className="w-10 bg-indigo-500 rounded-full text-white" />

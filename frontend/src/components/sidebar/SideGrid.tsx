@@ -9,11 +9,11 @@ function SideGrid({ color }: any) {
   };
 
   return (
-    <aside className="h-screen md:h-[1000px] border-4">
+    <aside className="h-screen md:h-[1000px] dark:bg-gray-900">
       <div
         className={`min-h-screen shadow-lg ${
           sidebarSize ? "w-56" : "w-10"
-        } duration-300 ease-in-out`}
+        } duration-300 ease-in-out dark:bg-gray-800`}
       >
         <MakeSidebar sendSizeChange={getSizeChange} color={color} />
       </div>

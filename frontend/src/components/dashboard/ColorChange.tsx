@@ -23,14 +23,14 @@ function ColorChange({ Pcolor, setPColor, Scolor, setSColor }: Props) {
         type="color"
         value={Pcolor}
         onChange={handlePrimaryColorChange}
-        className="w-full h-[100px]"
+        className="w-full h-[100px] dark:bg-slate-600 "
       />
       <p>Selected Primary: {Pcolor}</p>
       <input
         type="color"
         value={Scolor}
         onChange={handleSecondaryColorChange}
-        className="w-full h-[100px]"
+        className="w-full h-[100px] dark:bg-slate-600"
       />
       <p>Selected Secondary: {Scolor}</p>
     </div>

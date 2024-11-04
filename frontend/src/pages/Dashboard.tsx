@@ -14,12 +14,12 @@ function Dashboard() {
 
   return (
     <>
-      <div className="flex">
+      <div className="flex dark:bg-gray-700">
         {/* Sending just the primary color for the active state */}
         <SideGrid color={Pcolor} />
         <div className="w-full ml-20 mr-[30px] ">
           {/* I recommend using the 'auto-rows-[...px]' instead of row-span- for responsive purposes */}
-          <div className="grid grid-cols-6 auto-rows-[100px] gap-x-[30px] gap-y-[30px] max-h-svh ">
+          <div className="grid grid-cols-6 auto-rows-[100px] gap-x-[30px] gap-y-[30px] max-h-svh">
             <div className="col-span-6 row-span-1 col-start-1 row-start-1 h-1 ">
               <div className="pt-8 text-sm flex flex-colum text-gray-400">
                 <HomeIcon className="h-[15px] w-[15px]" /> / Dashboard
@@ -28,21 +28,21 @@ function Dashboard() {
                 Dashboard
               </h1>
             </div>
-            <div className="col-span-2 row-span-3 col-start-1 row-start-2 bg-slate-100 rounded-xl shadow-md">
+            <div className="col-span-2 row-span-3 col-start-1 row-start-2 bg-slate-100 rounded-xl shadow-md dark:bg-slate-600">
               {/* Sending just the primary color */}
               <RadarCharti color={Pcolor} />
             </div>
-            <div className="col-span-2 row-span-3 col-start-3 row-start-2 overflow-hidden bg-slate-100 rounded-xl shadow-md">
+            <div className="col-span-2 row-span-3 col-start-3 row-start-2 overflow-hidden bg-slate-100 rounded-xl shadow-md dark:bg-slate-600">
               <CreateDeck />
             </div>
             <div className="col-span-2 row-span-3 col-start-5 row-start-2 border-2 ">
               Calendar
             </div>
-            <div className="col-span-4 row-span-3 col-start-1 row-start-5 bg-slate-100 rounded-xl shadow-md">
+            <div className="col-span-4 row-span-3 col-start-1 row-start-5 bg-slate-100 rounded-xl shadow-md dark:bg-slate-600">
               {/* Sending both colors to be used */}
               <RecentDecks Pcolor={Pcolor} Scolor={Scolor} />
             </div>
-            <div className="col-span-2 row-span-3 col-start-5 row-start-5 bg-slate-100 rounded-xl shadow-md">
+            <div className="col-span-2 row-span-3 col-start-5 row-start-5 bg-slate-100 rounded-xl shadow-md dark:bg-slate-600">
               {/* This is the component that has the color picker, that is why we are using the setColor function */}
               <ColorChange
                 Pcolor={Pcolor}
