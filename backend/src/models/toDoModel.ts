@@ -2,6 +2,11 @@ import { Schema, model } from "mongoose";
 import { IToDo } from "../interfaces/IToDo";
 
 const toDoSchema = new Schema<IToDo>({
+  userId: {
+    type: Schema.Types.ObjectId,
+    ref: "User",
+    required: true,
+  },
   toDo: {
     type: String,
     required: true,

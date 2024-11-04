@@ -2,6 +2,11 @@ import { Schema, model } from "mongoose";
 import { IFlashCard } from "../interfaces/IFlashCard";
 
 const flashCardSchema = new Schema<IFlashCard>({
+    userId: {
+        type: Schema.Types.ObjectId,
+        ref: "User",
+        required: true,
+    },
     frontSide: {
         type: String,
         required: true,
