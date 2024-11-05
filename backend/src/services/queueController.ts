@@ -1,4 +1,5 @@
 import flashCard from '../models/flashCardModel';  // Mongoose model
+import Category from "../models/categoryModel"; 
 import { IFlashCard } from '../interfaces/IFlashCard';  // TypeScript interface for typing
 import { MinHeap } from "./minHeap";  // MinHeap utility from services
 
@@ -9,10 +10,23 @@ class QueueController {
         this.queue = new MinHeap<IFlashCard>();
     }
 
-    // Initialize the queue with flashcards due for review
-    async initializeQueue(): Promise<void> {
+    async initializeQueue(category: string): Promise<void> {
         const today = new Date();
-        const dueCards = await flashCard.find({ dueDate: { $lte: today } }).exec();
+        const normalizedCategory = category.toLowerCase();
+
+        // Find the category document by name
+        const categoryDoc = await Category.findOne({ name: normalizedCategory });
+        if (!categoryDoc) {
+            console.error(`Category "${category}" not found.`);
+            return;
+        }
+
+        // Use the category's ObjectId to find flashcards due for review in this category
+        const dueCards = await flashCard.find({
+            dueDate: { $lte: today },
+            category: categoryDoc._id  // Use the ObjectId of the category
+        }).exec();
+
         dueCards.forEach(card => this.queue.insert(card));
     }
 

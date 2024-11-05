@@ -17,7 +17,8 @@ const flashCardSchema = new Schema<IFlashCard>(
             required: true,
         },
         category: {
-            type: String,
+            type: Schema.Types.ObjectId,  // Reference to the Category model
+            ref: "Category",
             required: true,
         },
         dueDate: {
@@ -30,7 +31,7 @@ const flashCardSchema = new Schema<IFlashCard>(
         },
     },
     {
-        timestamps: { createdAt: "createdAt", updatedAt: "editedAt" }  // Automatically manages createdAt and editedAt
+        timestamps: { createdAt: "createdAt", updatedAt: "editedAt" },  // Automatically manages createdAt and editedAt
     }
 );
 

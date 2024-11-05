@@ -1,6 +1,7 @@
 import express from "express";
 import mongoose from "mongoose";
 import userRoutes from "./routes/userRoutes";
+import categoryRoutes from "./routes/categoryRoutes";
 import flashCardRoutes from "./routes/flashCardRoutes";
 import toDoRoutes from "./routes/todoRoutes";
 import dotenv from "dotenv";
@@ -41,6 +42,7 @@ app.use(passport.session());
 
 // User, flashCard, toDo routes
 app.use("/api/users", userRoutes);
+app.use("/api/categories", categoryRoutes);
 app.use("/api/flashcards", flashCardRoutes);
 app.use("/api/todos", toDoRoutes);
 

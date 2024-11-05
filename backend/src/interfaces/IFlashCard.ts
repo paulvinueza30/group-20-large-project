@@ -4,10 +4,10 @@ export interface IFlashCard extends Document {
     userId: Types.ObjectId;
     frontSide: string;
     backSide: string;
-    category: string;
+    category: Types.ObjectId;
     createdAt?: Date;
     editedAt?: Date;
     dueDate: Date;
-    interval?: Number;
+    interval?: number;
     updateDueDate(feedback: 'Forgot' | 'Hard' | 'Good' | 'Easy'): Promise<IFlashCard>;
 }
