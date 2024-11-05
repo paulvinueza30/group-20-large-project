@@ -24,6 +24,14 @@ const userSchema = new Schema<IUser>({
     type: Date,
     default: Date.now,
   },
+  colorPreferences: {
+    type: Object,
+    default: {
+      primary: "#5C0B86",
+      secondary: "#BA72E2",
+    },
+  },
+  profilePic: { type: String, default: "" },
 });
 
 const User = model<IUser>("User", userSchema);

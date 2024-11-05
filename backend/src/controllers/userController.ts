@@ -1,7 +1,9 @@
 import { Request, Response } from "express";
 import User from "../models/userModel";
+
 import bcrypt from "bcrypt";
 import passport from "../config/passport-config";
+import { IUser } from "../interfaces/IUser";
 
 // Register user
 export const registerUser = async (
@@ -78,4 +80,65 @@ export const loginUser = (
       });
     });
   })(req, res, next);
+};
+
+// Get user info
+export const getUserInfo = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  const user = req.user as IUser;
+
+  if (!user) {
+    res.status(404).json({ message: "User not found" });
+    return;
+  }
+
+  res.status(200).json({
+    message: "User data fetched successfully",
+    user: {
+      _id: user._id.toString(),
+      name: user.name,
+      userName: user.userName,
+      email: user.email,
+      createdAt: user.createdAt,
+      colorPreferences: user.colorPreferences,
+      profilePic: user.profilePic,
+    },
+  });
+};
+
+// Preferences
+
+// Update user color preferences
+export const updateColorPreferences = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  const { userId } = req.params; // Assuming userId is passed in the URL
+  const { primary, secondary } = req.body; // Colors sent in the request body
+
+  try {
+    // Find the user by ID and update the color preferences
+    const updatedUser = await User.findByIdAndUpdate(
+      userId,
+      { colorPreferences: { primary, secondary } },
+      { new: true }
+    );
+
+    if (!updatedUser) {
+      res.status(404).json({ message: "User not found" });
+      return;
+    }
+
+    res.status(200).json({
+      message: "Color preferences updated successfully",
+      user: updatedUser,
+    });
+  } catch (error) {
+    console.error(error);
+    res
+      .status(500)
+      .json({ message: "Failed to update color preferences", error });
+  }
 };
