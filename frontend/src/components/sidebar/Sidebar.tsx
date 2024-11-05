@@ -35,7 +35,7 @@ function Sidebar({ children, expanded, handleToggle }: SidebarProps) {
   return (
     <div className="relative">
       <div
-        className={`fixed inset-0 -z-10 block bg-gray-400 dark:bg-gray-900${
+        className={`fixed inset-0 -z-10 block  dark:bg-gray-900${
           expanded ? "block sm:hidden" : "hidden"
         }`}
       />
