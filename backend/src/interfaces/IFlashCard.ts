@@ -1,6 +1,6 @@
 import { Document, Types } from "mongoose";
 
-export interface IFlashCard extends Document {
+export interface IFlashcard extends Document {
     userId: Types.ObjectId;
     frontSide: string;
     backSide: string;
@@ -9,5 +9,5 @@ export interface IFlashCard extends Document {
     editedAt?: Date;
     dueDate: Date;
     interval?: number;
-    updateDueDate(feedback: 'Forgot' | 'Hard' | 'Good' | 'Easy'): Promise<IFlashCard>;
+    updateDueDate(feedback: 'Forgot' | 'Hard' | 'Good' | 'Easy'): Promise<IFlashcard>;
 }

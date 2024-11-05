@@ -1,5 +1,5 @@
 // Work in Progress
-function FlashCard() {
+function Flashcard() {
   return (
     <div className="border-4 p-20">
       <h1 className="text-5xl text-center">Topic</h1>
@@ -10,4 +10,4 @@ function FlashCard() {
   );
 }
 
-export default FlashCard;
+export default Flashcard;

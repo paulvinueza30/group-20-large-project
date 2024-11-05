@@ -1,19 +1,19 @@
 import express from "express";
-import { 
-    createFlashCard, 
-    editFlashCard, 
-    deleteFlashCard, 
-    getNextFlashCard, 
-    reviewFlashCard 
-} from "../controllers/flashCardController";
+import {
+    createFlashcard,
+    editFlashcard,
+    deleteFlashcard,
+    getNextFlashcard,
+    reviewFlashcard
+} from "../controllers/flashcardController";
 import { isAuthenticated } from "../middlewares/authMiddleware";
 
 const router = express.Router();
 
-router.post("/createFlashCard", isAuthenticated, createFlashCard);
-router.put("/editFlashCard", isAuthenticated, editFlashCard);
-router.delete("/deleteFlashCard", isAuthenticated, deleteFlashCard);
-router.get("/nextFlashCard", isAuthenticated, getNextFlashCard);
-router.put("/reviewFlashCard/:id", isAuthenticated, reviewFlashCard); 
+router.post("/createFlashcard/:categoryId", isAuthenticated, createFlashcard);
+router.put("/editFlashcard", isAuthenticated, editFlashcard);
+router.delete("/deleteFlashcard", isAuthenticated, deleteFlashcard);
+router.get("/nextFlashcard", isAuthenticated, getNextFlashcard);
+router.put("/reviewFlashcard/:id", isAuthenticated, reviewFlashcard);
 
 export default router;

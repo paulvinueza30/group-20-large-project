@@ -1,6 +1,6 @@
 import { useState } from "react";
 import SideGrid from "../components/sidebar/SideGrid";
-import FlashCard from "../components/FlashCard";
+import Flashcard from "../components/Flashcard";
 
 // TODO: Add components
 function Decks() {
@@ -18,7 +18,7 @@ function Decks() {
             </div>
             <div className="col-span-4 row-span-3 col-start-2 row-start-2 border-2">
               <div>
-                <FlashCard />
+                <Flashcard />
               </div>
               <div className="flex justify-between">
                 <button
