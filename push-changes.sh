@@ -16,6 +16,6 @@ git commit -m "$1"
 
 # Push changes to the main branch
 echo "Pushing changes to the main branch..."
-git push origin main
+git push origin $(git symbolic-ref --short HEAD)
 
 echo "Changes have been pushed successfully."
