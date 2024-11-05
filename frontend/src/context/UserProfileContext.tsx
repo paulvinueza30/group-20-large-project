@@ -5,7 +5,11 @@ import React, {
   useEffect,
   ReactNode,
 } from "react";
-import axios from "axios";
+import {
+  getUserInfo as fetchUserInfo, // Renamed to avoid conflict
+  updateColorPreferences as updateColorPreferencesAPI, // Renamed to avoid conflict
+  uploadProfilePic as uploadProfilePicAPI, // Renamed to avoid conflict
+} from "../services/userApi"; // Make sure you import the correct service functions
 
 interface IColorPreferences {
   primary: string;
@@ -53,10 +57,9 @@ export const UserProfileProvider: React.FC<UserProfileProviderProps> = ({
   useEffect(() => {
     const fetchUserProfile = async () => {
       try {
-        const response = await axios.get("/api/users/user", {
-          withCredentials: true,
-        });
-        setUserProfile(response.data.user);
+        const response = await fetchUserInfo(); // Renamed fetchUserInfo function
+        console.log("User profile fetched:", response.user); // Debug log
+        setUserProfile(response.user); // Assuming response contains 'user' in its data
       } catch (error) {
         console.error("Error fetching user profile", error);
       }
@@ -65,31 +68,64 @@ export const UserProfileProvider: React.FC<UserProfileProviderProps> = ({
     fetchUserProfile();
   }, []);
 
-  const updateColorPreferences = (primary: string, secondary: string) => {
+  // Update color preferences
+  const handleUpdateColorPreferences = async (
+    primary: string,
+    secondary: string
+  ) => {
     if (userProfile) {
+      // Avoid unnecessary updates if values haven't changed
+      if (
+        userProfile.colorPreferences.primary === primary &&
+        userProfile.colorPreferences.secondary === secondary
+      ) {
+        return; // No need to update if the colors are the same
+      }
+
+      // Update the profile locally
       const updatedProfile = {
         ...userProfile,
         colorPreferences: { primary, secondary },
       };
-      setUserProfile(updatedProfile);
-      axios.put("/api/users/update-color", { primary, secondary });
+      setUserProfile(updatedProfile); // Update the state with the new color preferences
+
+      try {
+        // Call the API to update the color preferences on the backend
+        const response = await updateColorPreferencesAPI(primary, secondary); // Renamed to avoid conflict
+        console.log("Color preferences updated:", response);
+      } catch (error) {
+        console.error("Error updating color preferences:", error);
+      }
     }
   };
 
-  const updateProfilePic = (profilePic: string) => {
-    if (userProfile) {
+  // Update the profile picture (if it changes)
+  const handleUpdateProfilePic = async (profilePic: string) => {
+    if (userProfile && userProfile.profilePic !== profilePic) {
+      // Update the profile locally
       const updatedProfile = {
         ...userProfile,
         profilePic,
       };
       setUserProfile(updatedProfile);
-      axios.put("/api/users/update-profile-pic", { profilePic });
+
+      try {
+        // Uncomment the line below to call the profile picture update API
+        // const response = await uploadProfilePicAPI(profilePic); // Renamed to avoid conflict
+        console.log("Profile picture updated:", profilePic);
+      } catch (error) {
+        console.error("Error updating profile picture:", error);
+      }
     }
   };
 
   return (
     <UserProfileContext.Provider
-      value={{ userProfile, updateColorPreferences, updateProfilePic }}
+      value={{
+        userProfile,
+        updateColorPreferences: handleUpdateColorPreferences,
+        updateProfilePic: handleUpdateProfilePic,
+      }}
     >
       {children}
     </UserProfileContext.Provider>

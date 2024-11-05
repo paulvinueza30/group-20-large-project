@@ -69,7 +69,7 @@ export const updateColorPreferences = async (
 ) => {
   try {
     const response = await axios.put(
-      `${USER_API_URL}/color-preferences`,
+      `${USER_API_URL}/user/color-preferences`,
       { primary, secondary },
       { withCredentials: true }
     );
@@ -90,12 +90,16 @@ export const uploadProfilePic = async (file: File) => {
   formData.append("profilePic", file);
 
   try {
-    const response = await axios.post(`${USER_API_URL}/profile-pic`, formData, {
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
-      withCredentials: true,
-    });
+    const response = await axios.post(
+      `${USER_API_URL}/user/profile-pic`,
+      formData,
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+        withCredentials: true,
+      }
+    );
     return response.data;
   } catch (error: unknown) {
     if (axios.isAxiosError(error) && error.response) {
