@@ -1,7 +1,7 @@
 import { Schema, model } from "mongoose";
-import { IFlashCard } from "../interfaces/IFlashCard";
+import { IFlashcard } from "../interfaces/IFlashcard";
 
-const flashCardSchema = new Schema<IFlashCard>(
+const flashcardSchema = new Schema<IFlashcard>(
     {
         userId: {
             type: Schema.Types.ObjectId,
@@ -36,10 +36,10 @@ const flashCardSchema = new Schema<IFlashCard>(
 );
 
 // Define an index on userId for faster lookups
-flashCardSchema.index({ userId: 1 });
+flashcardSchema.index({ userId: 1 });
 
 // Define the updateDueDate method
-flashCardSchema.methods.updateDueDate = function(feedback: 'Forgot' | 'Hard' | 'Good' | 'Easy'): Promise<IFlashCard> {
+flashcardSchema.methods.updateDueDate = function (feedback: 'Forgot' | 'Hard' | 'Good' | 'Easy'): Promise<IFlashcard> {
     const intervals: { [key: string]: number } = { Forgot: 1, Hard: 1.2, Good: 2.5, Easy: 3 };
     const multiplier = intervals[feedback];
     this.interval *= multiplier || 1;
@@ -47,6 +47,6 @@ flashCardSchema.methods.updateDueDate = function(feedback: 'Forgot' | 'Hard' | '
     return this.save();
 };
 
-const flashCard = model<IFlashCard>("FlashCard", flashCardSchema);
+const flashcard = model<IFlashcard>("Flashcard", flashcardSchema);
 
-export default flashCard;
+export default flashcard;

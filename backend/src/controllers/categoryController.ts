@@ -1,32 +1,38 @@
 import { Request, Response } from "express";
 import Category from "../models/categoryModel";
+import { IUser } from "../interfaces/IUser";
 
+// Create Category
 export const createCategory = async (req: Request, res: Response): Promise<void> => {
     try {
         const { name } = req.body;
-        const normalizedCategory = name.toLowerCase();
+        const user = req.user as IUser;
+        const userId = user._id;  // Retrieve userId from req.user
 
-        const existingCategory = await Category.findOne({ name: normalizedCategory });
-        if (existingCategory) {
-            res.status(400).json({ message: "Category already exists" });
-            return;
-        }
+        const newCategory = new Category({
+            name,
+            userId,
+        });
 
-        const newCategory = new Category({ name: normalizedCategory });
         await newCategory.save();
-        res.status(201).json({ message: "Category created successfully", category: newCategory });
+        res.status(201).json({
+            message: "Category created successfully",
+            category: newCategory,
+        });
     } catch (error) {
-        res.status(500).json({ message: "Error creating category", error });
+        res.status(500).json({ message: "Failed to create category", error });
     }
 };
 
+// Get All Categories for the Logged-In User
 export const getAllCategories = async (req: Request, res: Response): Promise<void> => {
     try {
-        const categories = await Category.find().sort("name").exec();
-        res.json(categories);
+        const user = req.user as IUser;
+        const userId = user._id;  // Retrieve userId from req.user
+
+        const categories = await Category.find({ userId });
+        res.status(200).json(categories);
     } catch (error) {
-        res.status(500).json({ message: "Error retrieving categories", error });
+        res.status(500).json({ message: "Failed to fetch categories", error });
     }
 };
-
-//maybe also a delete category later

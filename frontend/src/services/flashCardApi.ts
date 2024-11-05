@@ -3,15 +3,15 @@ import axios from "axios";
 const FLASHCARD_API_URL = `${process.env.REACT_APP_API_URL}/flashcards` || "http://localhost:5000/api/flashcards";
 
 // Create a flashcard
-export const createFlashCard = async (flashCardData: {
+export const createFlashcard = async (flashcardData: {
   frontSide: string;
   backSide: string;
-  category: string;  // This should be the category's _id
+  category: string;  // Pass the category's _id
 }) => {
   try {
     const response = await axios.post(
-      `${FLASHCARD_API_URL}/createFlashCard`,
-      flashCardData,
+      `${FLASHCARD_API_URL}/create`,
+      flashcardData,
       { withCredentials: true }
     );
     return response.data;
@@ -20,16 +20,16 @@ export const createFlashCard = async (flashCardData: {
   }
 };
 
-// Edit a flashcard (without category)
-export const editFlashCard = async (flashCardData: {
+// Edit a flashcard
+export const editFlashcard = async (flashcardData: {
   id: string;
   frontSide?: string;
   backSide?: string;
 }) => {
   try {
-    const response = await axios.post(
-      `${FLASHCARD_API_URL}/editFlashCard`,
-      flashCardData,
+    const response = await axios.put(
+      `${FLASHCARD_API_URL}/edit/${flashcardData.id}`,
+      { frontSide: flashcardData.frontSide, backSide: flashcardData.backSide },
       { withCredentials: true }
     );
     return response.data;
@@ -39,23 +39,21 @@ export const editFlashCard = async (flashCardData: {
 };
 
 // Delete a flashcard
-export const deleteFlashCard = async (flashCardData: { id: string }) => {
+export const deleteFlashcard = async (id: string) => {
   try {
-    const response = await axios.post(
-      `${FLASHCARD_API_URL}/deleteFlashCard`,
-      flashCardData,
-      { withCredentials: true }
-    );
+    const response = await axios.delete(`${FLASHCARD_API_URL}/delete/${id}`, {
+      withCredentials: true,
+    });
     return response.data;
   } catch (error: any) {
     throw error.response ? error.response.data : new Error("Internal server error");
   }
 };
 
-// Fetch the next flashcard due for review
-export const getNextFlashCard = async (category: string) => {
+// Fetch the next flashcard due for review in a specific category
+export const getNextFlashcard = async (category: string) => {
   try {
-    const response = await axios.get(`${FLASHCARD_API_URL}/nextFlashCard`, {
+    const response = await axios.get(`${FLASHCARD_API_URL}/next`, {
       params: { category },  // Send category as a query parameter
       withCredentials: true,
     });
@@ -66,10 +64,10 @@ export const getNextFlashCard = async (category: string) => {
 };
 
 // Review a flashcard with feedback
-export const reviewFlashCard = async (id: string, feedback: "Forgot" | "Hard" | "Good" | "Easy") => {
+export const reviewFlashcard = async (id: string, feedback: "Forgot" | "Hard" | "Good" | "Easy") => {
   try {
-    const response = await axios.post(
-      `${FLASHCARD_API_URL}/reviewFlashCard/${id}`,
+    const response = await axios.put(
+      `${FLASHCARD_API_URL}/review/${id}`,
       { feedback },
       { withCredentials: true }
     );
