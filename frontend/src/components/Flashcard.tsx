@@ -3,7 +3,7 @@ function Flashcard() {
   import { useState } from "react";
 
   // TODO: Flip animation and connect to API
-  function FlashCard() {
+  function Flashcard() { //note for Maria: Flashcard is now spelled with lowercase "c" everywhere
     const [showBackCard, setShowBackCard] = useState(false);
 
     const buttonStyle =
