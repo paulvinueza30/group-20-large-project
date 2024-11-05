@@ -74,7 +74,7 @@ function Sidebar({ children, expanded, handleToggle }: SidebarProps) {
             </div>
           </div>
           <ul className="flex-1 px-3">{children}</ul>
-          <div className="flex border-t p-3">
+          <div className="flex border-t p-3 h-[100px]">
             <div
               className={`flex items-center justify-between overflow-hidden transition-all ${
                 expanded ? "ml-3 w-52" : "w-0"
@@ -83,22 +83,20 @@ function Sidebar({ children, expanded, handleToggle }: SidebarProps) {
               <div>
                 <a
                   href="/"
-                  className="leading-4 flex items-center dark:text-white"
+                  className="leading-4 flex items-center dark:text-white pb-4"
                 >
                   <ArrowRightStartOnRectangleIcon className="h-6 w-6" />
                   <h4 className="text-primary-500 pl-2">Log out</h4>
                 </a>
                 <div className="leading-4 flex items-center pt-2">
-                  <div className="flex" onClick={handleClick}>
-                    <div className="flex-initial w-64 dark:text-white">
-                      Light Mode (Dark/Light)
-                      {localStorage.theme === "light" ? (
-                        <SunIcon className="w-6 h-6" />
-                      ) : (
-                        <MoonIcon className="w-6 h-6" />
-                      )}
-                    </div>
-                  </div>
+                  <label className="inline-flex items-center cursor-pointer float-end">
+                    <input type="checkbox" value="" className="sr-only peer" onClick={handleClick}/>
+                    <div className="relative w-11 h-6 bg-gray-200 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
+                    <div className=""></div>
+                    <span className="ms-3 text-md font-semifold text-gray-900 dark:text-gray-300">
+                      Light Mode 
+                    </span>
+                  </label>
                 </div>
               </div>
             </div>

@@ -12,7 +12,7 @@ function FlashCard() {
   };
 
   return (
-    <>
+    <div>
       {/* Front of card */}
       {!showBackCard && (
         <div className="">
@@ -37,7 +37,7 @@ function FlashCard() {
       )}
       {/* Back of card */}
       {showBackCard && (
-        <div className="">
+        <div className="transition-all duration-500 [transform-style:preserve-3d] group-hover:[transform:rotateY(180deg)]">
           <div className="p-20 bg-slate-100 rounded-xl">
             <h1 className="text-5xl text-center">Back</h1>
             <div className="p-10 text-center">
@@ -58,7 +58,7 @@ function FlashCard() {
           </button>
         </div>
       )}
-    </>
+    </div>
   );
 }
 

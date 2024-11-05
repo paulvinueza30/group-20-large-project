@@ -1,6 +1,7 @@
 import SideGrid from "../components/sidebar/SideGrid";
 import FlashCard from "../components/FlashCard";
 import { HomeIcon } from "@heroicons/react/24/outline";
+import AddFlashcard from "../components/AddFlashcard";
 
 
 // TODO: Pop-Up for create flashcard
@@ -19,8 +20,8 @@ function Decks() {
                 Deck name
               </h1>
             </div>
-            <div className="col-span-2 row-span-1 col-start-6 row-start-2">
-              <button className="bg-purple-700 text-white p-4 rounded-full">Add Flashcard</button>
+            <div className="col-span-3 row-span-1 col-start-5 row-start-2 float-end">
+              <AddFlashcard /> 
             </div>
             <div className="col-span-4 row-span-4 col-start-2 row-start-3">
               <FlashCard />
