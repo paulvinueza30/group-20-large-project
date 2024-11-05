@@ -31,7 +31,7 @@ const userSchema = new Schema<IUser>({
       secondary: "#BA72E2",
     },
   },
-  profilePic: { type: String, default: "" },
+  profilePic: { type: String, default: "default_user.png" },
 });
 
 const User = model<IUser>("User", userSchema);
