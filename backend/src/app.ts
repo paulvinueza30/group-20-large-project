@@ -8,6 +8,12 @@ import dotenv from "dotenv";
 import passport from "passport";
 import session from "express-session";
 import cors from "cors";
+import path from "path";
+import { fileURLToPath } from "url";
+
+// Get the current directory name
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 // Load environment variables
 dotenv.config({ path: "./src/.env" });
@@ -36,6 +42,8 @@ app.use(
     cookie: { secure: false },
   })
 );
+
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 app.use(passport.initialize());
 app.use(passport.session());

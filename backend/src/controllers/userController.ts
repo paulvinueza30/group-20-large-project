@@ -4,6 +4,7 @@ import User from "../models/userModel";
 import bcrypt from "bcrypt";
 import passport from "../config/passport-config";
 import { IUser } from "../interfaces/IUser";
+import upload from "../config/multer-config";
 
 // Register user
 export const registerUser = async (
@@ -115,7 +116,8 @@ export const updateColorPreferences = async (
   req: Request,
   res: Response
 ): Promise<void> => {
-  const { userId } = req.params; // Assuming userId is passed in the URL
+  const user = req.user as IUser;
+  const userId = user._id; // Assuming userId is passed in the URL
   const { primary, secondary } = req.body; // Colors sent in the request body
 
   try {
@@ -141,4 +143,44 @@ export const updateColorPreferences = async (
       .status(500)
       .json({ message: "Failed to update color preferences", error });
   }
+};
+
+// Profile picture upload handler
+export const uploadProfilePic = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  // Upload the image
+  upload(req, res, async (err) => {
+    if (err) {
+      return res
+        .status(400)
+        .json({ message: "Error uploading file", error: err.message });
+    }
+
+    // If file is uploaded, update user's profile picture URL
+    const user = req.user as IUser;
+    const userId = user._id;
+
+    try {
+      const updatedUser = await User.findByIdAndUpdate(userId, {
+        profilePic: `/uploads/${req.file?.filename}`,
+      });
+
+      if (!updatedUser) {
+        return res.status(404).json({ message: "User not found" });
+      }
+
+      // Respond with updated user info
+      res.status(200).json({
+        message: "Profile picture updated successfully",
+        profilePic: updatedUser.profilePic,
+      });
+    } catch (error) {
+      console.error(error);
+      res
+        .status(500)
+        .json({ message: "Error updating profile picture", error });
+    }
+  });
 };

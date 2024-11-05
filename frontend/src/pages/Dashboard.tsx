@@ -24,7 +24,7 @@ function Dashboard() {
               <div className="pt-8 text-sm flex flex-colum text-gray-400">
                 <HomeIcon className="h-[15px] w-[15px]" /> / Dashboard
               </div>
-              <h1 className="font-bold text-2xl xl:pt-14 lg:text-md">
+              <h1 className="font-bold text-2xl dark:text-white">
                 Dashboard
               </h1>
             </div>

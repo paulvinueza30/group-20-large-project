@@ -59,3 +59,51 @@ export const getUserInfo = async () => {
     }
   }
 };
+
+// Preferences
+
+// Update user color preferences
+export const updateColorPreferences = async (
+  primary: string,
+  secondary: string
+) => {
+  try {
+    const response = await axios.put(
+      `${USER_API_URL}/color-preferences`,
+      { primary, secondary },
+      { withCredentials: true }
+    );
+    return response.data;
+  } catch (error: unknown) {
+    if (axios.isAxiosError(error) && error.response) {
+      throw new Error(
+        error.response.data.message || "Failed to update color preferences"
+      );
+    } else {
+      throw new Error("Internal server error");
+    }
+  }
+};
+// Upload user profile picture
+export const uploadProfilePic = async (file: File) => {
+  const formData = new FormData();
+  formData.append("profilePic", file);
+
+  try {
+    const response = await axios.post(`${USER_API_URL}/profile-pic`, formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+      withCredentials: true,
+    });
+    return response.data;
+  } catch (error: unknown) {
+    if (axios.isAxiosError(error) && error.response) {
+      throw new Error(
+        error.response.data.message || "Error uploading profile picture"
+      );
+    } else {
+      throw new Error("Internal server error");
+    }
+  }
+};
