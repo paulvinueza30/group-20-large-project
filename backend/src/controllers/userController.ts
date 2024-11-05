@@ -116,7 +116,8 @@ export const updateColorPreferences = async (
   req: Request,
   res: Response
 ): Promise<void> => {
-  const { userId } = req.params; // Assuming userId is passed in the URL
+  const user = req.user as IUser;
+  const userId = user._id; // Assuming userId is passed in the URL
   const { primary, secondary } = req.body; // Colors sent in the request body
 
   try {
