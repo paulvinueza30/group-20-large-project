@@ -1,23 +1,20 @@
 import { Schema, model } from "mongoose";
 import { ICategory } from "../interfaces/ICategory";
 
-const categorySchema = new Schema<ICategory>(
-    {
-        userId: {
-            type: Schema.Types.ObjectId,
-            ref: "User",
-            required: true,
-        },
-        name: {
-            type: String,
-            required: true,
-            unique: true,
-        },
+const categorySchema = new Schema<ICategory>({
+    name: {
+        type: String,
+        required: true,
     },
-    {
-        timestamps: { createdAt: "createdAt", updatedAt: "editedAt" },  // Automatically manages createdAt and editedAt
-    }
-);
+    userId: {
+        type: Schema.Types.ObjectId,
+        ref: "User",
+        required: true,
+    },
+});
+
+// Set a unique index on the combination of `name` and `userId`
+categorySchema.index({ name: 1, userId: 1 }, { unique: true });
 
 // Pre-save hook to normalize category names to lowercase for consistency
 categorySchema.pre("save", function (next) {
@@ -25,6 +22,6 @@ categorySchema.pre("save", function (next) {
     next();
 });
 
-const category = model<ICategory>("Category", categorySchema);
+const Category = model<ICategory>("Category", categorySchema);
 
-export default category;
+export default Category;
