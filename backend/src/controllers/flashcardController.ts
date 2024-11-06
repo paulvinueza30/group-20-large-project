@@ -3,18 +3,26 @@ import flashcard from "../models/flashcardModel";
 import Category from "../models/categoryModel";
 import QueueController from "../services/queueController";
 import { IUser } from "../interfaces/IUser";
+import mongoose from "mongoose";
 
 const queueController = new QueueController();
 
 // Create Flashcard
 export const createFlashcard = async (req: Request, res: Response): Promise<void> => {
     try {
-        const { frontSide, backSide, category } = req.body;
+        const { frontSide, backSide } = req.body;
+        const categoryId = req.params.categoryId;
         const user = req.user as IUser;
         const userId = user._id;
 
+        // Validate if categoryId is a valid ObjectId
+        if (!mongoose.Types.ObjectId.isValid(categoryId)) {
+            res.status(400).json({ message: "Invalid category ID" });
+            return;
+        }
+
         // Verify the category exists and belongs to the user
-        const categoryDoc = await Category.findOne({ _id: category, userId });
+        const categoryDoc = await Category.findOne({ _id: categoryId, userId });
         if (!categoryDoc) {
             res.status(404).json({ message: "Category not found or does not belong to the user" });
             return;
@@ -83,17 +91,25 @@ export const deleteFlashcard = async (req: Request, res: Response): Promise<void
 
 // Get Next Flashcard Due for Review
 export const getNextFlashcard = async (req: Request, res: Response): Promise<void> => {
-    const { category } = req.query;
+    const categoryId = req.params.categoryId;
     const user = req.user as IUser;
-    const userId = user._id.toString();
-
-    if (!category || typeof category !== "string") {
-        res.status(400).json({ message: "Category is required and must be a string" });
-        return;
-    }
+    const userId = user._id;
 
     try {
-        await queueController.initializeQueue(category, userId);
+        // Validate if categoryId is a valid ObjectId
+        if (!mongoose.Types.ObjectId.isValid(categoryId)) {
+            res.status(400).json({ message: "Invalid category ID" });
+            return;
+        }
+
+        // Verify the category exists and belongs to the user
+        const categoryDoc = await Category.findOne({ _id: categoryId, userId });
+        if (!categoryDoc) {
+            res.status(404).json({ message: "Category not found or does not belong to the user" });
+            return;
+        }
+        const strUserId = userId.toString();
+        await queueController.initializeQueue(categoryId, strUserId);
         const nextCard = queueController.getNextCard();
 
         if (!nextCard) {
@@ -111,6 +127,8 @@ export const getNextFlashcard = async (req: Request, res: Response): Promise<voi
 export const reviewFlashcard = async (req: Request, res: Response): Promise<void> => {
     const { id } = req.params;
     const { feedback } = req.body;
+    const user = req.user as IUser;
+    const userId = user._id;
 
     // Validate feedback
     if (!['Forgot', 'Hard', 'Good', 'Easy'].includes(feedback)) {
@@ -119,10 +137,6 @@ export const reviewFlashcard = async (req: Request, res: Response): Promise<void
     }
 
     try {
-        // Retrieve userId from req.user
-        const user = req.user as IUser;
-        const userId = user._id.toString();
-
         // Check if the flashcard exists and belongs to the user
         const card = await flashcard.findOne({ _id: id, userId });
         if (!card) {
@@ -137,4 +151,3 @@ export const reviewFlashcard = async (req: Request, res: Response): Promise<void
         res.status(500).json({ message: "Error reviewing flashcard", error });
     }
 };
-

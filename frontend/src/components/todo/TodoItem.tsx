@@ -1,5 +1,9 @@
 import React, { useState } from "react";
+<<<<<<< HEAD
 import useGetTodo from "../../hooks/todo/useGetTodo";
+=======
+import useGetTodo from "../../hooks/useGetTodo";
+>>>>>>> d2f7cbe (Restore local changes after .git folder replacement)
 
 const TodoItem: React.FC = () => {
   const [markedDone, setMarkedDone] = useState(Boolean);

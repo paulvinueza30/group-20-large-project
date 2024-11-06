@@ -1,6 +1,10 @@
 import React, { useState } from "react";
 import TodoItem from "./TodoItem";
+<<<<<<< HEAD
 import useCreateTodo from "../../hooks/todo/useCreateTodo";
+=======
+import useCreateTodo from "../../hooks/useCreateTodo";
+>>>>>>> d2f7cbe (Restore local changes after .git folder replacement)
 import { PlusIcon } from "@heroicons/react/24/outline";
 
 function TodoList() {
@@ -25,7 +29,13 @@ function TodoList() {
   return (
     <div className="p-2">
       <h2 className="text-center font-bold text-xl py-2">Todo List</h2>
+<<<<<<< HEAD
       <ul>{/* <TodoItem /> */}</ul>
+=======
+      <ul>
+        {/* <TodoItem /> */}
+      </ul>
+>>>>>>> d2f7cbe (Restore local changes after .git folder replacement)
       <form onSubmit={handleSubmit} className="flex mt-4">
         <input
           className="border-2 m-s"

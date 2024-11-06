@@ -2,6 +2,7 @@ import flashcard from '../models/flashcardModel';  // Mongoose model
 import Category from "../models/categoryModel";
 import { IFlashcard } from '../interfaces/IFlashcard';  // TypeScript interface for typing
 import { MinHeap } from "./minHeap";  // MinHeap utility from services
+import mongoose from 'mongoose';
 
 class QueueController {
     private queue: MinHeap<IFlashcard>;
@@ -10,24 +11,46 @@ class QueueController {
         this.queue = new MinHeap<IFlashcard>();
     }
 
-    async initializeQueue(category: string, userId: string): Promise<void> {
+    async initializeQueue(categoryId: string, userId: string): Promise<void> {
         const today = new Date();
-        const normalizedCategory = category.toLowerCase();
 
-        // Find the category document by name and userId
-        const categoryDoc = await Category.findOne({ name: normalizedCategory, userId });
+        // Log received parameters
+        console.log("Received categoryId:", categoryId);
+        console.log("Received userId:", userId);
+
+        // Validate categoryId and userId as ObjectId
+        if (!mongoose.Types.ObjectId.isValid(categoryId)) {
+            console.error(`Invalid category ID: ${categoryId}`);
+            return;
+        }
+        if (!mongoose.Types.ObjectId.isValid(userId)) {
+            console.error(`Invalid user ID: ${userId}`);
+            return;
+        }
+
+        // Convert categoryId and userId to ObjectId
+        const categoryObjectId = new mongoose.Types.ObjectId(categoryId);
+        const userObjectId = new mongoose.Types.ObjectId(userId);
+
+        // Verify that the category exists for the given userId
+        const categoryDoc = await Category.findOne({ _id: categoryObjectId, userId: userObjectId });
+        console.log("Category document found:", categoryDoc);  // Add this line for debugging
         if (!categoryDoc) {
-            console.error(`Category "${category}" not found for user.`);
+            console.error(`Category with ID "${categoryId}" not found for user with ID "${userId}".`);
             return;
         }
 
         // Use the category's ObjectId and userId to find flashcards due for review
         const dueCards = await flashcard.find({
             dueDate: { $lte: today },
-            category: categoryDoc._id,  // Filter by category ObjectId
-            userId,  // Filter by userId
+            category: categoryObjectId,  // Use category ObjectId directly
+            userId: userObjectId,  // Use user ObjectId directly
         }).exec();
 
+        // Log dueCards for debugging
+        console.log("Due flashcards found:", dueCards);
+
+        // Insert each due flashcard into the queue
         dueCards.forEach(card => this.queue.insert(card));
     }
 
