@@ -1,6 +1,9 @@
 import NavBar from "../components/NavBar";
 import Placholder from "../assets/Placeholder.png";
-import team from "../assets/Transhumans - Astro.png";
+import TeamCards from "../components/TeamCards";
+import { IoExtensionPuzzle } from "react-icons/io5";
+import { FaGamepad } from "react-icons/fa6";
+import { FaBookOpen } from "react-icons/fa";
 
 // TODO: Add picture, features, and teams
 function Home() {
@@ -22,55 +25,49 @@ function Home() {
       <div className="col-span-3 row-span-5 col-start-3 row-start-2">
         <img
           src={Placholder}
-          className="w-max h-max relative left-20 z-0 pt-5"
+          className="w-max h-max relative -right-40 z-0 pt-5"
         />
       </div>
       {/* Features Part */}
       <div className="col-span-6 row-span-3 row-start-7 bg-primary h-full col-start-1"></div>
-      <div className="col-span-4 col-start-2 row-span-3 row-start-7 border-2">
-        <h2 className="text-2xl font-bold text-white mt-10">Feature</h2>
-        <div className="flex justify-between pt-10 text-white">
-          <div>
-            <h3 className="text-xl  font-bold">Various learning modes</h3>
-            <p>
+      <div className="col-span-4 col-start-2 row-span-3 row-start-7 w-full">
+        <h2 className="text-2xl font-bold text-white mt-10">Features</h2>
+        <div className="flex justify-evenly pt-10 text-white">
+          <div className="">
+            <FaBookOpen className="text-white" size={30} />
+            <h3 className="text-xl font-bold">Various learning modes</h3>
+            <p className="text-balance">
               Lorem ipsum odor amet, consectetuer adipiscing elit. Neque donec
               vitae ipsum facilisi cubilia dictumst.
             </p>
           </div>
-          <div>
-            <h3 className="text-xl  font-bold">Streaks and Badged</h3>
-            <p>
+          <div className="px-4">
+            <IoExtensionPuzzle className="text-white" size={30} />
+            <h3 className="text-xl font-bold">Challenges</h3>
+            <p className="text-balance">
               Lorem ipsum odor amet, consectetuer adipiscing elit. Neque donec
               vitae ipsum facilisi cubilia dictumst.
             </p>
           </div>
           <div className="">
-            <h3 className="text-xl  font-bold">Challenges</h3>
-            <p>
+            <FaGamepad className="text-white relative" size={30} />
+            <h3 className="text-xl font-bold ">Streaks and Badges</h3>
+            <p className="text-balance">
               Lorem ipsum odor amet, consectetuer adipiscing elit. Neque donec
               vitae ipsum facilisi cubilia dictumst.
             </p>
           </div>
         </div>
       </div>
-      <div className="col-span-6 row-span-4 row-start-10 border-2">
+      <div className="col-span-6 row-span-4 row-start-10">
         <h2 className="text-center text-4xl text-bold font-pixel py-4 pb-10">
           Team
         </h2>
-        <div className="flex justify-evenly">
-          <div className="bg-tertiary border-2 w-[250px] p-0 rounded-2xl overflow-hidden">
-            <img src={team} alt="" className="self-end  relative top-4" />
-            <p className="bg-white">Project Manager</p>
-          </div>
-          <div className="bg-tertiary border-2 w-[250px] p-0 rounded-2xl overflow-hidden">
-            <img src={team} alt="" className="self-end  relative top-4" />
-            <p className="bg-white">Back end</p>
-          </div>
-          <div className="bg-tertiary border-2 w-[250px] p-0 rounded-2xl overflow-hidden">
-            <img src={team} alt="" className="self-end  relative top-4" />
-            <p className="bg-white">Front End</p>
-          </div>
-        </div>
+        <TeamCards />
+      </div>
+      <div className="col-span-6 row-span-2 row-start-14 pt-20 text-center">
+        {" "}
+        Possible Footer
       </div>
     </div>
   );
