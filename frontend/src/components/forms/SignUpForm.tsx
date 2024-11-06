@@ -1,9 +1,5 @@
 import React, { useState } from "react";
-<<<<<<< HEAD
-import useRegisterUser from "../../hooks/user/useRegisterUser";
-=======
 import useRegisterUser from "../../hooks/useRegisterUser";
->>>>>>> d2f7cbe (Restore local changes after .git folder replacement)
 
 const SignUpForm: React.FC = () => {
   const { register, loading, error, success } = useRegisterUser();

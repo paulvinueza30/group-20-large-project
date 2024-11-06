@@ -17,8 +17,6 @@ createRoot(document.getElementById("root")!).render(
       <Route path="/" element={<App />} />
       <Route path="/login" element={<Login />} />
       <Route path="/signup" element={<SignUp />} />
-      <Route path="/decks" element={<Decks />} />
-      <Route path="/stats" element={<Stats />} />
 
       {/* Wrap the Dashboard and Profile routes with the UserProfileProvider */}
       <Route
@@ -29,6 +27,24 @@ createRoot(document.getElementById("root")!).render(
           </UserProfileProvider>
         }
       />
+      <Route
+        path="/decks"
+        element={
+          <UserProfileProvider>
+            <Decks />
+          </UserProfileProvider>
+        }
+      />
+
+      <Route
+        path="/stats"
+        element={
+          <UserProfileProvider>
+            <Stats />
+          </UserProfileProvider>
+        }
+      />
+
       <Route
         path="/profile"
         element={

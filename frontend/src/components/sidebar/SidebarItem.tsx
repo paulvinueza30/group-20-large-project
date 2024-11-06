@@ -12,19 +12,18 @@ interface SidebarItemProps {
   color?: string;
 }
 
-// We're assuming that the sub-menu items will not have further sub-menu items therefore, it cannot be expanded
 interface SubMenuItemProps extends Omit<SidebarItemProps, "expanded"> {
   expanded?: never;
   subMenu?: never;
 }
 
-// This component is used to render the sub-menu items when hovered
 function HoveredSubMenuItem({ icon, text, active, color }: SubMenuItemProps) {
   return (
     <div
       className={`my-2 rounded-md p-2${
         active ? "bg-gray-300" : " hover:bg-indigo-50"
       }`}
+      style={{ backgroundColor: active ? color : undefined }}
     >
       <div className="flex items-center justify-center ">
         <span className="text-primary-500 h-6 w-6 ">{icon}</span>
@@ -63,19 +62,15 @@ export default function SidebarItem({
         <Link
           to={to}
           className={`
-         group relative my-3 flex w-full cursor-pointer
-         items-center rounded-md px-3
-         py-4 font-medium transition-colors
-         dark:text-white
-         ${
-           active && !subMenu
-             ? `text-white bg-primary`
-             : "text-gray-600 hover:bg-tertiary"
-         }
-         ${!expanded && "hidden sm:flex"}
-        `}
+            group relative my-3 flex w-full cursor-pointer
+            items-center rounded-md px-3 py-4 font-medium transition-colors
+            dark:text-white
+            ${active && !subMenu ? `text-white bg-primary` : "text-gray-600"}
+            ${!expanded && "hidden sm:flex"}
+          `}
           style={{
-            backgroundColor: active && !subMenu ? color : undefined, // Use inline style for background color
+            backgroundColor: active && !subMenu ? color : undefined,
+            color: active ? "white" : undefined,
           }}
           onClick={() => setExpandSubMenu((curr) => expanded && !curr)}
         >
@@ -98,22 +93,15 @@ export default function SidebarItem({
             </div>
           )}
 
-          {/* 
-            display item text or sub-menu items when hovered
-          */}
           {!expanded && (
             <div
               className={`
-            text-primary-500 invisible absolute left-full ml-6 -translate-x-3
-            rounded-md bg-secondary px-2
-            py-1 text-sm opacity-20 transition-all
-            group-hover:visible group-hover:translate-x-0 group-hover:opacity-100 dark:text-white dark:bg-secondary
-        `}
+                text-primary-500 invisible absolute left-full ml-6 -translate-x-3
+                rounded-md bg-secondary px-2
+                py-1 text-sm opacity-20 transition-all
+                group-hover:visible group-hover:translate-x-0 group-hover:opacity-100 dark:text-white dark:bg-secondary
+              `}
             >
-              {/* 
-                if hovered item has no sub-menu, display the text
-                else display the sub-menu items
-              */}
               {!subMenu
                 ? text
                 : subMenu.map((item, index) => (
@@ -122,7 +110,7 @@ export default function SidebarItem({
                       text={item.text}
                       icon={item.icon}
                       to={"/"}
-                      color=""
+                      color={color}
                     />
                   ))}
             </div>
@@ -130,10 +118,6 @@ export default function SidebarItem({
         </Link>
       </li>
       <ul className="sub-menu pl-6" style={{ height: subMenuHeight }}>
-        {/* 
-          Render the sub-menu items if the item has a sub-menu
-          The sub-menu items are rendered as SidebarItem components
-        */}
         {expanded &&
           subMenu?.map((item, index) => (
             <SidebarItem
@@ -145,6 +129,15 @@ export default function SidebarItem({
             />
           ))}
       </ul>
+
+      {/* Hover effect for background color */}
+      <style>
+        {`
+          .group:hover {
+            background-color: ${color};
+          }
+        `}
+      </style>
     </>
   );
 }

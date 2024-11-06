@@ -13,7 +13,6 @@ import { ReactNode, useEffect, useState } from "react";
 import SidebarItem from "./SidebarItem";
 import Logo from "../../assets/logo.webp";
 import { useLocation } from "react-router-dom";
-import { spawn } from "child_process";
 
 interface SidebarProps {
   children: ReactNode;
@@ -90,11 +89,16 @@ function Sidebar({ children, expanded, handleToggle }: SidebarProps) {
                 </a>
                 <div className="leading-4 flex items-center pt-2">
                   <label className="inline-flex items-center cursor-pointer float-end">
-                    <input type="checkbox" value="" className="sr-only peer" onClick={handleClick}/>
+                    <input
+                      type="checkbox"
+                      value=""
+                      className="sr-only peer"
+                      onClick={handleClick}
+                    />
                     <div className="relative w-11 h-6 bg-gray-200 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
                     <div className=""></div>
                     <span className="ms-3 text-md font-semifold text-gray-900 dark:text-gray-300">
-                      Light Mode 
+                      Light Mode
                     </span>
                   </label>
                 </div>

@@ -1,9 +1,5 @@
 import React, { useState } from "react";
-<<<<<<< HEAD
-import useLoginUser from "../../hooks/user/useLoginUser";
-=======
 import useLoginUser from "../../hooks/useLoginUser";
->>>>>>> d2f7cbe (Restore local changes after .git folder replacement)
 import { useNavigate } from "react-router-dom";
 
 const LoginForm: React.FC = () => {

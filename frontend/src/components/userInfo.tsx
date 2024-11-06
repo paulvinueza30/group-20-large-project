@@ -1,9 +1,5 @@
 import React from "react";
-<<<<<<< HEAD
 import useGetUserInfo from "../hooks/user/useGetUserInfo";
-=======
-import useGetUserInfo from "../hooks/useGetUserInfo";
->>>>>>> d2f7cbe (Restore local changes after .git folder replacement)
 import placeholder from "../assets/Transhumans - Astro.png";
 
 const UserInfo: React.FC = () => {
