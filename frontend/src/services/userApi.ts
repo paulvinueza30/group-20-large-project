@@ -85,18 +85,15 @@ export const updateColorPreferences = async (
   }
 };
 // Upload user profile picture
-export const uploadProfilePic = async (file: File) => {
+export const uploadProfilePic = async (profilePic: File) => {
   const formData = new FormData();
-  formData.append("profilePic", file);
+  formData.append("profilePic", profilePic);
 
   try {
     const response = await axios.post(
       `${USER_API_URL}/user/profile-pic`,
       formData,
       {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
         withCredentials: true,
       }
     );

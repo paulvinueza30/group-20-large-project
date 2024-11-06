@@ -43,7 +43,7 @@ app.use(
   })
 );
 
-app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+app.use("/uploads", express.static(path.join(__dirname, "../uploads")));
 
 app.use(passport.initialize());
 app.use(passport.session());

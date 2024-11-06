@@ -29,7 +29,7 @@ interface IUser {
 interface IProfileContext {
   userProfile: IUser | null;
   updateColorPreferences: (primary: string, secondary: string) => void;
-  updateProfilePic: (profilePic: string) => void;
+  updateProfilePic: (profilePic: File) => void;
 }
 
 // Context and Provider
@@ -74,12 +74,11 @@ export const UserProfileProvider: React.FC<UserProfileProviderProps> = ({
     secondary: string
   ) => {
     if (userProfile) {
-      // Avoid unnecessary updates if values haven't changed
       if (
         userProfile.colorPreferences.primary === primary &&
         userProfile.colorPreferences.secondary === secondary
       ) {
-        return; // No need to update if the colors are the same
+        return;
       }
 
       // Update the profile locally
@@ -91,8 +90,7 @@ export const UserProfileProvider: React.FC<UserProfileProviderProps> = ({
 
       try {
         // Call the API to update the color preferences on the backend
-        const response = await updateColorPreferencesAPI(primary, secondary); // Renamed to avoid conflict
-        console.log("Color preferences updated:", response);
+        const response = await updateColorPreferencesAPI(primary, secondary);
       } catch (error) {
         console.error("Error updating color preferences:", error);
       }
@@ -100,19 +98,21 @@ export const UserProfileProvider: React.FC<UserProfileProviderProps> = ({
   };
 
   // Update the profile picture (if it changes)
-  const handleUpdateProfilePic = async (profilePic: string) => {
-    if (userProfile && userProfile.profilePic !== profilePic) {
-      // Update the profile locally
-      const updatedProfile = {
-        ...userProfile,
-        profilePic,
-      };
-      setUserProfile(updatedProfile);
-
+  const handleUpdateProfilePic = async (profilePic: File) => {
+    if (userProfile && profilePic) {
+      // Perform the upload first, don't compare based on file name
       try {
-        // Uncomment the line below to call the profile picture update API
-        // const response = await uploadProfilePicAPI(profilePic); // Renamed to avoid conflict
-        console.log("Profile picture updated:", profilePic);
+        // Upload the image using the API
+        const response = await uploadProfilePicAPI(profilePic);
+
+        // Assuming the response contains the new profilePic URL, update the user profile
+        const updatedProfile = {
+          ...userProfile,
+          profilePic: response.profilePic, // Set the response profilePic URL
+        };
+
+        // Update the context state with the new profile picture URL
+        setUserProfile(updatedProfile);
       } catch (error) {
         console.error("Error updating profile picture:", error);
       }

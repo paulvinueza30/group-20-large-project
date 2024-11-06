@@ -94,6 +94,9 @@ export const getUserInfo = async (
     res.status(404).json({ message: "User not found" });
     return;
   }
+  if (user.profilePic && !user.profilePic.startsWith("/uploads/")) {
+    user.profilePic = `/uploads/${user.profilePic}`; // Add /uploads/ to the default image
+  }
 
   res.status(200).json({
     message: "User data fetched successfully",
@@ -163,15 +166,20 @@ export const uploadProfilePic = async (
     const userId = user._id;
 
     try {
-      const updatedUser = await User.findByIdAndUpdate(userId, {
-        profilePic: `/uploads/${req.file?.filename}`,
-      });
+      // Update the user with the new profile picture
+      const updatedUser = await User.findByIdAndUpdate(
+        userId,
+        {
+          profilePic: `/uploads/${req.file?.filename}`, // Update profilePic field
+        },
+        { new: true } // Ensure it returns the updated user
+      );
 
       if (!updatedUser) {
         return res.status(404).json({ message: "User not found" });
       }
 
-      // Respond with updated user info
+      // Respond with the full updated user object
       res.status(200).json({
         message: "Profile picture updated successfully",
         profilePic: updatedUser.profilePic,

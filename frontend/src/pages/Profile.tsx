@@ -1,8 +1,8 @@
 import RadarCharti from "../components/dashboard/RadarCharti";
 import SideGrid from "../components/sidebar/SideGrid";
 import TodoList from "../components/todo/TodoList";
-import { HomeIcon } from "@heroicons/react/24/outline";
 import UserInfo from "../components/userInfo";
+import { HomeIcon } from "@heroicons/react/24/outline";
 import { useUserProfile } from "../context/UserProfileContext";
 
 // TODO: Add components
@@ -31,7 +31,7 @@ function Profile() {
               <h1 className="font-bold text-2xl">Profile</h1>
             </div>
             <div className="col-span-2 row-span-4 col-start-1 row-start-2 bg-slate-100 rounded-xl shadow-md">
-              <UserInfo />
+              <UserInfo Pcolor={Pcolor} Scolor={Scolor} />
             </div>
             <div className="col-span-2 row-span-4 col-start-3 row-start-2 overflow-hidden bg-slate-100 rounded-xl shadow-md">
               <RadarCharti />
