@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import useLoginUser from "../../hooks/useLoginUser";
+import useLoginUser from "../../hooks/user/useLoginUser";
 import { useNavigate } from "react-router-dom";
 
 const LoginForm: React.FC = () => {

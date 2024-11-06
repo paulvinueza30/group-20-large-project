@@ -1,5 +1,5 @@
 import React from "react";
-import useGetUserInfo from "../hooks/useGetUserInfo";
+import useGetUserInfo from "../hooks/user/useGetUserInfo";
 import placeholder from "../assets/Transhumans - Astro.png";
 
 const UserInfo: React.FC = () => {

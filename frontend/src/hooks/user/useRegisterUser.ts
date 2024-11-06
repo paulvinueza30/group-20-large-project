@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { registerUser } from "../services/userApi";
+import { registerUser } from "../../services/userApi";
 
 const useRegisterUser = () => {
   const [loading, setLoading] = useState(false);

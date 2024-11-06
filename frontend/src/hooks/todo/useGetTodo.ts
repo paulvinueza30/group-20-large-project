@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { getTodos } from "../services/todoApi";
+import { getTodos } from "../../services/todoApi";
 
 interface Todo {
   _id: string;

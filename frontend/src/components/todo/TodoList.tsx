@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import TodoItem from "./TodoItem";
-import useCreateTodo from "../../hooks/useCreateTodo";
+import useCreateTodo from "../../hooks/todo/useCreateTodo";
 import { PlusIcon } from "@heroicons/react/24/outline";
 
 function TodoList() {
@@ -25,9 +25,7 @@ function TodoList() {
   return (
     <div className="p-2">
       <h2 className="text-center font-bold text-xl py-2">Todo List</h2>
-      <ul>
-        {/* <TodoItem /> */}
-      </ul>
+      <ul>{/* <TodoItem /> */}</ul>
       <form onSubmit={handleSubmit} className="flex mt-4">
         <input
           className="border-2 m-s"
