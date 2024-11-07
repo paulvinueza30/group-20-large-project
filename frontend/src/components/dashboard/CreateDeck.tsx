@@ -15,10 +15,12 @@ function CreateDeck() {
 
   return (
     <div>
-      <div className="max-w-sm bg-slate-100 dark:bg-slate-600">
+      <div className="max-w-sm bg-slate-100 dark:bg-dark-primary">
         <img className="rounded-t-lg h-[250px] w-full" src={Image} />
         <div className="p-5">
-          <h5 className="mb-2 text-xl font-bold ">Create New Deck</h5>
+          <h5 className="mb-2 text-xl font-bold dark:text-white">
+            Create New Deck
+          </h5>
           <div className="flex justify-between">
             <form onSubmit={handleSubmit}>
               <input

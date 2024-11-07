@@ -24,7 +24,9 @@ function TodoList() {
 
   return (
     <div className="p-2">
-      <h2 className="text-center font-bold text-xl py-2">Todo List</h2>
+      <h2 className="text-center font-bold text-xl py-2 dark:text-white">
+        Todo List
+      </h2>
       <ul>{/* <TodoItem /> */}</ul>
       <form onSubmit={handleSubmit} className="flex mt-4">
         <input

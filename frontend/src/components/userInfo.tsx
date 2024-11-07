@@ -9,7 +9,8 @@ interface UserInfoProps {
 
 const UserInfo: React.FC<UserInfoProps> = ({ Pcolor, Scolor }) => {
   const { userProfile, updateProfilePic } = useUserProfile();
-  const textStyle = "rounded-xl mb-2 bg-white p-2 m-4";
+  const textStyle =
+    "rounded-xl mb-2 bg-white p-2 m-4 dark:bg-dark-secondary dark:text-white";
 
   // Handle the file input change
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -30,7 +31,9 @@ const UserInfo: React.FC<UserInfoProps> = ({ Pcolor, Scolor }) => {
 
   return (
     <div>
-      <h2 className="text-center font-bold text-xl py-4">User Info</h2>
+      <h2 className="text-center font-bold text-xl py-4 dark:text-white">
+        User Info
+      </h2>
       <div className="flex flex-col items-center">
         <div
           className="w-[140px] h-[140px] object-cover self-center border-2 rounded-full p-1"

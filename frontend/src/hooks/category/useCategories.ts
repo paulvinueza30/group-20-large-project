@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { getAllCategories } from "../../services/categoryApi";
 
 interface Category {
-  id: number;
+  _id: string;
   name: string;
 }
 

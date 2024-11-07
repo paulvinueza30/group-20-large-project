@@ -1,25 +1,26 @@
 import { Radar, RadarChart, PolarGrid, PolarAngleAxis } from "recharts";
+import { useCategories } from "../../hooks/category/useCategories";
 
 // TODO: connect to API
 const RadarCharti = ({ color }: any) => {
+  const { data } = useCategories();
+
   // Sample data
-  const data = [
-    { name: "A", x: 21 },
-    { name: "B", x: 22 },
-    { name: "C", x: -32 },
-    { name: "D", x: -14 },
-    { name: "E", x: -51 },
-    { name: "F", x: 59 },
-  ];
+  const radarData = data?.map((category) => ({
+    name: category.name,
+    x: 10,
+  }));
 
   return (
     <div className=" w-42 h-42 ">
-      <h3 className="text-center p-2 text-lg font-bold">Current Level</h3>
+      <h3 className="text-center p-2 text-lg font-bold dark:text-white">
+        Current Level
+      </h3>
       <RadarChart
         width={300}
         height={300}
         outerRadius="80%"
-        data={data}
+        data={radarData}
         className="pl-2 w-10 h-10"
       >
         <PolarGrid />

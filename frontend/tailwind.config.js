@@ -12,6 +12,8 @@ export default {
         'secondary': '#BA72E2',
         'tertiary': '#D396F4', 
         'blue': '#059FFA',
+        'dark-primary': '#1E1F2C',
+        'dark-secondary': '#2C2B38'
       },
       fontFamily: {
         sans: ['Graphik', 'sans-serif'],

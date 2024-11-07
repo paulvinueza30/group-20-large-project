@@ -31,7 +31,7 @@ function NavBar() {
             <li>
               <a
                 href="/login"
-                className="block px-6 text-white rounded-md hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 bg-secondary"
+                className="block px-6 text-white rounded-md md:border-0 md:hover:text-blue-700 bg-secondary hover:bg-primary"
               >
                 Log In
               </a>

@@ -2,9 +2,10 @@ import React from "react";
 import { useCategories } from "../../hooks/category/useCategories";
 
 // Fix routing
-function RecentDecks({ Pcolor, Scolor }: any) {
+function RecentDecks({ Pcolor, Scolor }: { Pcolor: string; Scolor: string }) {
   const { data, loading, error } = useCategories();
 
+  const dataSize = data ? data.length : 0;
   const cardStyle = `relative rounded-xl w-2/5 h-3/6 p-16 mt-2`;
 
   if (loading) {
@@ -16,15 +17,21 @@ function RecentDecks({ Pcolor, Scolor }: any) {
   }
 
   return (
-    <div>
-      <h3 className="text-center p-4  text-lg font-bold">Recent Decks</h3>
-      <div className="flex flex-wrap justify-evenly content-stretch">
-        {data?.map((category) => (
+    <div className="overflow-hidden">
+      <h3 className="text-center p-4  text-lg font-bold dark:text-white">
+        Recent Decks
+      </h3>
+      <p className="text-center text-xl text-gray-500">
+        {dataSize == 0 ? <p className="pt-24">No decks created</p> : ""}
+      </p>
+      <div className="flex flex-wrap justify-evenly content-stretch overflow-hidden">
+        {/* Only maps up to 4 decks */}
+        {data?.slice(0, 4).map((category) => (
           <React.Fragment key={category.name}>
             <a
-              href={`/decks`}
+              href={`/decks/${category.name}`}
               className={cardStyle}
-              key={category.id}
+              key={category._id}
               style={{ backgroundColor: Pcolor }}
             >
               <h3 className="text-lg font-semibold absolute top-[5px] left-[12px] text-white">

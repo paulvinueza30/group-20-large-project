@@ -4,9 +4,11 @@ import AddFlashcard from "../components/AddFlashcard";
 
 import Flashcard from "../components/Flashcard";
 import { useUserProfile } from "../context/UserProfileContext";
+import { useParams } from "react-router-dom";
 
-// TODO: Pop-Up for create flashcard
+// TODO
 function Decks() {
+  const { categoryName } = useParams<{ categoryName: string }>();
   const { userProfile } = useUserProfile();
 
   // Check if the user profile is loaded
@@ -25,9 +27,12 @@ function Decks() {
           <div className="grid grid-cols-6 grid-rows-8 lg:gap-x-[30px] lg:gap-y-[30px] max-h-shv">
             <div className="col-span-6 row-span-1 col-start-1 row-start-1 h-1 ">
               <div className="pt-8 text-sm flex flex-colum text-gray-400">
-                <HomeIcon className="h-[15px] w-[15px]" /> / Decks / Deck Name
+                <HomeIcon className="h-[15px] w-[15px]" /> / Decks /{" "}
+                {categoryName}
               </div>
-              <h1 className="font-bold text-2xl dark:text-white">Deck Name</h1>
+              <h1 className="font-bold text-2xl dark:text-white">
+                {categoryName}
+              </h1>
             </div>
             <div className="col-span-3 row-span-1 col-start-5 row-start-2 float-end">
               <AddFlashcard />

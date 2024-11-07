@@ -1,19 +1,34 @@
 import { useState } from "react";
-import { createTodo } from "../services/todoApi";
+import { createFlashcard } from "../../services/flashCardApi";
 
-const useCreateTodo = () => {
+interface UseCreateFlashcardResult {
+  loading: boolean;
+  error: string | null;
+  success: boolean;
+  create: (flashcardData: {
+    frontSide: string;
+    backSide: string;
+    category: string;
+  }) => Promise<void>;
+}
+
+export const useCreateFlashcard = (): UseCreateFlashcardResult => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<boolean>(false);
 
-  const create = async (toDoData: { toDo: string }) => {
+  const create = async (flashcardData: {
+    frontSide: string;
+    backSide: string;
+    category: string;
+  }) => {
     setLoading(true);
     setError(null);
     setSuccess(false);
 
     try {
       // Gets the response back from the API
-      const response = await createTodo(toDoData);
+      const response = await createFlashcard(flashcardData);
       setSuccess(true); // Set success only if login is successful
       return response; // Return response for further handling if needed
     } catch (error: any) {
@@ -25,5 +40,3 @@ const useCreateTodo = () => {
 
   return { create, loading, error, success };
 };
-
-export default useCreateTodo;

@@ -13,7 +13,7 @@ import { ReactNode, useEffect, useState } from "react";
 import SidebarItem from "./SidebarItem";
 import Logo from "../../assets/logo.webp";
 import { useLocation } from "react-router-dom";
-import { useUserProfile } from "../../context/UserProfileContext";
+import { useCategories } from "../../hooks/category/useCategories";
 
 interface SidebarProps {
   children: ReactNode;
@@ -42,7 +42,7 @@ function Sidebar({ children, expanded, handleToggle }: SidebarProps) {
   return (
     <div className="relative">
       <div
-        className={`fixed inset-0 -z-10 block  dark:bg-gray-900${
+        className={`fixed inset-0 -z-10 block  dark:bg-dark-primary${
           expanded ? "block sm:hidden" : "hidden"
         }`}
       />
@@ -51,7 +51,7 @@ function Sidebar({ children, expanded, handleToggle }: SidebarProps) {
           expanded ? "w-5/6 sm:w-64" : "w-0 sm:w-20"
         }`}
       >
-        <nav className="flex h-full md:h-[1000px] flex-col border-r bg-white dark:bg-gray-900 shadow-sm">
+        <nav className="flex h-full md:h-[1000px] flex-col border-r bg-white dark:bg-dark-primary shadow-sm dark:border-dark-secondary">
           <div className="flex items-center justify-between p-4 pb-2">
             <img
               src={profilePicUrl}
@@ -122,6 +122,8 @@ function Sidebar({ children, expanded, handleToggle }: SidebarProps) {
 export default function MakeSidebar({ sendSizeChange, color }: any) {
   const location = useLocation();
 
+  const { data } = useCategories();
+
   const [expanded, setExpanded] = useState(() => {
     const saved = localStorage.getItem("navbarCollapsed");
     return saved ? JSON.parse(saved) : true; // default to true
@@ -139,6 +141,12 @@ export default function MakeSidebar({ sendSizeChange, color }: any) {
     });
   };
 
+  const subMenuData = data?.map((category) => ({
+    icon: <></>,
+    text: category.name,
+    to: `/decks/${category.name}`,
+  }));
+
   const navBarItems = [
     {
       icon: <HomeIcon />,
@@ -147,20 +155,9 @@ export default function MakeSidebar({ sendSizeChange, color }: any) {
     },
     {
       icon: <ChartBarSquareIcon />,
-      subMenu: [
-        {
-          icon: <></>,
-          text: "Deck Name 1",
-          to: "/decks",
-        },
-        {
-          icon: <></>,
-          text: "Deck Name 2",
-          to: "",
-        },
-      ],
+      subMenu: subMenuData,
       text: "Decks",
-      to: "/decks",
+      to: "#",
     },
     {
       icon: <ChartPieIcon />,
