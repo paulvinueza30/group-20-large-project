@@ -10,6 +10,7 @@ export interface ICategory extends Document {
     streakLastUpdated?: Date;
     createdAt?: Date;
     editedAt?: Date;
+    updateExperience(feedback: 'Forgot' | 'Hard' | 'Good' | 'Easy'): Promise<ICategory>;
 
 }
 

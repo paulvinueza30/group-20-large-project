@@ -45,6 +45,16 @@ categorySchema.pre("save", function (next) {
     next();
 });
 
+// Define the updateExperience method
+categorySchema.methods.updateExperience = function (feedback: 'Forgot' | 'Hard' | 'Good' | 'Easy'): Promise<ICategory> {
+    const intervals: { [key: string]: number } = { Forgot: 0.25, Hard: 0.5, Good: 0.75, Easy: 1 };
+    let newPoints = intervals[feedback];
+    if (this.streakCount)
+        newPoints *= 1.2;
+    this.experience += newPoints;
+    return this.save();
+};
+
 const Category = model<ICategory>("Category", categorySchema);
 
 export default Category;
