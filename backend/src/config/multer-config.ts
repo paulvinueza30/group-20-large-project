@@ -6,7 +6,7 @@ import path from "path";
 const __dirname = path.dirname(new URL(import.meta.url).pathname);
 
 // Ensure 'uploads' directory exists
-const uploadPath = path.join(__dirname, "../../uploads");
+const uploadPath = path.join("../../../uploads");
 
 if (!fs.existsSync(uploadPath)) {
   fs.mkdirSync(uploadPath, { recursive: true }); // Creates the directory if it doesn't exist
