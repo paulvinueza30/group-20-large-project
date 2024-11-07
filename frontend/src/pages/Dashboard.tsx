@@ -6,7 +6,7 @@ import RadarCharti from "../components/dashboard/RadarCharti";
 import RecentDecks from "../components/dashboard/RecentDecks";
 import SideGrid from "../components/sidebar/SideGrid";
 import { HomeIcon } from "@heroicons/react/24/outline";
-
+import CalendarWidget from "../components/dashboard/CalendarWidget/CalendarWidget";
 function Dashboard() {
   // Use the context to get the user profile
   const { userProfile, updateColorPreferences } = useUserProfile();
@@ -66,8 +66,8 @@ function Dashboard() {
             </div>
 
             {/* Calendar placeholder */}
-            <div className="col-span-2 row-span-3 col-start-5 row-start-2 border-2 ">
-              Calendar
+            <div className="col-span-4 row-span-4 col-start-8 row-start-2 border-2 ">
+              <CalendarWidget Pcolor={Pcolor} Scolor={Scolor} />
             </div>
 
             {/* Recent decks with both primary and secondary colors */}

@@ -3,7 +3,7 @@ import Placholder from "../assets/Placeholder.png";
 import TeamCards from "../components/TeamCards";
 import { IoExtensionPuzzle } from "react-icons/io5";
 import { FaGamepad } from "react-icons/fa6";
-import { FaBookOpen } from "react-icons/fa";
+import { FaBookOpen } from "react-icons/fa6";
 
 // TODO: Add picture, features, and teams
 function Home() {

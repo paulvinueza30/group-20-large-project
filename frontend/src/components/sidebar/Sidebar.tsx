@@ -13,6 +13,7 @@ import { ReactNode, useEffect, useState } from "react";
 import SidebarItem from "./SidebarItem";
 import Logo from "../../assets/logo.webp";
 import { useLocation } from "react-router-dom";
+import { useUserProfile } from "../../context/UserProfileContext";
 
 interface SidebarProps {
   children: ReactNode;
@@ -30,7 +31,14 @@ function Sidebar({ children, expanded, handleToggle }: SidebarProps) {
 
     localStorage.theme = localStorage.theme === "dark" ? "light" : "dark";
   }
-
+  const { userProfile } = useUserProfile();
+  if (!userProfile) {
+    return <div>Loading user information...</div>;
+  }
+  // Construct the image URL if the profilePic is a relative path
+  const profilePicUrl = userProfile.profilePic
+    ? `${process.env.REACT_APP_SERVER_URL}${userProfile.profilePic}` // Ensure the correct base URL
+    : Logo;
   return (
     <div className="relative">
       <div
@@ -46,7 +54,7 @@ function Sidebar({ children, expanded, handleToggle }: SidebarProps) {
         <nav className="flex h-full md:h-[1000px] flex-col border-r bg-white dark:bg-gray-900 shadow-sm">
           <div className="flex items-center justify-between p-4 pb-2">
             <img
-              src={Logo}
+              src={profilePicUrl}
               className={`overflow-hidden transition-all ${
                 expanded ? "w-10" : "w-0"
               }`}
