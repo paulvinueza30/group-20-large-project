@@ -80,7 +80,7 @@ export const reviewFlashcard = async (
 ) => {
   try {
     const response = await axios.put(
-      `${FLASHCARD_API_URL}/review/${id}`,
+      `${FLASHCARD_API_URL}/reviewFlashcard/${id}`,
       { feedback },
       { withCredentials: true }
     );

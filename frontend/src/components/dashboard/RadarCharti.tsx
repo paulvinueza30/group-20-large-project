@@ -8,8 +8,31 @@ const RadarCharti = ({ color }: any) => {
   // Sample data
   const radarData = data?.map((category) => ({
     name: category.name,
-    x: 10,
+    x: 100,
   }));
+
+  const radarData2 = [
+    {
+    name: "progaramming",
+    x: 1.5,
+  },
+  {
+    name: "progaramming3",
+    x: 2,
+  },
+  {
+    name: "progaramming1",
+    x: 1,
+  },
+  {
+    name: "10 number",
+    x: 1.5,
+  },
+  {
+    name: "number",
+    x: 0,
+  }
+]
 
   return (
     <div className=" w-42 h-42 ">
@@ -20,7 +43,7 @@ const RadarCharti = ({ color }: any) => {
         width={300}
         height={300}
         outerRadius="80%"
-        data={radarData}
+        data={radarData2}
         className="pl-2 w-10 h-10"
       >
         <PolarGrid />

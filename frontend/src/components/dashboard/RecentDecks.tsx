@@ -1,5 +1,7 @@
 import React from "react";
 import { useCategories } from "../../hooks/category/useCategories";
+import { GoTrash } from "react-icons/go";
+
 
 // Fix routing
 function RecentDecks({ Pcolor, Scolor }: { Pcolor: string; Scolor: string }) {
@@ -27,10 +29,10 @@ function RecentDecks({ Pcolor, Scolor }: { Pcolor: string; Scolor: string }) {
       <div className="flex flex-wrap justify-evenly content-stretch overflow-hidden">
         {/* Only maps up to 4 decks */}
         {data?.slice(0, 4).map((category) => (
-          <React.Fragment key={category.name}>
+          <div key={category.name} style={{ backgroundColor: Pcolor }} className={cardStyle}>
             <a
               href={`/decks/${category.name}`}
-              className={cardStyle}
+              className="w-max "
               key={category._id}
               style={{ backgroundColor: Pcolor }}
             >
@@ -44,7 +46,10 @@ function RecentDecks({ Pcolor, Scolor }: { Pcolor: string; Scolor: string }) {
                 number cards
               </span>
             </a>
-          </React.Fragment>
+              <span className=" absolute bottom-0 right-[12px] mb-2 z-50">
+                <GoTrash className="w-8 h-8 text-secondary hover:text-white" onClick={() => console.log("deleted")}/>
+              </span>
+          </div>
         ))}
       </div>
     </div>
