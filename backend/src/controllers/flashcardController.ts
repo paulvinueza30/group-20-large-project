@@ -28,6 +28,7 @@ export const createFlashcard = async (req: Request, res: Response): Promise<void
             return;
         }
 
+        // Create the flashcard
         const newFlashcard = new flashcard({
             frontSide,
             backSide,
@@ -36,6 +37,11 @@ export const createFlashcard = async (req: Request, res: Response): Promise<void
         });
 
         await newFlashcard.save();
+
+        // Increment the cardCount in the associated category
+        categoryDoc.cardCount += 1;
+        await categoryDoc.save();
+
         res.status(201).json({
             message: "Flashcard created successfully",
             flashcard: newFlashcard,
@@ -77,17 +83,27 @@ export const deleteFlashcard = async (req: Request, res: Response): Promise<void
         const user = req.user as IUser;
         const userId = user._id;
 
-        const deletedFlashcard = await flashcard.findOneAndDelete({ _id: id, userId });
+        // Find and delete the flashcard
+        const flashcardToDelete = await flashcard.findOneAndDelete({ _id: id, userId });
 
-        if (!deletedFlashcard) {
+        if (!flashcardToDelete) {
             res.status(404).json({ message: "Flashcard not found or does not belong to the user" });
             return;
         }
+
+        // Decrement the cardCount in the associated category
+        const categoryDoc = await Category.findById(flashcardToDelete.category);
+        if (categoryDoc && categoryDoc.userId.toString() === userId.toString()) {
+            categoryDoc.cardCount -= 1;
+            await categoryDoc.save();
+        }
+
         res.status(200).json({ message: "Flashcard deleted successfully" });
     } catch (error) {
         res.status(500).json({ message: "Failed to delete flashcard", error });
     }
 };
+
 
 // Get Next Flashcard Due for Review
 export const getNextFlashcard = async (req: Request, res: Response): Promise<void> => {
