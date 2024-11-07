@@ -30,16 +30,16 @@ function Profile() {
               </div>
               <h1 className="font-bold text-2xl">Profile</h1>
             </div>
-            <div className="col-span-2 row-span-4 col-start-1 row-start-2 bg-slate-100 rounded-xl shadow-md">
+            <div className="col-span-2 row-span-4 col-start-1 row-start-2 bg-slate-100 rounded-xl shadow-md dark:bg-dark-primary">
               <UserInfo Pcolor={Pcolor} Scolor={Scolor} />
             </div>
-            <div className="col-span-2 row-span-4 col-start-3 row-start-2 overflow-hidden bg-slate-100 rounded-xl shadow-md">
+            <div className="col-span-2 row-span-4 col-start-3 row-start-2 overflow-hidden bg-slate-100 rounded-xl shadow-md dark:bg-dark-primary">
               <RadarCharti />
             </div>
-            <div className="col-span-2 row-span-4 col-start-5 row-start-2 bg-slate-100 rounded-xl shadow-md">
+            <div className="col-span-2 row-span-4 col-start-5 row-start-2 bg-slate-100 rounded-xl shadow-md dark:bg-dark-primary">
               <TodoList />
             </div>
-            <div className="col-span-6 row-span-2 row-start-6 bg-slate-100 rounded-xl shadow-md">
+            <div className="col-span-6 row-span-2 row-start-6 bg-slate-100 rounded-xl shadow-md dark:bg-dark-primary">
               6
             </div>
             {/* This is just to have a bit of spacing at the bottom of the page */}

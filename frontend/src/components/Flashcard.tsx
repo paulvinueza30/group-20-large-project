@@ -17,9 +17,9 @@ function Flashcard() {
     <div>
       {/* Front of card */}
       {!showBackCard && (
-        <div className="">
-          <div className="p-20 bg-slate-100 rounded-xl">
-            <h1 className="text-5xl text-center">Front</h1>
+        <div className="dark:text-white">
+          <div className="p-20 bg-slate-100 dark:bg-dark-primary rounded-xl">
+            <h1 className="text-5xl text-center ">Front</h1>
             <div className="p-10 text-center">
               <h4>Question</h4>
             </div>
@@ -39,8 +39,8 @@ function Flashcard() {
       )}
       {/* Back of card */}
       {showBackCard && (
-        <div className="transition-all duration-500 [transform-style:preserve-3d] group-hover:[transform:rotateY(180deg)]">
-          <div className="p-20 bg-slate-100 rounded-xl">
+        <div className="dark:text-white">
+          <div className="p-20 bg-slate-100 dark:bg-dark-primary rounded-xl">
             <h1 className="text-5xl text-center">Back</h1>
             <div className="p-10 text-center">
               <h4>Answer</h4>

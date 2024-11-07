@@ -18,7 +18,9 @@ function RecentDecks({ Pcolor, Scolor }: { Pcolor: string; Scolor: string }) {
 
   return (
     <div className="overflow-hidden">
-      <h3 className="text-center p-4  text-lg font-bold">Recent Decks</h3>
+      <h3 className="text-center p-4  text-lg font-bold dark:text-white">
+        Recent Decks
+      </h3>
       <p className="text-center text-xl text-gray-500">
         {dataSize == 0 ? <p className="pt-24">No decks created</p> : ""}
       </p>

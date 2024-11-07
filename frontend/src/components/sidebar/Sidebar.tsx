@@ -12,7 +12,7 @@ import {
 import { ReactNode, useEffect, useState } from "react";
 import SidebarItem from "./SidebarItem";
 import Logo from "../../assets/logo.webp";
-import { useLocation, useParams } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import { useCategories } from "../../hooks/category/useCategories";
 
 interface SidebarProps {
@@ -35,7 +35,7 @@ function Sidebar({ children, expanded, handleToggle }: SidebarProps) {
   return (
     <div className="relative">
       <div
-        className={`fixed inset-0 -z-10 block  dark:bg-gray-900${
+        className={`fixed inset-0 -z-10 block  dark:bg-dark-primary${
           expanded ? "block sm:hidden" : "hidden"
         }`}
       />
@@ -44,7 +44,7 @@ function Sidebar({ children, expanded, handleToggle }: SidebarProps) {
           expanded ? "w-5/6 sm:w-64" : "w-0 sm:w-20"
         }`}
       >
-        <nav className="flex h-full md:h-[1000px] flex-col border-r bg-white dark:bg-gray-900 shadow-sm">
+        <nav className="flex h-full md:h-[1000px] flex-col border-r bg-white dark:bg-dark-primary shadow-sm dark:border-dark-secondary">
           <div className="flex items-center justify-between p-4 pb-2">
             <img
               src={Logo}
@@ -114,7 +114,6 @@ function Sidebar({ children, expanded, handleToggle }: SidebarProps) {
 
 export default function MakeSidebar({ sendSizeChange, color }: any) {
   const location = useLocation();
-  const { id } = useParams<{ id: string }>();
 
   const { data } = useCategories();
 
@@ -151,7 +150,7 @@ export default function MakeSidebar({ sendSizeChange, color }: any) {
       icon: <ChartBarSquareIcon />,
       subMenu: subMenuData,
       text: "Decks",
-      to: "/decks",
+      to: "#",
     },
     {
       icon: <ChartPieIcon />,
