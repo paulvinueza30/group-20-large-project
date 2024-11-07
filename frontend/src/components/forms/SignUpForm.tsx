@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import useRegisterUser from "../../hooks/useRegisterUser";
+import useRegisterUser from "../../hooks/user/useRegisterUser";
 
 const SignUpForm: React.FC = () => {
   const { register, loading, error, success } = useRegisterUser();
