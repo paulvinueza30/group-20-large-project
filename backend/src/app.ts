@@ -3,7 +3,8 @@ import mongoose from "mongoose";
 import userRoutes from "./routes/userRoutes";
 import categoryRoutes from "./routes/categoryRoutes";
 import flashcardRoutes from "./routes/flashcardRoutes";
-import toDoRoutes from "./routes/todoRoutes";
+import todoRoutes from "./routes/todoRoutes";
+import eventRoutes from "./routes/eventRoutes";
 import dotenv from "dotenv";
 import passport from "passport";
 import session from "express-session";
@@ -52,7 +53,8 @@ app.use(passport.session());
 app.use("/api/users", userRoutes);
 app.use("/api/categories", categoryRoutes);
 app.use("/api/flashcards", flashcardRoutes);
-app.use("/api/todos", toDoRoutes);
+app.use("/api/todos", todoRoutes);
+app.use("/api/events", eventRoutes);
 
 // Get URI from environment variables
 const mongoURI = process.env.MONGODB_URI || "";
