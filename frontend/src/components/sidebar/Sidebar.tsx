@@ -13,6 +13,7 @@ import { ReactNode, useEffect, useState } from "react";
 import SidebarItem from "./SidebarItem";
 import Logo from "../../assets/logo.webp";
 import { useLocation } from "react-router-dom";
+import { useCategories } from "../../hooks/category/useCategories";
 
 interface SidebarProps {
   children: ReactNode;
@@ -114,6 +115,8 @@ function Sidebar({ children, expanded, handleToggle }: SidebarProps) {
 export default function MakeSidebar({ sendSizeChange, color }: any) {
   const location = useLocation();
 
+  const { data } = useCategories();
+
   const [expanded, setExpanded] = useState(() => {
     const saved = localStorage.getItem("navbarCollapsed");
     return saved ? JSON.parse(saved) : true; // default to true
@@ -131,6 +134,12 @@ export default function MakeSidebar({ sendSizeChange, color }: any) {
     });
   };
 
+  const subMenuData = data?.map((category) => ({
+    icon: <></>,
+    text: category.name,
+    to: "/decks",
+  }));
+
   const navBarItems = [
     {
       icon: <HomeIcon />,
@@ -139,18 +148,7 @@ export default function MakeSidebar({ sendSizeChange, color }: any) {
     },
     {
       icon: <ChartBarSquareIcon />,
-      subMenu: [
-        {
-          icon: <></>,
-          text: "Deck Name 1",
-          to: "/decks",
-        },
-        {
-          icon: <></>,
-          text: "Deck Name 2",
-          to: "",
-        },
-      ],
+      subMenu: subMenuData,
       text: "Decks",
       to: "/decks",
     },

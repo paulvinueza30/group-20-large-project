@@ -70,7 +70,6 @@ export default function SidebarItem({
           `}
           style={{
             backgroundColor: active && !subMenu ? color : undefined,
-            color: active ? "white" : undefined,
           }}
           onClick={() => setExpandSubMenu((curr) => expanded && !curr)}
         >
@@ -117,7 +116,12 @@ export default function SidebarItem({
           )}
         </Link>
       </li>
-      <ul className="sub-menu pl-6" style={{ height: subMenuHeight }}>
+      <ul
+        className={`sub-menu pl-6`}
+        style={{
+          height: subMenuHeight,
+        }}
+      >
         {expanded &&
           subMenu?.map((item, index) => (
             <SidebarItem
