@@ -12,9 +12,6 @@ function CreateDeck() {
     event.preventDefault();
     await create(categoryName);
   };
-  if (success) {
-    window.location.reload();
-  }
 
   return (
     <div>

@@ -1,22 +1,26 @@
 import axios from "axios";
 
-const FLASHCARD_API_URL = `${process.env.REACT_APP_API_URL}/flashcards` || "http://localhost:5000/api/flashcards";
+const FLASHCARD_API_URL =
+  `${process.env.REACT_APP_API_URL}/flashcards` ||
+  "http://localhost:5000/api/flashcards";
 
 // Create a flashcard
 export const createFlashcard = async (flashcardData: {
   frontSide: string;
   backSide: string;
-  category: string;  // Pass the category's _id
+  category: string; // Pass the category's _id
 }) => {
   try {
     const response = await axios.post(
-      `${FLASHCARD_API_URL}/create`,
+      `${FLASHCARD_API_URL}/createFlashcard/${flashcardData.category}`,
       flashcardData,
       { withCredentials: true }
     );
     return response.data;
   } catch (error: any) {
-    throw error.response ? error.response.data : new Error("Internal server error");
+    throw error.response
+      ? error.response.data
+      : new Error("Internal server error");
   }
 };
 
@@ -34,7 +38,9 @@ export const editFlashcard = async (flashcardData: {
     );
     return response.data;
   } catch (error: any) {
-    throw error.response ? error.response.data : new Error("Internal server error");
+    throw error.response
+      ? error.response.data
+      : new Error("Internal server error");
   }
 };
 
@@ -46,7 +52,9 @@ export const deleteFlashcard = async (id: string) => {
     });
     return response.data;
   } catch (error: any) {
-    throw error.response ? error.response.data : new Error("Internal server error");
+    throw error.response
+      ? error.response.data
+      : new Error("Internal server error");
   }
 };
 
@@ -54,17 +62,22 @@ export const deleteFlashcard = async (id: string) => {
 export const getNextFlashcard = async (category: string) => {
   try {
     const response = await axios.get(`${FLASHCARD_API_URL}/next`, {
-      params: { category },  // Send category as a query parameter
+      params: { category }, // Send category as a query parameter
       withCredentials: true,
     });
     return response.data;
   } catch (error: any) {
-    throw error.response ? error.response.data : new Error("Internal server error");
+    throw error.response
+      ? error.response.data
+      : new Error("Internal server error");
   }
 };
 
 // Review a flashcard with feedback
-export const reviewFlashcard = async (id: string, feedback: "Forgot" | "Hard" | "Good" | "Easy") => {
+export const reviewFlashcard = async (
+  id: string,
+  feedback: "Forgot" | "Hard" | "Good" | "Easy"
+) => {
   try {
     const response = await axios.put(
       `${FLASHCARD_API_URL}/review/${id}`,
@@ -73,6 +86,8 @@ export const reviewFlashcard = async (id: string, feedback: "Forgot" | "Hard" | 
     );
     return response.data;
   } catch (error: any) {
-    throw error.response ? error.response.data : new Error("Internal server error");
+    throw error.response
+      ? error.response.data
+      : new Error("Internal server error");
   }
 };

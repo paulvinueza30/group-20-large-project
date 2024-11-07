@@ -31,7 +31,7 @@ function RecentDecks({ Pcolor, Scolor }: { Pcolor: string; Scolor: string }) {
             <a
               href={`/decks/${category.name}`}
               className={cardStyle}
-              key={category.id}
+              key={category._id}
               style={{ backgroundColor: Pcolor }}
             >
               <h3 className="text-lg font-semibold absolute top-[5px] left-[12px] text-white">
