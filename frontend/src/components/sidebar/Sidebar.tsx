@@ -12,7 +12,7 @@ import {
 import { ReactNode, useEffect, useState } from "react";
 import SidebarItem from "./SidebarItem";
 import Logo from "../../assets/logo.webp";
-import { useLocation } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import { useCategories } from "../../hooks/category/useCategories";
 
 interface SidebarProps {
@@ -114,6 +114,7 @@ function Sidebar({ children, expanded, handleToggle }: SidebarProps) {
 
 export default function MakeSidebar({ sendSizeChange, color }: any) {
   const location = useLocation();
+  const { id } = useParams<{ id: string }>();
 
   const { data } = useCategories();
 
@@ -137,7 +138,7 @@ export default function MakeSidebar({ sendSizeChange, color }: any) {
   const subMenuData = data?.map((category) => ({
     icon: <></>,
     text: category.name,
-    to: "/decks",
+    to: `/decks/${category.name}`,
   }));
 
   const navBarItems = [

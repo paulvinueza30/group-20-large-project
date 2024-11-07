@@ -27,7 +27,7 @@ function RecentDecks({ Pcolor, Scolor }: { Pcolor: string; Scolor: string }) {
         {data?.slice(0, 4).map((category) => (
           <React.Fragment key={category.name}>
             <a
-              href={`/decks`}
+              href={`/decks/${category.name}`}
               className={cardStyle}
               key={category.id}
               style={{ backgroundColor: Pcolor }}
