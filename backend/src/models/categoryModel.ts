@@ -11,13 +11,19 @@ const categorySchema = new Schema<ICategory>({
         ref: "User",
         required: true,
     },
+    cardCount: {
+        type: Number,
+        default: 0,
+    },
+}, {
+    timestamps: { createdAt: 'createdAt', updatedAt: 'editedAt' } // Enable automatic timestamps
 });
 
 // Compound index to enforce unique category names per user
 categorySchema.index({ name: 1, userId: 1 }, { unique: true });
 
 // Pre-save hook to normalize category names to lowercase for consistency
-categorySchema.pre("save", function(next) {
+categorySchema.pre("save", function (next) {
     this.name = this.name.toLowerCase();
     next();
 });

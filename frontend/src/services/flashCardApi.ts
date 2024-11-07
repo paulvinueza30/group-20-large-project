@@ -8,12 +8,12 @@ const FLASHCARD_API_URL =
 export const createFlashcard = async (flashcardData: {
   frontSide: string;
   backSide: string;
-  category: string; // Pass the category's _id
+  categoryId: string;
 }) => {
   try {
     const response = await axios.post(
-      `${FLASHCARD_API_URL}/createFlashcard/${flashcardData.category}`,
-      flashcardData,
+      `${FLASHCARD_API_URL}/create/${flashcardData.categoryId}`,
+      { frontSide: flashcardData.frontSide, backSide: flashcardData.backSide },
       { withCredentials: true }
     );
     return response.data;
@@ -59,12 +59,12 @@ export const deleteFlashcard = async (id: string) => {
 };
 
 // Fetch the next flashcard due for review in a specific category
-export const getNextFlashcard = async (category: string) => {
+export const getNextFlashcard = async (categoryId: string) => {
   try {
-    const response = await axios.get(`${FLASHCARD_API_URL}/next`, {
-      params: { category }, // Send category as a query parameter
-      withCredentials: true,
-    });
+    const response = await axios.get(
+      `${FLASHCARD_API_URL}/nextFlashcard/${categoryId}`,
+      { withCredentials: true }
+    );
     return response.data;
   } catch (error: any) {
     throw error.response

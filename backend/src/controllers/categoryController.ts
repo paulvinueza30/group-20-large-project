@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import Category from "../models/categoryModel";
+import flashcard from "../models/flashcardModel";
 import { IUser } from "../interfaces/IUser";
 
 // Create Category
@@ -43,5 +44,31 @@ export const getAllCategories = async (req: Request, res: Response): Promise<voi
         res.status(200).json(categories);
     } catch (error) {
         res.status(500).json({ message: "Failed to fetch categories", error });
+    }
+};
+
+// Delete Category and associated flashcards
+export const deleteCategory = async (req: Request, res: Response): Promise<void> => {
+    try {
+        const categoryId = req.params.categoryId;
+        const user = req.user as IUser;
+        const userId = user._id;
+
+        // Check if the category exists and belongs to the user
+        const categoryDoc = await Category.findOneAndDelete({ _id: categoryId, userId });
+        if (!categoryDoc) {
+            res.status(404).json({ message: "Category not found or does not belong to the user" });
+            return;
+        }
+
+        // Delete all flashcards associated with the category
+        const deletedFlashcards = await flashcard.deleteMany({ category: categoryId, userId });
+
+        res.status(200).json({
+            message: "Category and associated flashcards deleted successfully",
+            deletedFlashcards: deletedFlashcards.deletedCount
+        });
+    } catch (error) {
+        res.status(500).json({ message: "Failed to delete category and flashcards", error });
     }
 };
