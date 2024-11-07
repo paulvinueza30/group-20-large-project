@@ -15,6 +15,23 @@ const categorySchema = new Schema<ICategory>({
         type: Number,
         default: 0,
     },
+    experience: {
+        type: Number,
+        default: 0,
+    },
+    streakCount: {
+        type: Number,
+        default: 0,
+    },
+    cardsStudied: {
+        type: Number,
+        default: 0,
+    },
+    streakLastUpdated: {
+        type: Date,
+        default: null,
+    },
+
 }, {
     timestamps: { createdAt: 'createdAt', updatedAt: 'editedAt' } // Enable automatic timestamps
 });
