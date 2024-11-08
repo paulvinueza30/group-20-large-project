@@ -14,8 +14,10 @@ export const createCategory = async (categoryName: string) => {
     );
     return response.data;
   } catch (error: any) {
+    // Catch and handle errors properly
+    console.error("Error creating category:", error);
     throw error.response
-      ? error.response.data
+      ? new Error(error.response.data.message || "Failed to create category")
       : new Error("Internal server error");
   }
 };
@@ -25,12 +27,13 @@ export const getAllCategories = async () => {
   try {
     const response = await axios.get(`${CATEGORY_API_URL}/all`, {
       withCredentials: true,
-      withCredentials: true,
     });
     return response.data;
   } catch (error: any) {
+    // Catch and handle errors properly
+    console.error("Error fetching categories:", error);
     throw error.response
-      ? error.response.data
+      ? new Error(error.response.data.message || "Failed to fetch categories")
       : new Error("Internal server error");
   }
 };
@@ -46,8 +49,10 @@ export const deleteCategory = async (categoryId: string) => {
     );
     return response.data;
   } catch (error: any) {
+    // Catch and handle errors properly
+    console.error("Error deleting category:", error);
     throw error.response
-      ? error.response.data
+      ? new Error(error.response.data.message || "Failed to delete category")
       : new Error("Internal server error");
   }
 };

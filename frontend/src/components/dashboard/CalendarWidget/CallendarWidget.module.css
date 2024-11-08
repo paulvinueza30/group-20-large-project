@@ -183,3 +183,62 @@
   font-style: italic;
   margin: 0;
 }
+/* Styling for the Events on [day] header and button */
+.eventListHeader {
+  display: flex;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.eventListHeader h3 {
+  padding-left: 6.3%;
+  margin: 0;
+  font-size: 1.125rem;
+  font-weight: 600;
+  flex-grow: 0.2; /* This will push the button to the right */
+}
+
+.addEventButton {
+  background-color: var(
+    --secondary-color
+  ); /* Use the secondary color for the button */
+  color: white;
+  font-size: 1.5rem;
+  padding: 2px;
+  border-radius: 50%;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  margin-left: 8px; /* Adds space between the heading and the button */
+}
+
+.addEventButton:hover {
+  background-color: var(--secondary-color-dark);
+  transform: scale(1.1);
+}
+
+.addEventButton:active {
+  transform: scale(1);
+}
+
+.addEventButton .icon {
+  width: 20px;
+  height: 20px;
+}
+
+/* The dot that appears on days with events */
+.eventDot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: var(--scolor); /* Dynamic color from the Scolor prop */
+  position: absolute;
+  bottom: 4px;
+  left: 50%;
+  transform: translateX(-50%);
+}

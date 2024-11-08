@@ -15,27 +15,31 @@ import {
   ChevronLeft,
   ChevronRight,
   Calendar as CalendarIcon,
-  Clock,
+  Plus as AddIcon, // Plus icon from lucide-react
 } from "lucide-react";
-import styles from "../CalendarWidget/CallendarWidget.module.css";
-
-const events = [
-  { date: new Date(2024, 10, 7), title: "Math Quiz" },
-  { date: new Date(2024, 10, 9), title: "Science Review" },
-  { date: new Date(2024, 10, 12), title: "History Test" },
-  { date: new Date(2024, 10, 15), title: "English Essay Due" },
-  { date: new Date(2024, 10, 20), title: "Art Project Presentation" },
-];
+import styles from "./CallendarWidget.module.css";
+import useEvents from "../../../hooks/calendarEvent/useEvents";
+import AddEventModal from "./AddEventModal";
 
 interface CalendarWidgetProps {
-  Pcolor: string; // Primary color
-  Scolor: string; // Secondary color (e.g., used for hover or today)
+  Pcolor: string;
+  Scolor: string;
 }
 
 const CalendarWidget: React.FC<CalendarWidgetProps> = ({ Pcolor, Scolor }) => {
   const [currentMonth, setCurrentMonth] = useState(new Date());
   const [selectedDate, setSelectedDate] = useState(new Date());
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
+  const {
+    events,
+    loading,
+    handleCreateEvent,
+    handleDeleteEvent,
+    handleUpdateEvent,
+  } = useEvents(currentMonth); // Custom hook fetches events based on currentMonth
+
+  // Get all days of the month
   const daysInMonth = useMemo(() => {
     const monthStart = startOfMonth(currentMonth);
     const monthEnd = endOfMonth(monthStart);
@@ -53,24 +57,38 @@ const CalendarWidget: React.FC<CalendarWidgetProps> = ({ Pcolor, Scolor }) => {
     return days;
   }, [currentMonth]);
 
-  const onDateClick = (day: Date) => setSelectedDate(day);
+  // Get events for the selected date
+  const selectedDateEvents = events.filter((event) =>
+    isSameDay(new Date(event.date), selectedDate)
+  );
+
+  // Check if a specific day has events
+  const hasEvents = (day: Date) => {
+    return events.some((event) => isSameDay(new Date(event.date), day));
+  };
+
+  const onDateClick = (day: Date) => {
+    setSelectedDate(day);
+  };
+
   const nextMonth = () => setCurrentMonth(addMonths(currentMonth, 1));
   const prevMonth = () => setCurrentMonth(subMonths(currentMonth, 1));
 
-  const selectedDateEvents = events.filter((event) =>
-    isSameDay(event.date, selectedDate)
-  );
+  const handleEventSubmit = (event: {
+    title: string;
+    date: string;
+    description: string;
+    time: string;
+  }) => {
+    handleCreateEvent(event); // Call the handleCreateEvent function from the hook
+  };
+
+  const openAddEventModal = () => {
+    setIsModalOpen(true);
+  };
 
   return (
-    <div
-      className={styles.calendarWidget}
-      style={{
-        backgroundColor: "#fff",
-        boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
-        borderRadius: "12px",
-        overflow: "hidden",
-      }}
-    >
+    <div className={styles.calendarWidget}>
       <div
         className={styles.header}
         style={{ backgroundColor: Pcolor, color: "#fff" }}
@@ -91,7 +109,11 @@ const CalendarWidget: React.FC<CalendarWidgetProps> = ({ Pcolor, Scolor }) => {
           </button>
         </div>
       </div>
-      <div className={styles.calendarBody}>
+
+      <div
+        className={styles.calendarBody}
+        style={{ "--scolor": Scolor } as React.CSSProperties} // Set dynamic color for event dots
+      >
         <div className={styles.daysHeader}>
           {["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map((day) => (
             <div key={day} className={styles.dayHeader}>
@@ -99,20 +121,9 @@ const CalendarWidget: React.FC<CalendarWidgetProps> = ({ Pcolor, Scolor }) => {
             </div>
           ))}
         </div>
-        <div
-          className={styles.daysGrid}
-          style={
-            {
-              "--hover-bg-color": `${Pcolor}20`, // Set hover background color as CSS variable
-              "--selected-bg-color": Pcolor, // Set selected background color as CSS variable
-              "--event-indicator-color": Pcolor, // Set event indicator color
-            } as React.CSSProperties
-          }
-        >
+
+        <div className={styles.daysGrid}>
           {daysInMonth.map((day, idx) => {
-            const hasEvents = events.some((event) =>
-              isSameDay(event.date, day)
-            );
             const isSelected = isSameDay(day, selectedDate);
             const isToday = isSameDay(day, new Date());
             const isCurrentMonth = isSameMonth(day, currentMonth);
@@ -126,59 +137,61 @@ const CalendarWidget: React.FC<CalendarWidgetProps> = ({ Pcolor, Scolor }) => {
                 } ${isToday ? styles.today : ""} ${
                   !isCurrentMonth ? styles.notCurrentMonth : ""
                 }`}
-                style={{
-                  backgroundColor: isSelected ? Pcolor : "transparent",
-                  color: !isCurrentMonth
-                    ? "#ccc"
-                    : isSelected
-                    ? "#fff"
-                    : isToday
-                    ? Scolor
-                    : "#333",
-                }}
+                style={{ backgroundColor: isSelected ? Pcolor : "transparent" }}
               >
                 <span>{format(day, "d")}</span>
-                {hasEvents && (
-                  <div
-                    className={styles.eventIndicator}
-                    style={{
-                      backgroundColor: isSelected ? "#fff" : Pcolor,
-                    }}
-                  />
-                )}
+
+                {/* Dot for events */}
+                {hasEvents(day) && <div className={styles.eventDot}></div>}
               </button>
             );
           })}
         </div>
       </div>
-      <div className={styles.eventList}>
+
+      {/* "Events on [day]" Section */}
+      <div className={styles.eventListHeader}>
         <h3 style={{ color: Pcolor }}>
           Events on {format(selectedDate, "MMMM d, yyyy")}
         </h3>
+
+        {/* Add Event Button with Plus Icon */}
+        <button
+          className={styles.addEventButton}
+          onClick={openAddEventModal}
+          style={{ backgroundColor: Scolor }}
+        >
+          <AddIcon className={styles.icon} />
+        </button>
+      </div>
+
+      {/* Render the AddEventModal */}
+      <AddEventModal
+        selectedDate={selectedDate}
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        onSubmit={handleEventSubmit}
+        Pcolor={Pcolor}
+        Scolor={Scolor}
+      />
+
+      {/* Event list */}
+      <div className={styles.eventList}>
         {selectedDateEvents.length > 0 ? (
           <ul>
             {selectedDateEvents.map((event, idx) => (
               <li
                 key={idx}
                 className={styles.eventItem}
-                style={{
-                  borderColor: Pcolor,
-                  backgroundColor: `${Pcolor}10`,
-                }}
+                style={{ borderColor: Pcolor }}
               >
-                <span className={styles.eventTitle}>{event.title}</span>
-                <span className={styles.eventTime}>
-                  <Clock
-                    className={styles.eventIcon}
-                    style={{ color: Pcolor }}
-                  />
-                  {format(event.date, "h:mm a")}
-                </span>
+                <span>{event.title}</span>
+                <span>{format(new Date(event.date), "h:mm a")}</span>
               </li>
             ))}
           </ul>
         ) : (
-          <p className={styles.noEvents}>No events scheduled for this day.</p>
+          <p>No events scheduled for this day.</p>
         )}
       </div>
     </div>
