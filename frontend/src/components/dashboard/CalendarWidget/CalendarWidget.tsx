@@ -10,16 +10,18 @@ import {
   isSameDay,
   addMonths,
   subMonths,
+  isBefore,
 } from "date-fns";
 import {
   ChevronLeft,
   ChevronRight,
   Calendar as CalendarIcon,
-  Plus as AddIcon, // Plus icon from lucide-react
+  Plus as AddIcon,
 } from "lucide-react";
 import styles from "./CallendarWidget.module.css";
 import useEvents from "../../../hooks/calendarEvent/useEvents";
 import AddEventModal from "./AddEventModal";
+import EventItem from "./EventItem";
 
 interface CalendarWidgetProps {
   Pcolor: string;
@@ -30,16 +32,11 @@ const CalendarWidget: React.FC<CalendarWidgetProps> = ({ Pcolor, Scolor }) => {
   const [currentMonth, setCurrentMonth] = useState(new Date());
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [editingEvent, setEditingEvent] = useState<any | null>(null);
 
-  const {
-    events,
-    loading,
-    handleCreateEvent,
-    handleDeleteEvent,
-    handleUpdateEvent,
-  } = useEvents(currentMonth); // Custom hook fetches events based on currentMonth
+  const { events, handleCreateEvent, handleDeleteEvent, handleUpdateEvent } =
+    useEvents(currentMonth);
 
-  // Get all days of the month
   const daysInMonth = useMemo(() => {
     const monthStart = startOfMonth(currentMonth);
     const monthEnd = endOfMonth(monthStart);
@@ -48,63 +45,76 @@ const CalendarWidget: React.FC<CalendarWidgetProps> = ({ Pcolor, Scolor }) => {
 
     const days = [];
     let day = startDate;
-
     while (day <= endDate) {
       days.push(day);
       day = addDays(day, 1);
     }
-
     return days;
-  }, [currentMonth]);
+  }, [currentMonth, events]);
 
-  // Get events for the selected date
   const selectedDateEvents = events.filter((event) =>
     isSameDay(new Date(event.date), selectedDate)
   );
 
-  // Check if a specific day has events
-  const hasEvents = (day: Date) => {
-    return events.some((event) => isSameDay(new Date(event.date), day));
-  };
+  const hasEvents = (day: Date) =>
+    events.some((event) => isSameDay(new Date(event.date), day));
 
-  const onDateClick = (day: Date) => {
-    setSelectedDate(day);
-  };
+  const handleDateClick = (day: Date) => setSelectedDate(day);
+  const handleNextMonth = () => setCurrentMonth(addMonths(currentMonth, 1));
+  const handlePrevMonth = () => setCurrentMonth(subMonths(currentMonth, 1));
 
-  const nextMonth = () => setCurrentMonth(addMonths(currentMonth, 1));
-  const prevMonth = () => setCurrentMonth(subMonths(currentMonth, 1));
-
-  const handleEventSubmit = (event: {
+  const handleEventSubmit = async (event: {
     title: string;
     date: string;
     description: string;
     time: string;
   }) => {
-    handleCreateEvent(event); // Call the handleCreateEvent function from the hook
+    await handleCreateEvent(event);
+    setCurrentMonth(new Date(currentMonth));
   };
 
-  const openAddEventModal = () => {
+  const handleEditClick = (event: any) => {
+    setEditingEvent(event);
     setIsModalOpen(true);
   };
 
+  const handleDeleteClick = (id: string) => {
+    handleDeleteEvent(id);
+  };
+
+  const openAddEventModal = () => {
+    setEditingEvent(null);
+    setIsModalOpen(true);
+  };
+
+  const isPastDay = (day: Date) =>
+    isBefore(day, new Date()) && !isSameDay(day, new Date());
+
   return (
-    <div className={styles.calendarWidget}>
-      <div
-        className={styles.header}
-        style={{ backgroundColor: Pcolor, color: "#fff" }}
-      >
+    <div
+      className={styles.calendarWidget}
+      style={{
+        width: "100%",
+        height: "100%",
+        margin: 0,
+        padding: 0,
+        display: "flex",
+        flexDirection: "column",
+      }}
+    >
+      <div className={styles.header} style={{ backgroundColor: Pcolor }}>
         <h2>
           <CalendarIcon className={styles.headerIcon} />
           Calendar
         </h2>
         <div className={styles.navContainer}>
-          <button onClick={prevMonth} className={styles.navButton}>
+          <button onClick={handlePrevMonth} className={styles.navButton}>
             <ChevronLeft />
           </button>
           <span className={styles.currentMonth}>
             {format(currentMonth, "MMMM yyyy")}
           </span>
-          <button onClick={nextMonth} className={styles.navButton}>
+          <button onClick={handleNextMonth} className={styles.navButton}>
             <ChevronRight />
           </button>
         </div>
@@ -112,7 +122,7 @@ const CalendarWidget: React.FC<CalendarWidgetProps> = ({ Pcolor, Scolor }) => {
 
       <div
         className={styles.calendarBody}
-        style={{ "--scolor": Scolor } as React.CSSProperties} // Set dynamic color for event dots
+        style={{ "--scolor": Scolor } as React.CSSProperties}
       >
         <div className={styles.daysHeader}>
           {["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map((day) => (
@@ -127,35 +137,47 @@ const CalendarWidget: React.FC<CalendarWidgetProps> = ({ Pcolor, Scolor }) => {
             const isSelected = isSameDay(day, selectedDate);
             const isToday = isSameDay(day, new Date());
             const isCurrentMonth = isSameMonth(day, currentMonth);
+            const isDisabled = isPastDay(day);
 
             return (
               <button
                 key={idx}
-                onClick={() => onDateClick(day)}
+                onClick={() => !isDisabled && handleDateClick(day)}
                 className={`${styles.dayCell} ${
                   isSelected ? styles.selected : ""
                 } ${isToday ? styles.today : ""} ${
                   !isCurrentMonth ? styles.notCurrentMonth : ""
-                }`}
-                style={{ backgroundColor: isSelected ? Pcolor : "transparent" }}
+                } ${isDisabled ? styles.disabled : ""}`}
+                style={{
+                  backgroundColor: isSelected ? Pcolor : "transparent",
+                  cursor: isDisabled ? "not-allowed" : "pointer",
+                }}
+                disabled={isDisabled}
               >
                 <span>{format(day, "d")}</span>
-
-                {/* Dot for events */}
-                {hasEvents(day) && <div className={styles.eventDot}></div>}
+                {hasEvents(day) && (
+                  <div
+                    className={styles.eventDot}
+                    style={{ backgroundColor: Scolor }}
+                  ></div>
+                )}
               </button>
             );
           })}
         </div>
       </div>
 
-      {/* "Events on [day]" Section */}
-      <div className={styles.eventListHeader}>
+      <div
+        className={styles.eventListHeader}
+        style={{
+          position: "relative",
+          zIndex: 1,
+          backgroundColor: "white",
+        }}
+      >
         <h3 style={{ color: Pcolor }}>
           Events on {format(selectedDate, "MMMM d, yyyy")}
         </h3>
-
-        {/* Add Event Button with Plus Icon */}
         <button
           className={styles.addEventButton}
           onClick={openAddEventModal}
@@ -165,35 +187,43 @@ const CalendarWidget: React.FC<CalendarWidgetProps> = ({ Pcolor, Scolor }) => {
         </button>
       </div>
 
-      {/* Render the AddEventModal */}
+      <div
+        className={styles.eventList}
+        style={{
+          flex: 1,
+          overflowY: "auto",
+          position: "relative",
+          zIndex: 1,
+          backgroundColor: "white",
+        }}
+      >
+        {selectedDateEvents.length > 0 ? (
+          <ul>
+            {selectedDateEvents.map((event) => (
+              <EventItem
+                key={event._id}
+                event={event}
+                Pcolor={Pcolor}
+                onDelete={handleDeleteClick}
+                onEdit={handleEditClick}
+              />
+            ))}
+          </ul>
+        ) : (
+          <p className={styles.noEvents}>No events scheduled for this day.</p>
+        )}
+      </div>
+
       <AddEventModal
         selectedDate={selectedDate}
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
         onSubmit={handleEventSubmit}
+        editingEvent={editingEvent}
         Pcolor={Pcolor}
         Scolor={Scolor}
+        handleUpdateEvent={handleUpdateEvent}
       />
-
-      {/* Event list */}
-      <div className={styles.eventList}>
-        {selectedDateEvents.length > 0 ? (
-          <ul>
-            {selectedDateEvents.map((event, idx) => (
-              <li
-                key={idx}
-                className={styles.eventItem}
-                style={{ borderColor: Pcolor }}
-              >
-                <span>{event.title}</span>
-                <span>{format(new Date(event.date), "h:mm a")}</span>
-              </li>
-            ))}
-          </ul>
-        ) : (
-          <p>No events scheduled for this day.</p>
-        )}
-      </div>
     </div>
   );
 };

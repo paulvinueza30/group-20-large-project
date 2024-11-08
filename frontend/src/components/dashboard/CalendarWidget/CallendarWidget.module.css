@@ -124,6 +124,16 @@
   transform: scale(1.1);
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
+.dayCell.disabled {
+  background-color: #f0f0f0; /* Light grey background */
+  color: #ccc; /* Grey text color */
+  border: 1px solid #ddd; /* Light grey border */
+}
+
+.dayCell.disabled:hover {
+  cursor: not-allowed; /* Disable hover effect */
+  background-color: #f0f0f0; /* Keep the grey background on hover */
+}
 
 .eventIndicator {
   width: 4px;
@@ -136,6 +146,9 @@
 .eventList {
   padding: 20px;
   border-top: 1px solid #eee;
+  max-height: 180px;
+  overflow-y: auto;
+  padding-right: 10px;
 }
 
 .eventList h3 {
@@ -151,13 +164,52 @@
 }
 
 .eventItem {
+  position: relative;
   display: flex;
+  align-items: center; /* Align text content and icons horizontally */
   justify-content: space-between;
-  align-items: center;
-  padding: 12px;
-  border-radius: 8px;
+  padding: 10px;
   margin-bottom: 8px;
-  border-left: 4px solid;
+  border-left: 4px solid var(--primary-color);
+  cursor: pointer;
+  overflow: hidden;
+  transition: transform 0.3s ease;
+}
+
+.eventItem:hover {
+  transform: translateX(
+    -10px
+  ); /* Adjust this to how far you want the item to slide */
+}
+
+.eventActions {
+  position: absolute;
+  right: 10px; /* Position icons to the right of the event item */
+  display: flex;
+  align-items: center; /* Align icons horizontally */
+  gap: 10px;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.eventItem:hover .eventActions {
+  opacity: 1;
+}
+
+.eventContent {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  padding-right: 40px; /* Add padding to prevent overlap with icons */
+}
+
+.eventDescription {
+  font-size: 0.9rem;
+  color: #666;
+  margin-top: 4px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .eventTitle {
@@ -183,6 +235,7 @@
   font-style: italic;
   margin: 0;
 }
+
 /* Styling for the Events on [day] header and button */
 .eventListHeader {
   display: flex;
@@ -199,9 +252,7 @@
 }
 
 .addEventButton {
-  background-color: var(
-    --secondary-color
-  ); /* Use the secondary color for the button */
+  background-color: var(--secondary-color);
   color: white;
   font-size: 1.5rem;
   padding: 2px;
@@ -214,7 +265,7 @@
   justify-content: center;
   width: 36px;
   height: 36px;
-  margin-left: 8px; /* Adds space between the heading and the button */
+  margin-left: 8px;
 }
 
 .addEventButton:hover {
@@ -236,9 +287,40 @@
   width: 6px;
   height: 6px;
   border-radius: 50%;
-  background-color: var(--scolor); /* Dynamic color from the Scolor prop */
+  background-color: var(--secondary-color); /* Use Scolor dynamically */
   position: absolute;
   bottom: 4px;
   left: 50%;
   transform: translateX(-50%);
+}
+
+/* Custom scrollbar for Webkit browsers (Chrome, Safari, Edge) */
+.calendarWidget::-webkit-scrollbar {
+  width: 8px; /* Adjust the width of the scrollbar */
+  height: 8px; /* Adjust the height of horizontal scrollbar */
+}
+
+.calendarWidget::-webkit-scrollbar-track {
+  background-color: #f1f1f1; /* Track color */
+  border-radius: 10px; /* Round corners for the track */
+}
+
+.calendarWidget::-webkit-scrollbar-thumb {
+  background-color: #888; /* Thumb color */
+  border-radius: 10px; /* Round corners for the thumb */
+  border: 2px solid #f1f1f1; /* Border around the thumb */
+}
+
+.calendarWidget::-webkit-scrollbar-thumb:hover {
+  background-color: #555; /* Darken thumb color on hover */
+}
+
+.calendarWidget::-webkit-scrollbar-button {
+  display: none; /* Hide the arrows (if any) on the scrollbar */
+}
+
+/* For Firefox (using scrollbar-width and scrollbar-color) */
+* {
+  scrollbar-width: thin; /* Makes the scrollbar thinner */
+  scrollbar-color: #888 #f1f1f1; /* Thumb and track colors */
 }

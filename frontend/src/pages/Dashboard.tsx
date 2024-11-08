@@ -66,7 +66,7 @@ function Dashboard() {
             </div>
 
             {/* Calendar  */}
-            <div className="col-span-4 row-span-5 col-start-5 row-start-2 border-2 ">
+            <div className="col-span-4 row-span-5 col-start-5 row-start-2 border-2 overflow-hidden">
               <CalendarWidget Pcolor={Pcolor} Scolor={Scolor} />
             </div>
 

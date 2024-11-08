@@ -7,66 +7,89 @@ import {
 } from "../../services/eventApi";
 
 const useEvents = (currentMonth: Date) => {
-  const [events, setEvents] = useState<any[]>([]); // Store events here
-  const [loading, setLoading] = useState<boolean>(true); // Loading state for events
+  const [events, setEvents] = useState<any[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
 
-  // Fetch events on mount and when the currentMonth changes
+  // Fetch events from the server
   const fetchEvents = useCallback(async () => {
     try {
       setLoading(true);
       const response = await getEvents();
       const fetchedEvents = response.events;
-      // Ensure fetchedEvents is an array before setting state
       if (Array.isArray(fetchedEvents)) {
-        setEvents(fetchedEvents);
+        // Sort events by date before updating state
+        const sortedEvents = fetchedEvents.sort(
+          (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()
+        );
+        setEvents(sortedEvents);
       } else {
         console.warn("API response is not an array:", fetchedEvents);
-        setEvents([]); // Fallback to empty array if the response is invalid
+        setEvents([]);
       }
     } catch (error) {
       console.error("Error fetching events:", error);
-      setEvents([]); // In case of an error, set events to empty array
+      setEvents([]);
     } finally {
       setLoading(false);
     }
   }, []);
 
-  // Call fetchEvents when currentMonth changes or on mount
   useEffect(() => {
     fetchEvents();
   }, [currentMonth, fetchEvents]);
 
-  // Handle creating an event
+  const [refresh, setRefresh] = useState(false);
+
   const handleCreateEvent = async (event: any) => {
     try {
       const newEvent = await createEvent(event);
-      // Re-fetch events after adding a new one
-      fetchEvents();
+      if (newEvent) {
+        setEvents((prevEvents) => [...prevEvents, newEvent]);
+        setRefresh((prev) => !prev); // Toggle refresh state
+      }
     } catch (error) {
       console.error("Error creating event:", error);
     }
   };
 
-  // Handle deleting an event
   const handleDeleteEvent = async (id: string) => {
     try {
       await deleteEvent(id);
-      // Re-fetch events after deleting one
-      fetchEvents();
+      setEvents((prevEvents) => prevEvents.filter((event) => event._id !== id));
     } catch (error) {
       console.error("Error deleting event:", error);
     }
   };
 
-  // Handle updating an event (for example, toggling event status)
+  // Update an existing event
   const handleUpdateEvent = async (id: string, updatedEvent: any) => {
     try {
-      await updateEvent(id, updatedEvent);
-      // Re-fetch events after updating one
-      fetchEvents();
+      // Optimistic UI update: immediately update the event in the state
+      setEvents((prevEvents) =>
+        prevEvents.map((event) =>
+          event._id === id ? { ...event, ...updatedEvent } : event
+        )
+      );
+
+      // Perform the actual update
+      const updated = await updateEvent(id, updatedEvent);
+
+      // If the API response differs from the optimistic update, update the state
+      setEvents((prevEvents) =>
+        prevEvents.map((event) =>
+          event._id === id ? { ...event, ...updated } : event
+        )
+      );
     } catch (error) {
       console.error("Error updating event:", error);
+
+      // If the update fails, revert the optimistic update
+      fetchEvents();
     }
+  };
+  // Refresh function for manually fetching events
+  const refreshEvents = async () => {
+    await fetchEvents();
   };
 
   return {
@@ -75,6 +98,7 @@ const useEvents = (currentMonth: Date) => {
     handleCreateEvent,
     handleDeleteEvent,
     handleUpdateEvent,
+    refreshEvents,
   };
 };
 

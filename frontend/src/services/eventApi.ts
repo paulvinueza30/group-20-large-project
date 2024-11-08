@@ -37,7 +37,7 @@ export const createEvent = async (event: Event) => {
 // Update an event by ID
 export const updateEvent = async (id: string, event: Event) => {
   try {
-    const response = await axios.patch(`${EVENT_API_URL}/${id}`, event, {
+    const response = await axios.put(`${EVENT_API_URL}/${id}`, event, {
       headers: {
         "Content-Type": "application/json",
       },

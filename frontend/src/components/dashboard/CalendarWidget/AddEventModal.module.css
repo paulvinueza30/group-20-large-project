@@ -9,7 +9,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 1000; /* Ensure the modal is on top of the calendar */
+  z-index: 1000;
 }
 
 /* Modal Content - The box that holds the modal's form */
@@ -20,6 +20,12 @@
   width: 400px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   position: relative;
+}
+.errorMessage {
+  color: red;
+  font-size: 1.2rem;
+  margin-top: 10px;
+  display: block;
 }
 
 /* Modal Header - Title inside the modal */
@@ -39,7 +45,8 @@ label {
 }
 
 input,
-textarea {
+textarea,
+select {
   width: 100%;
   padding: 8px;
   margin-top: 4px;
@@ -47,16 +54,33 @@ textarea {
   border: 1px solid #ddd;
 }
 
-/* Make the textarea resizable */
 textarea {
   resize: vertical;
   height: 100px;
+}
+
+/* Time Input */
+.timeInput {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 8px;
+}
+
+.timeInput select {
+  width: 30%; /* Adjust width for better spacing */
+}
+
+.timeInput span {
+  font-weight: bold;
+  margin: 0 8px;
 }
 
 /* Buttons inside the modal */
 .buttons {
   display: flex;
   justify-content: space-between;
+  margin-top: 16px;
 }
 
 .modalContent button {
