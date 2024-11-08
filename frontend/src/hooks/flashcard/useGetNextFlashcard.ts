@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react';
-import { getNextFlashcard } from '../../services/flashCardApi';
+import { useState, useEffect } from "react";
+import { getNextFlashcard } from "../../services/flashCardApi";
 
 // Define types for the flashcard data (modify based on the actual structure of the API response)
 interface Flashcard {
@@ -9,7 +9,10 @@ interface Flashcard {
   backSide: string;
 }
 
-export const useGetNextFlashcard = (category: string) => {
+export const useGetNextFlashcard = (
+  category: string,
+  p0: { refetchOnWindowFocus: boolean; staleTime: number }
+) => {
   const [flashcard, setFlashcard] = useState<Flashcard | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
@@ -21,7 +24,7 @@ export const useGetNextFlashcard = (category: string) => {
       const data = await getNextFlashcard(category);
       setFlashcard(data); // Update flashcard with the new data
     } catch (err: any) {
-      setError(err?.message || 'Failed to load flashcard');
+      setError(err?.message || "Failed to load flashcard");
     } finally {
       setLoading(false);
     }

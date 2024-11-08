@@ -25,7 +25,6 @@ export const getAllCategories = async () => {
   try {
     const response = await axios.get(`${CATEGORY_API_URL}/all`, {
       withCredentials: true,
-      withCredentials: true,
     });
     return response.data;
   } catch (error: any) {

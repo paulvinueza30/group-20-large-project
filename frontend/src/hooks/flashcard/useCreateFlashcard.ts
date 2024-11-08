@@ -8,7 +8,7 @@ interface UseCreateFlashcardResult {
   create: (flashcardData: {
     frontSide: string;
     backSide: string;
-    category: string;
+    categoryId: string;
   }) => Promise<void>;
 }
 
@@ -20,7 +20,7 @@ export const useCreateFlashcard = (): UseCreateFlashcardResult => {
   const create = async (flashcardData: {
     frontSide: string;
     backSide: string;
-    category: string;
+    categoryId: string;
   }) => {
     setLoading(true);
     setError(null);

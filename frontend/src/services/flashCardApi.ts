@@ -12,7 +12,7 @@ export const createFlashcard = async (flashcardData: {
 }) => {
   try {
     const response = await axios.post(
-      `${FLASHCARD_API_URL}/create/${flashcardData.categoryId}`,
+      `${FLASHCARD_API_URL}/createFlashcard/${flashcardData.categoryId}`,
       { frontSide: flashcardData.frontSide, backSide: flashcardData.backSide },
       { withCredentials: true }
     );

@@ -48,7 +48,7 @@ function AddFlashcard() {
     if (flashcardData.frontSide && flashcardData.backSide && categoryId) {
       const flashcardWithCategory = {
         ...flashcardData,
-        category: categoryId,
+        categoryId: categoryId,
       };
       try {
         await create(flashcardWithCategory);
