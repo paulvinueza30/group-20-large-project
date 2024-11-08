@@ -15,6 +15,10 @@ import Logo from "../../assets/logo.webp";
 import { useLocation } from "react-router-dom";
 import { useCategories } from "../../hooks/category/useCategories";
 import { useUserProfile } from "../../context/UserProfileContext";
+<<<<<<< HEAD
+=======
+
+>>>>>>> 2193e7046725271328e31469247014e9f976a804
 interface SidebarProps {
   children: ReactNode;
   expanded: boolean;

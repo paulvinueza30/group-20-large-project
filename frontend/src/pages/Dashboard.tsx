@@ -56,27 +56,27 @@ function Dashboard() {
             </div>
 
             {/* Radar chart with primary color */}
-            <div className="col-span-2 row-span-3 col-start-1 row-start-2 bg-slate-100 rounded-xl shadow-md dark:bg-dark-primary">
+            <div className="col-span-2 row-span-4 col-start-1 row-start-2 bg-slate-100 rounded-xl shadow-md dark:bg-dark-primary">
               <RadarCharti color={Pcolor} />
             </div>
 
             {/* Create deck */}
-            <div className="col-span-2 row-span-3 col-start-3 row-start-2 overflow-hidden bg-slate-100 rounded-xl shadow-md dark:bg-dark-primary">
+            <div className="col-span-2 row-span-4 col-start-3 row-start-2 overflow-hidden bg-slate-100 rounded-xl shadow-md dark:bg-dark-primary">
               <CreateDeck />
             </div>
 
             {/* Calendar placeholder */}
-            <div className="col-span-4 row-span-4 col-start-8 row-start-2 border-2 ">
+            <div className="col-span-4 row-span-5 col-start-5 row-start-2 border-2 ">
               <CalendarWidget Pcolor={Pcolor} Scolor={Scolor} />
             </div>
 
             {/* Recent decks with both primary and secondary colors */}
-            <div className="col-span-4 row-span-3 col-start-1 row-start-5 bg-slate-100 rounded-xl shadow-md dark:bg-dark-primary">
+            <div className="col-span-4 row-span-3 col-start-1 row-start-7 bg-slate-100 rounded-xl shadow-md dark:bg-dark-primary">
               <RecentDecks Pcolor={Pcolor} Scolor={Scolor} />
             </div>
 
             {/* Color Change component */}
-            <div className="col-span-2 row-span-3 col-start-5 row-start-5 bg-slate-100 rounded-xl shadow-md dark:bg-dark-primary">
+            <div className="col-span-2 row-span-3 col-start-5 row-start-7 bg-slate-100 rounded-xl shadow-md dark:bg-dark-primary">
               <ColorChange
                 Pcolor={Pcolor}
                 setPColor={handlePrimaryColorChange} // Pass function to change primary color

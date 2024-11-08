@@ -59,11 +59,13 @@ class QueueController {
         return this.queue.extractMin();
     }
 
-    // Review a flashcard, update its due date based on feedback
+    // Review a flashcard, update its due date and experience based on feedback
     async reviewCard(id: string, feedback: 'Forgot' | 'Hard' | 'Good' | 'Easy'): Promise<void> {
         const card = await flashcard.findById(id);
+        const category = await Category.findById(card.category)
         if (card) {
             await card.updateDueDate(feedback);  // Adjusts dueDate and interval based on feedback
+            await category.updateExperience(feedback);
             this.queue.update(card);  // Update or reposition the card in the heap
         }
     }

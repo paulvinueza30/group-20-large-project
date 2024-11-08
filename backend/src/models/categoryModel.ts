@@ -15,6 +15,23 @@ const categorySchema = new Schema<ICategory>({
         type: Number,
         default: 0,
     },
+    experience: {
+        type: Number,
+        default: 0,
+    },
+    streakCount: {
+        type: Number,
+        default: 0,
+    },
+    cardsStudied: {
+        type: Number,
+        default: 0,
+    },
+    streakLastUpdated: {
+        type: Date,
+        default: null,
+    },
+
 }, {
     timestamps: { createdAt: 'createdAt', updatedAt: 'editedAt' } // Enable automatic timestamps
 });
@@ -27,6 +44,16 @@ categorySchema.pre("save", function (next) {
     this.name = this.name.toLowerCase();
     next();
 });
+
+// Define the updateExperience method
+categorySchema.methods.updateExperience = function (feedback: 'Forgot' | 'Hard' | 'Good' | 'Easy'): Promise<ICategory> {
+    const intervals: { [key: string]: number } = { Forgot: 0.25, Hard: 0.5, Good: 0.75, Easy: 1 };
+    let newPoints = intervals[feedback];
+    if (this.streakCount)
+        newPoints *= 1.2;
+    this.experience += newPoints;
+    return this.save();
+};
 
 const Category = model<ICategory>("Category", categorySchema);
 

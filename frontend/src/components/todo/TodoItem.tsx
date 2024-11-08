@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import useGetTodo from "../../hooks/useGetTodo";
+import useGetTodo from "../../hooks/todo/useGetTodo";
 
 const TodoItem: React.FC = () => {
   const [markedDone, setMarkedDone] = useState(Boolean);
