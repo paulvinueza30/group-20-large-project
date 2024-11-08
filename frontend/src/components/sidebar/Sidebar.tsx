@@ -13,12 +13,8 @@ import { ReactNode, useEffect, useState } from "react";
 import SidebarItem from "./SidebarItem";
 import Logo from "../../assets/logo.webp";
 import { useLocation } from "react-router-dom";
-import { useCategories } from "../../hooks/category/useCategories";
 import { useUserProfile } from "../../context/UserProfileContext";
-<<<<<<< HEAD
-=======
 
->>>>>>> 2193e7046725271328e31469247014e9f976a804
 interface SidebarProps {
   children: ReactNode;
   expanded: boolean;
@@ -32,88 +28,75 @@ function Sidebar({ children, expanded, handleToggle }: SidebarProps) {
     } else {
       document.documentElement.classList.remove("dark");
     }
-
     localStorage.theme = localStorage.theme === "dark" ? "light" : "dark";
   }
+
   const { userProfile } = useUserProfile();
   if (!userProfile) {
     return <div>Loading user information...</div>;
   }
-  // Construct the image URL if the profilePic is a relative path
+
   const profilePicUrl = userProfile.profilePic
-    ? `${process.env.REACT_APP_SERVER_URL}${userProfile.profilePic}` // Ensure the correct base URL
+    ? `${process.env.REACT_APP_SERVER_URL}${userProfile.profilePic}`
     : Logo;
+
   return (
     <div className="relative">
-      <div
-        className={`fixed inset-0 -z-10 block  dark:bg-dark-primary${
-          expanded ? "block sm:hidden" : "hidden"
-        }`}
-      />
       <aside
         className={`box-border h-screen transition-all ${
           expanded ? "w-5/6 sm:w-64" : "w-0 sm:w-20"
         }`}
       >
-        <nav className="flex h-full md:h-[1000px] flex-col border-r bg-white dark:bg-dark-primary shadow-sm dark:border-dark-secondary">
+        <nav className="flex h-full flex-col border-r bg-white dark:bg-dark-primary shadow-sm dark:border-dark-secondary">
           <div className="flex items-center justify-between p-4 pb-2">
             <img
               src={profilePicUrl}
-              className={`overflow-hidden transition-all ${
-                expanded ? "w-10" : "w-0"
-              }`}
+              className={`transition-all ${expanded ? "w-10" : "w-0"}`}
               alt=""
             />
             <h1
-              className={`overflow-hidden font-bold dark:text-white ${
-                expanded ? "w-30" : "w-0"
+              className={`font-bold dark:text-white ${
+                expanded ? "block" : "hidden"
               }`}
             >
               Group 20
             </h1>
-            <div className={`${expanded ? "" : "hidden sm:block"}`}>
-              <button
-                onClick={handleToggle}
-                className="rounded-lg bg-gray-50 dark:bg-gray-800 p-1.5 hover:bg-gray-100"
-              >
-                {expanded ? (
-                  <ArrowRightIcon className="h-6 w-6" />
-                ) : (
-                  <ArrowLeftIcon className="h-6 w-6" />
-                )}
-              </button>
-            </div>
+            <button
+              onClick={handleToggle}
+              className="rounded-lg bg-gray-50 dark:bg-gray-800 p-1.5 hover:bg-gray-100"
+            >
+              {expanded ? (
+                <ArrowRightIcon className="h-6 w-6" />
+              ) : (
+                <ArrowLeftIcon className="h-6 w-6" />
+              )}
+            </button>
           </div>
           <ul className="flex-1 px-3">{children}</ul>
           <div className="flex border-t p-3 h-[100px]">
-            <div
-              className={`flex items-center justify-between overflow-hidden transition-all ${
-                expanded ? "ml-3 w-52" : "w-0"
-              }`}
-            >
-              <div>
-                <a
-                  href="/"
-                  className="leading-4 flex items-center dark:text-white pb-4"
-                >
-                  <ArrowRightStartOnRectangleIcon className="h-6 w-6" />
-                  <h4 className="text-primary-500 pl-2">Log out</h4>
-                </a>
-                <div className="leading-4 flex items-center pt-2">
-                  <label className="inline-flex items-center cursor-pointer float-end">
-                    <input
-                      type="checkbox"
-                      value=""
-                      className="sr-only peer"
-                      onClick={handleClick}
-                    />
-                    <div className="relative w-11 h-6 bg-gray-200 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
-                    <div className=""></div>
-                    <span className="ms-3 text-md font-semifold text-gray-900 dark:text-gray-300">
+            <div className={`flex items-center ${expanded ? "ml-3" : ""}`}>
+              <a
+                href="/"
+                className="leading-4 flex items-center dark:text-white pb-4"
+              >
+                <ArrowRightStartOnRectangleIcon className="h-6 w-6" />
+                {expanded && <h4 className="text-primary-500 pl-2">Log out</h4>}
+              </a>
+              <div className="leading-4 flex items-center pt-2">
+                <label className="inline-flex items-center cursor-pointer">
+                  <input
+                    type="checkbox"
+                    value=""
+                    className="sr-only peer"
+                    onClick={handleClick}
+                  />
+                  <div className="relative w-11 h-6 bg-gray-200 rounded-full peer dark:bg-gray-700 peer-checked:bg-blue-600"></div>
+                  {expanded && (
+                    <span className="ms-3 text-md text-gray-900 dark:text-gray-300">
                       Light Mode
                     </span>
-                  </label>
-                </div>
+                  )}
+                </label>
               </div>
             </div>
           </div>
@@ -125,31 +108,32 @@ function Sidebar({ children, expanded, handleToggle }: SidebarProps) {
 
 export default function MakeSidebar({ sendSizeChange, color }: any) {
   const location = useLocation();
-
-  const { data } = useCategories();
-
   const [expanded, setExpanded] = useState(() => {
     const saved = localStorage.getItem("navbarCollapsed");
-    return saved ? JSON.parse(saved) : true; // default to true
+    return saved ? JSON.parse(saved) : true;
   });
 
   useEffect(() => {
     sendSizeChange(expanded);
-  }, [expanded, sendSizeChange]); // Call sendSizeChange when expanded changes
+  }, [expanded, sendSizeChange]);
 
   const handleToggle = () => {
-    setExpanded((prev: any) => {
+    setExpanded((prev) => {
       const newState = !prev;
       localStorage.setItem("navbarCollapsed", JSON.stringify(newState));
       return newState;
     });
   };
 
-  const subMenuData = data?.map((category) => ({
-    icon: <></>,
-    text: category.name,
-    to: `/decks/${category.name}`,
-  }));
+  // Commented out for now
+  // const { data } = useCategories();
+  const data = null;
+
+  // const subMenuData = data?.map((category) => ({
+  //   icon: <></>,
+  //   text: category.name,
+  //   to: `/decks/${category.name}`,
+  // }));
 
   const navBarItems = [
     {
@@ -159,9 +143,9 @@ export default function MakeSidebar({ sendSizeChange, color }: any) {
     },
     {
       icon: <ChartBarSquareIcon />,
-      subMenu: subMenuData,
+      // subMenu: subMenuData,
       text: "Decks",
-      to: "#",
+      to: "/decks",
     },
     {
       icon: <ChartPieIcon />,

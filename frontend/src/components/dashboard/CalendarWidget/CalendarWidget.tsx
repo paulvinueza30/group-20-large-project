@@ -159,7 +159,7 @@ const CalendarWidget: React.FC<CalendarWidgetProps> = ({ Pcolor, Scolor }) => {
         <button
           className={styles.addEventButton}
           onClick={openAddEventModal}
-          style={{ backgroundColor: Scolor }}
+          style={{ backgroundColor: Pcolor }}
         >
           <AddIcon className={styles.icon} />
         </button>

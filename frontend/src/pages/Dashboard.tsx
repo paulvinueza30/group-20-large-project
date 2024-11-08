@@ -62,10 +62,10 @@ function Dashboard() {
 
             {/* Create deck */}
             <div className="col-span-2 row-span-4 col-start-3 row-start-2 overflow-hidden bg-slate-100 rounded-xl shadow-md dark:bg-dark-primary">
-              <CreateDeck />
+              <CreateDeck Pcolor={Pcolor} Scolor={Scolor} />
             </div>
 
-            {/* Calendar placeholder */}
+            {/* Calendar  */}
             <div className="col-span-4 row-span-5 col-start-5 row-start-2 border-2 ">
               <CalendarWidget Pcolor={Pcolor} Scolor={Scolor} />
             </div>
