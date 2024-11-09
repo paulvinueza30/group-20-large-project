@@ -55,6 +55,16 @@ categorySchema.methods.updateExperience = function (feedback: 'Forgot' | 'Hard' 
     return this.save();
 };
 
+// Define the dailyStreakCheck method
+categorySchema.methods.dailyStreakCheck = async function (): Promise<void> {
+   const currDate = new Date();
+   if (this.streakLastUpdated && (currDate.getTime() - this.streakLastUpdated.get()) > (24 * 60 * 60 * 1000)) {
+      this.streakCount = 0;
+      this.streakLastUpdated = currDate;
+      await this.save();
+   }
+};
+
 const Category = model<ICategory>("Category", categorySchema);
 
 export default Category;

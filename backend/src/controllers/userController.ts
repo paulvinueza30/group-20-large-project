@@ -69,6 +69,9 @@ export const loginUser = (
         return next(err);
       }
 
+      const categories = await Category.find({ userId: user._id });
+      await Promise.all(categories.map(category => category.dailyStreakCheck()));
+
       return res.status(200).json({
         message: "Login successful",
         user: {

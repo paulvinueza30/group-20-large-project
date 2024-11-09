@@ -162,8 +162,10 @@ export const getNextFlashcard = async (
     if (!nextCard) {
       res.status(204).json({ message: "No flashcards due for review in this category" });
       return;
-  }
-  
+    }
+    
+    categoryDoc.cardsStudied += 1;
+    await categoryDoc.save();  
 
     res.json(nextCard);
   } catch (error) {
@@ -187,6 +189,14 @@ export const reviewFlashcard = async (
     return;
   }
 
+  const xpMap = {                                               
+       Forgot: .25,
+       Hard: .5,
+       Good: .75,
+       Easy: 1,
+  };
+  const xpGain = xpMap[feedback];
+
   try {
     // Check if the flashcard exists and belongs to the user
     const card = await flashcard.findOne({ _id: id, userId });
@@ -198,6 +208,9 @@ export const reviewFlashcard = async (
         });
       return;
     }
+
+    user.experience += xpGain;
+    await user.save();
 
     // Update due date based on feedback
     await queueController.reviewCard(id, feedback);
