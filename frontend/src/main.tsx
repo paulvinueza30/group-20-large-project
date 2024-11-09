@@ -12,7 +12,7 @@ import { UserProfileProvider } from "./context/UserProfileContext"; // Import th
 import { useCategories } from "./hooks/category/useCategories.ts";
 
 const AppWithRouting = () => {
-  const { data } = useCategories();
+  const { data } = useCategories(true);
   return (
     <BrowserRouter>
       <Routes>
@@ -48,7 +48,7 @@ const AppWithRouting = () => {
         />
 
         <Route
-          path="/stats"
+          path="/achievements"
           element={
             <UserProfileProvider>
               <Stats />

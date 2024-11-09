@@ -2,7 +2,7 @@ import {
   ArrowRightIcon,
   ArrowLeftIcon,
   HomeIcon,
-  ChartPieIcon,
+  TrophyIcon,
   UserIcon,
   SunIcon,
   MoonIcon,
@@ -14,6 +14,7 @@ import SidebarItem from "./SidebarItem";
 import Logo from "../../assets/logo.webp";
 import { useLocation } from "react-router-dom";
 import { useUserProfile } from "../../context/UserProfileContext";
+import { useCategories } from "../../hooks/category/useCategories";
 
 interface SidebarProps {
   children: ReactNode;
@@ -118,7 +119,7 @@ export default function MakeSidebar({ sendSizeChange, color }: any) {
   }, [expanded, sendSizeChange]);
 
   const handleToggle = () => {
-    setExpanded((prev) => {
+    setExpanded((prev: any) => {
       const newState = !prev;
       localStorage.setItem("navbarCollapsed", JSON.stringify(newState));
       return newState;
@@ -148,9 +149,9 @@ export default function MakeSidebar({ sendSizeChange, color }: any) {
       to: "/decks",
     },
     {
-      icon: <ChartPieIcon />,
-      text: "Stats",
-      to: "/stats",
+      icon: <TrophyIcon />,
+      text: "Achievements",
+      to: "/achievements",
     },
     {
       icon: <UserIcon />,

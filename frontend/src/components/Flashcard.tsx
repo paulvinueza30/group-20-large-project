@@ -3,11 +3,15 @@ import { useGetNextFlashcard } from "../hooks/flashcard/useGetNextFlashcard";
 import { useParams } from "react-router-dom";
 import { useCategories } from "../hooks/category/useCategories";
 import { useReviewFlashcard } from "../hooks/flashcard/useReviewFlashcard";
+import Confetti from "react-confetti";
 
 // Work in Progress
 type Feedback = "Forgot" | "Hard" | "Good" | "Easy";
 
 function Flashcard() {
+  const buttonStyle =
+    "text-white mt-4 bg-primary hover:bg-purple-800 focus:outline-none focus:ring-4 focus:ring-purple-300 font-medium rounded-full text-sm text-center mb-2 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-900 w-1/5 p-3";
+
   const [showBackCard, setShowBackCard] = useState(false);
   const { categoryName } = useParams<{ categoryName: string }>();
 
@@ -18,7 +22,7 @@ function Flashcard() {
     staleTime: 0, // Data is considered stale immediately
   });
 
-  const { data } = useCategories();
+  const { data } = useCategories(true);
 
   useEffect(() => {
     if (data && categoryName) {
@@ -49,14 +53,39 @@ function Flashcard() {
     }
   };
 
-  if (loading) return <p>Loading...</p>;
-  if (error) return <p>Error: {error}</p>;
+  if (loading)
+    return (
+      <div className="">
+        <div className="p-20 bg-gray-300 dark:bg-gray-600 rounded-xl min-h-[300px] animate-pulse flex justify-center items-center">
+          <span className="loader"></span>
+        </div>
+        {/* <div className="flex justify-between">
+          <div className={`${buttonStyle} animate-pulse h-10`}></div>
+          <div className={`${buttonStyle} animate-pulse`}></div>
+          <div className={`${buttonStyle} animate-pulse`}></div>
+        </div> */}
+      </div>
+    );
+
+  // If there are no more cards in the deck
+  if (error == "No flashcards due for review in this category") {
+    return (
+      <div className="p-20 bg-slate-100 dark:bg-dark-primary rounded-xl min-h-[300px] flex justify-center flex-col">
+        <Confetti recycle={false} />
+        <h1 className="text-center text-2xl dark:text-white pb-2 border-b font-bold">
+          You have finished this deck.
+        </h1>
+        <h3 className="text-center text-2xl dark:text-white pt-4">
+          Come back tomorrow or add more cards to the deck.
+        </h3>
+      </div>
+    );
+  } else if (error) {
+    return <p className="dark:text-white">Error: {error}</p>;
+  }
 
   if (loadingFeedback) return <p>Loading...</p>;
   if (errorFeedback) return <p>Error: {errorFeedback}</p>;
-
-  const buttonStyle =
-    "text-white mt-4 bg-purple-700 hover:bg-purple-800 focus:outline-none focus:ring-4 focus:ring-purple-300 font-medium rounded-full text-sm text-center mb-2 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-900 w-1/5 p-3";
 
   const handleClick = () => {
     setShowBackCard(!showBackCard);
