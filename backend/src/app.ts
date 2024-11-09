@@ -59,16 +59,11 @@ app.use("/api/events", eventRoutes);
 // Get URI from environment variables
 const mongoURI = process.env.MONGODB_URI || "";
 
-// Connect to MongoDB using URI
 mongoose
   .connect(mongoURI)
   .then(() => {
-    console.log("Database connection successful");
-    // Start the server
-    app.listen(PORT, () => {
-      console.log(`Server is running on port ${PORT}`);
-    });
+    console.log("Connected to MongoDB");
+    import("./cron/eventCleanup");
+    app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
   })
-  .catch((error) => {
-    console.error("Database connection failed:", error);
-  });
+  .catch((err) => console.error("Database connection error:", err));
