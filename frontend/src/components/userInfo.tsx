@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 import { useUserProfile } from "../context/UserProfileContext";
 import placeholder from "../assets/Transhumans - Astro.png";
+import { PhotoIcon } from "@heroicons/react/24/outline";
 
 interface UserInfoProps {
   Pcolor: string;
@@ -8,6 +9,7 @@ interface UserInfoProps {
 }
 
 const UserInfo: React.FC<UserInfoProps> = ({ Pcolor, Scolor }) => {
+  const [isHover, setIsHover] = useState(false);
   const { userProfile, updateProfilePic } = useUserProfile();
   const textStyle =
     "rounded-xl mb-2 bg-white p-2 m-4 dark:bg-dark-secondary dark:text-white";
@@ -18,6 +20,13 @@ const UserInfo: React.FC<UserInfoProps> = ({ Pcolor, Scolor }) => {
     if (file) {
       updateProfilePic(file);
     }
+  };
+
+  const handleMouseEnter = () => {
+    setIsHover(true);
+  };
+  const handleMouseLeave = () => {
+    setIsHover(false);
   };
 
   if (!userProfile) {
@@ -36,25 +45,45 @@ const UserInfo: React.FC<UserInfoProps> = ({ Pcolor, Scolor }) => {
       </h2>
       <div className="flex flex-col items-center">
         <div
-          className="w-[140px] h-[140px] object-cover self-center border-2 rounded-full p-1"
+          className="w-[140px] h-[140px] object-cover self-center border-2 rounded-full p-1 relative"
           style={{
             backgroundColor: Scolor,
             borderColor: Scolor,
           }}
         >
+          <div className="text-white ">
+            <label
+              onMouseEnter={handleMouseEnter}
+              onMouseLeave={handleMouseLeave}
+              htmlFor="files"
+              className="-bottom-[3px] left-0 opacity-0 hover:opacity-100 border-none text-center absolute pt-12 hover:bg-opacity-70 rounded-full w-[140px] h-[140px]"
+              style={{
+                backgroundColor: isHover ? Scolor : "transparent",
+                opacity: isHover ? 0.8 : 0,
+              }}
+            >
+              <PhotoIcon className="w-10 h-10 place-self-center " />
+              Select Image
+            </label>
+            <input
+              id="files"
+              type="file"
+              onChange={handleFileChange}
+              className="hidden"
+            />
+          </div>
           <img
             src={profilePicUrl}
             alt="User Profile"
             className="w-full h-full object-cover rounded-full" // Ensures the image fills the wrapper
           />
         </div>
-        <p className={textStyle}>Name: {userProfile.name}</p>
-        <p className={textStyle}>Current Level: </p>
-        <p className={textStyle}>Daily Streak: </p>
-        <p className={textStyle}>Email: {userProfile.email}</p>
-
-        {/* File input for profile picture */}
-        <input type="file" onChange={handleFileChange} className="mt-4" />
+        <div className="flex flex-col justify-start">
+          <p className={textStyle}>Name: {userProfile.name}</p>
+          <p className={textStyle}>Current Level: </p>
+          <p className={textStyle}>Daily Streak: </p>
+          <p className={textStyle}>Email: {userProfile.email}</p>
+        </div>
       </div>
     </div>
   );

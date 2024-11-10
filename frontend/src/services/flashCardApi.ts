@@ -65,6 +65,10 @@ export const getNextFlashcard = async (categoryId: string) => {
       `${FLASHCARD_API_URL}/nextFlashcard/${categoryId}`,
       { withCredentials: true }
     );
+    if (response.status === 204) {
+      // Handle the no content situation specifically for frontend
+      return { message: "No flashcards left in this category" };
+    }
     return response.data;
   } catch (error: any) {
     throw error.response

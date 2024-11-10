@@ -83,6 +83,17 @@ export const loginUser = (
   })(req, res, next);
 };
 
+// Logout user
+export const logoutUser = (req: Request, res: Response): void => {
+  req.logout((err) => { //function provided by passport
+    if (err) {
+      console.error("Error logging out user: ", err);
+      return res.status(500).json({ message: "Internal server error during logout" });
+    }
+    res.status(200).json({ message: "Logout successful" });
+  });
+};
+
 // Get user info
 export const getUserInfo = async (
   req: Request,

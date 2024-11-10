@@ -16,7 +16,7 @@ export default {
         'dark-secondary': '#2C2B38'
       },
       fontFamily: {
-        sans: ['Graphik', 'sans-serif'],
+        sans: ['Inter', 'sans-serif'],
         serif: ['Merriweather', 'serif'],
         pixel: ['pixel', 'sans-serif']
       },

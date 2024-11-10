@@ -1,7 +1,7 @@
 import React from "react";
 import { useCategories } from "../../hooks/category/useCategories";
 import { GoTrash } from "react-icons/go";
-
+import DeckSkeleton from "./DeckSkeleton";
 
 // Fix routing
 function RecentDecks({ Pcolor, Scolor }: { Pcolor: string; Scolor: string }) {
@@ -11,7 +11,19 @@ function RecentDecks({ Pcolor, Scolor }: { Pcolor: string; Scolor: string }) {
   const cardStyle = `relative rounded-xl w-2/5 h-3/6 p-16 mt-2`;
 
   if (loading) {
-    return <div>Loading...</div>;
+    return (
+      <div className="">
+        <h3 className="text-center p-4 text-lg font-bold dark:text-white">
+          Recent Decks
+        </h3>
+        <div className="flex flex-wrap justify-evenly content-stretch overflow-hidden">
+          <DeckSkeleton />
+          <DeckSkeleton />
+          <DeckSkeleton />
+          <DeckSkeleton />
+        </div>
+      </div>
+    );
   }
 
   if (error) {
@@ -20,7 +32,7 @@ function RecentDecks({ Pcolor, Scolor }: { Pcolor: string; Scolor: string }) {
 
   return (
     <div className="overflow-hidden">
-      <h3 className="text-center p-4  text-lg font-bold dark:text-white">
+      <h3 className="text-center p-4 text-lg font-bold dark:text-white">
         Recent Decks
       </h3>
       <p className="text-center text-xl text-gray-500">
@@ -29,7 +41,11 @@ function RecentDecks({ Pcolor, Scolor }: { Pcolor: string; Scolor: string }) {
       <div className="flex flex-wrap justify-evenly content-stretch overflow-hidden">
         {/* Only maps up to 4 decks */}
         {data?.slice(0, 4).map((category) => (
-          <div key={category.name} style={{ backgroundColor: Pcolor }} className={cardStyle}>
+          <div
+            key={category.name}
+            style={{ backgroundColor: Pcolor }}
+            className={cardStyle}
+          >
             <a
               href={`/decks/${category.name}`}
               className="w-max "
@@ -46,9 +62,12 @@ function RecentDecks({ Pcolor, Scolor }: { Pcolor: string; Scolor: string }) {
                 number cards
               </span>
             </a>
-              <span className=" absolute bottom-0 right-[12px] mb-2 z-50">
-                <GoTrash className="w-8 h-8 text-secondary hover:text-white" onClick={() => console.log("deleted")}/>
-              </span>
+            <span className=" absolute bottom-0 right-[12px] mb-2 z-50">
+              <GoTrash
+                className="w-8 h-8 text-secondary hover:text-white"
+                onClick={() => console.log("deleted")}
+              />
+            </span>
           </div>
         ))}
       </div>

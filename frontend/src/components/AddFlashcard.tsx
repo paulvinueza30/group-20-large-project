@@ -6,7 +6,7 @@ import { useCategories } from "../hooks/category/useCategories";
 function AddFlashcard() {
   const [showModal, setShowModal] = useState(false);
   const { categoryName } = useParams<{ categoryName: string }>();
-  const { data } = useCategories();
+  const { data } = useCategories(true);
 
   // Find the category ID based on the categoryName from URL params
   const [categoryId, setCategoryId] = useState<string>("");

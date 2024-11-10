@@ -160,11 +160,10 @@ export const getNextFlashcard = async (
     const nextCard = queueController.getNextCard();
 
     if (!nextCard) {
-      res
-        .status(404)
-        .json({ message: "No flashcards due for review in this category" });
+      res.status(204).json({ message: "No flashcards due for review in this category" });
       return;
-    }
+  }
+  
 
     res.json(nextCard);
   } catch (error) {

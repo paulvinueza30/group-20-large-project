@@ -46,7 +46,7 @@ function CreateDeck({ Pcolor, Scolor }: CreateDeckProps) {
   return (
     <div className="flex justify-center p-6">
       <div
-        className="max-w-sm bg-slate-100 dark:bg-dark-primary rounded-lg overflow-hidden shadow-lg border-2 transition-all"
+        className="max-w-sm bg-slate-100 dark:bg-dark-primary rounded-lg overflow-hidden shadow-lg transition-all"
         style={{
           boxShadow: `0 8px 16px rgba(0, 0, 0, 0.1)`,
         }}

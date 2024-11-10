@@ -19,13 +19,21 @@ function Stats() {
     <>
       <div className="flex">
         <SideGrid color={Pcolor} />
-
         <div className="flex w-full ml-20">
-          <div className="grid grid-cols-2 gap-4 w-full">
-            <div className="border-2 h-full w-full">Stats Page</div>
-            <div className="border-2 h-full grid grid-rows-2">
-              <div className="border">grid col 2 container</div>
-              <div className="border flex-grow">grid col2 container 2</div>
+          <div className="grid grid-cols-6 auto-rows-[100px] gap-4 w-full">
+            <div className=" h-full w-full col-span-6">
+              <h1 className="font-bold text-2xl dark:text-white pt-14">
+                Achievements
+              </h1>
+            </div>
+            <div className="border-2 h-full col-span-2 row-span-6 col-start-1 row-start-2 ">
+              Player
+            </div>
+            <div className="border-2 h-full col-span-2 row-span-6 col-start-3 row-start-2 ">
+              Decks
+            </div>
+            <div className="border-2 h-full col-span-2 row-span-6 col-start-5 row-start-2 ">
+              Streaks
             </div>
           </div>
         </div>
