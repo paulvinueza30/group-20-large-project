@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { getAllCategories } from "../../services/categoryApi";
+import axios from "axios";
 
-// Type definitions
 interface Category {
   _id: string;
   name: string;
@@ -22,22 +22,37 @@ export const useCategories = (
 
   useEffect(() => {
     const fetchCategories = async () => {
-      if (!isAuthenticated) return; // Don't fetch categories if not authenticated
+      if (!isAuthenticated) {
+        setLoading(false);
+        return; // Do not fetch categories if not authenticated
+      }
+
+      setLoading(true); // Start loading
+      setError(null); // Reset any previous errors
 
       try {
-        const data = await getAllCategories();
-        setData(data);
+        // Make sure the server is up by pinging the endpoint first (optional)
+        await fetch(`${process.env.REACT_APP_API_URL}/healthcheck`);
+
+        const data = await getAllCategories(); // Fetch categories
+        setData(data); // Set the fetched categories
       } catch (error: any) {
-        setError(
-          error.response ? error.response.data : "Internal server error"
-        );
+        if (axios.isAxiosError(error)) {
+          setError(
+            error.response?.data?.message || "Failed to fetch categories"
+          );
+        } else {
+          setError("An unexpected error occurred");
+        }
       } finally {
-        setLoading(false);
+        setLoading(false); // Stop loading after request
       }
     };
 
-    fetchCategories();
-  }, [isAuthenticated]); // This ensures the effect is only called when isAuthenticated changes
+    if (isAuthenticated) {
+      fetchCategories(); // Only fetch categories when authenticated
+    }
+  }, [isAuthenticated]); // Refetch when authentication status changes
 
   return { data, error, loading };
 };

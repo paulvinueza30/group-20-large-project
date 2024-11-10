@@ -9,10 +9,8 @@ import Login from "./pages/Login.tsx";
 import SignUp from "./pages/SignUp.tsx";
 import Dashboard from "./pages/Dashboard.tsx";
 import { UserProfileProvider } from "./context/UserProfileContext"; // Import the provider
-import { useCategories } from "./hooks/category/useCategories.ts";
 
 const AppWithRouting = () => {
-  const { data } = useCategories(true);
   return (
     <BrowserRouter>
       <Routes>
@@ -64,19 +62,6 @@ const AppWithRouting = () => {
             </UserProfileProvider>
           }
         />
-
-        {/* Dynamic Category Route */}
-        {data?.map((category) => (
-          <Route
-            key={category.name}
-            path={`/decks/:categoryName`}
-            element={
-              <UserProfileProvider>
-                <Decks />
-              </UserProfileProvider>
-            }
-          />
-        ))}
       </Routes>
     </BrowserRouter>
   );

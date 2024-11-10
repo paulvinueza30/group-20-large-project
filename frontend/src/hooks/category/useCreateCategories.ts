@@ -19,12 +19,10 @@ export const useCreateCategory = (): UseCreateCategoryResult => {
     setSuccess(false);
 
     try {
-      // Gets the response back from the API
-      const response = await createCategory(categoryName);
-      setSuccess(true); // Set success only if login is successful
-      return response; // Return response for further handling if needed
+      await createCategory(categoryName); // No need to return response
+      setSuccess(true);
     } catch (error: any) {
-      setError(error.message || "Create failed");
+      setError(error?.message || "Failed to create category");
     } finally {
       setLoading(false);
     }
