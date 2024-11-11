@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useParams, useLocation } from "react-router-dom";
 import { useGetNextFlashcard } from "../hooks/flashcard/useGetNextFlashcard";
 import { useReviewFlashcard } from "../hooks/flashcard/useReviewFlashcard";
@@ -22,10 +22,7 @@ function Flashcard() {
 
   // Set category to use with useGetNextFlashcard
   const [category, setCategory] = useState<string>(categoryId);
-  const { flashcard, loading, error, refetch } = useGetNextFlashcard(category, {
-    refetchOnWindowFocus: true,
-    staleTime: 0,
-  });
+  const { flashcard, loading, error, refetch } = useGetNextFlashcard(category);
 
   const { review, loadingFeedback, errorFeedback } = useReviewFlashcard();
 
@@ -53,9 +50,9 @@ function Flashcard() {
       </div>
     );
 
-  if (error === "No flashcards due for review in this category") {
+  if (error === "No flashcards left in this category") {
     return (
-      <div className="p-20 bg-slate-100 dark:bg-dark-primary rounded-xl min-h-[300px] flex justify-center flex-col">
+      <div className="p-20 bg-slate-100 dark:bg-dark-primary rounded-xl min-h-[450px] flex justify-center flex-col">
         <Confetti recycle={false} />
         <h1 className="text-center text-2xl dark:text-white pb-2 border-b font-bold">
           You have finished this deck.
@@ -78,10 +75,11 @@ function Flashcard() {
 
   return (
     <div>
-      <h2 className="text-center text-lg font-bold">{categoryName}</h2> {/* Display category name */}
+      <h2 className="text-center text-lg font-bold">{categoryName}</h2>{" "}
+      {/* Display category name */}
       {!showBackCard && (
         <div className="dark:text-white">
-          <div className="p-20 bg-slate-100 dark:bg-dark-primary rounded-xl">
+          <div className="p-20 bg-slate-100 dark:bg-dark-primary rounded-xl min-h-96">
             <h1 className="text-5xl text-center">{flashcard?.frontSide}</h1>
           </div>
           <div className="flex justify-between">
@@ -97,7 +95,6 @@ function Flashcard() {
           </div>
         </div>
       )}
-
       {showBackCard && (
         <div className="dark:text-white">
           <div className="p-20 bg-slate-100 dark:bg-dark-primary rounded-xl">

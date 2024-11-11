@@ -9,10 +9,7 @@ interface Flashcard {
   backSide: string;
 }
 
-export const useGetNextFlashcard = (
-  category: string,
-  p0: { refetchOnWindowFocus: boolean; staleTime: number }
-) => {
+export const useGetNextFlashcard = (category: string) => {
   const [flashcard, setFlashcard] = useState<Flashcard | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
@@ -22,7 +19,12 @@ export const useGetNextFlashcard = (
     setError(null); // Reset the error on each new fetch
     try {
       const data = await getNextFlashcard(category);
-      setFlashcard(data); // Update flashcard with the new data
+      if (data.message) {
+        setError(data.message); // If no flashcards left, show message
+        setFlashcard(null);
+      } else {
+        setFlashcard(data); // Update flashcard with the new data
+      }
     } catch (err: any) {
       setError(err?.message || "Failed to load flashcard");
     } finally {

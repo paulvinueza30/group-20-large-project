@@ -11,6 +11,7 @@ import Login from "./pages/Login.tsx";
 import SignUp from "./pages/SignUp.tsx";
 import Dashboard from "./pages/Dashboard.tsx";
 import { UserProfileProvider } from "./context/UserProfileContext"; // Import the provider
+import Review from "./pages/Review.tsx";
 
 const AppWithRouting = () => {
   return (
@@ -42,17 +43,19 @@ const AppWithRouting = () => {
           path="/decks/:categoryId"
           element={
             <UserProfileProvider>
-              <DeckDetails /> {/* Renders DeckDetails.tsx for the selected category */}
+              <DeckDetails />{" "}
+              {/* Renders DeckDetails.tsx for the selected category */}
             </UserProfileProvider>
           }
         />
-        
+
         {/* Add the review route for the Flashcard component */}
         <Route
           path="/review/:categoryId"
           element={
             <UserProfileProvider>
-              <Flashcard /> {/* Renders Flashcard.tsx to review flashcards in the selected category */}
+              <Review />{" "}
+              {/* Renders Flashcard.tsx to review flashcards in the selected category */}
             </UserProfileProvider>
           }
         />

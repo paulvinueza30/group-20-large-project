@@ -7,6 +7,10 @@ export default {
   ],
   theme: {
     extend: {
+      backgroundImage: {
+        'card-bg1': "url(src/assets/bg1.jpg)",
+        'card-bg2': "url(src/assets/bg2.jpg)",
+      },
       colors: {
         'primary': '#5C0B86',
         'secondary': '#BA72E2',

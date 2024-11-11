@@ -3,7 +3,7 @@ import { useCreateFlashcard } from "../hooks/flashcard/useCreateFlashcard";
 import { useParams } from "react-router-dom";
 import { useCategories } from "../hooks/category/useCategories";
 
-function AddFlashcard() {
+function AddFlashcard({ color }: any) {
   const [showModal, setShowModal] = useState(false);
   const { categoryName } = useParams<{ categoryName: string }>();
   const { data } = useCategories(true);
@@ -74,7 +74,8 @@ function AddFlashcard() {
   return (
     <>
       <button
-        className="bg-purple-700 text-white active:bg-purple-800 font-bold uppercase text-sm rounded-full p-4 px-6 shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+        style={{ backgroundColor: color }}
+        className=" text-white active:bg-purple-800 font-bold uppercase text-sm rounded-full p-4 px-6 shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
         type="button"
         onClick={() => setShowModal(true)}
       >

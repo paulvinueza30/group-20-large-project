@@ -14,7 +14,6 @@ import SidebarItem from "./SidebarItem";
 import Logo from "../../assets/logo.webp";
 import { useLocation } from "react-router-dom";
 import { useUserProfile } from "../../context/UserProfileContext";
-import { useCategories } from "../../hooks/category/useCategories";
 
 interface SidebarProps {
   children: ReactNode;
