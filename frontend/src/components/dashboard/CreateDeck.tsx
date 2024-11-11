@@ -45,15 +45,10 @@ function CreateDeck({ Pcolor, Scolor }: CreateDeckProps) {
 
   return (
     <div className="flex justify-center p-6">
-      <div
-        className="max-w-sm bg-slate-100 dark:bg-dark-primary rounded-lg overflow-hidden shadow-lg transition-all"
-        style={{
-          boxShadow: `0 8px 16px rgba(0, 0, 0, 0.1)`,
-        }}
-      >
+      <div className="max-w-sm bg-slate-100 dark:bg-dark-primary rounded-lg overflow-hidden  transition-all">
         <div className="relative">
           <img
-            className="rounded-t-lg h-[250px] w-full object-cover transition-all duration-500 ease-in-out"
+            className="rounded-t-lg h-full w-full object-cover transition-all duration-500 ease-in-out"
             src={Image}
             alt="Create Deck"
             style={{ filter: `hue-rotate(${hueRotation}deg)` }}
@@ -85,7 +80,7 @@ function CreateDeck({ Pcolor, Scolor }: CreateDeckProps) {
               value={categoryName}
               onChange={(e) => setCategoryName(e.target.value)}
               placeholder="Deck name"
-              className="w-4/5 rounded-md p-2 bg-gray-100 text-gray-900 border-2 focus:outline-none focus:ring-2 focus:ring-offset-2 transition-all duration-300"
+              className="w-4/5 rounded-md p-2 bg-gray-100 text-gray-900 border-2 focus:outline-none focus:ring-2 focus:ring-offset-2 transition-all duration-300 dark:bg-slate-500 dark:border-none "
               style={{}}
               required
             />
@@ -95,7 +90,6 @@ function CreateDeck({ Pcolor, Scolor }: CreateDeckProps) {
               className="ml-3 p-2 rounded-full transition-all duration-300 hover:scale-105 hover:bg-opacity-90"
               style={{
                 backgroundColor: Pcolor,
-                boxShadow: `0 4px 8px rgba(0, 0, 0, 0.2)`,
               }}
             >
               <PlusCircleIcon className="w-8 text-white" />

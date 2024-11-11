@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { GoTrash } from "react-icons/go";
 import DeckSkeleton from "./DeckSkeleton";
@@ -10,9 +10,22 @@ interface RecentDecksProps {
   categories: Category[] | null; // Use the imported Category interface
 }
 
-const RecentDecks: React.FC<RecentDecksProps> = ({ Pcolor, Scolor, categories }) => {
+const RecentDecks: React.FC<RecentDecksProps> = ({
+  Pcolor,
+  Scolor,
+  categories,
+}) => {
+  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   const dataSize = categories ? categories.length : 0;
-  const cardStyle = `relative rounded-xl w-2/5 h-3/6 p-16 mt-2`;
+  const cardStyle = `relative rounded-xl w-2/5 h-2/6 z-1 mb-6`;
+
+  const handleMouseEnter = (index: number) => {
+    setHoveredIndex(index); // Set the index of the hovered item
+  };
+
+  const handleMouseLeave = () => {
+    setHoveredIndex(null); // Reset hover state when mouse leaves
+  };
 
   if (!categories) {
     return (
@@ -21,6 +34,8 @@ const RecentDecks: React.FC<RecentDecksProps> = ({ Pcolor, Scolor, categories })
           Recent Decks
         </h3>
         <div className="flex flex-wrap justify-evenly content-stretch overflow-hidden">
+          <DeckSkeleton />
+          <DeckSkeleton />
           <DeckSkeleton />
           <DeckSkeleton />
           <DeckSkeleton />
@@ -40,35 +55,42 @@ const RecentDecks: React.FC<RecentDecksProps> = ({ Pcolor, Scolor, categories })
       </p>
       <div className="flex flex-wrap justify-evenly content-stretch overflow-hidden">
         {/* Only maps up to 4 decks */}
-        {categories.slice(0, 4).map((category) => (
+        {categories.slice(0, 6).map((category, index) => (
           <div
             key={category._id}
             style={{ backgroundColor: Pcolor }}
-            className={cardStyle}
+            className={`flex flex-col ${cardStyle} `}
           >
             {/* Link to the review page for the selected deck */}
             <Link
               to={`/review/${category._id}`} // Use category._id in the URL for review
               state={{ categoryName: category.name }} // Pass category name in state
-              className="w-max"
+              className={`${cardStyle} p-9 mt-4 w-full`}
               style={{ backgroundColor: Pcolor }}
             >
               <h3 className="text-lg font-semibold absolute top-[5px] left-[12px] text-white">
                 {category.name}
               </h3>
+            </Link>
+            <div className="relative flex rounded-xl p-5 mb-2">
               <span
                 className="absolute bottom-0 left-[12px] mb-2 p-1 pl-4 pr-4 rounded-full"
                 style={{ backgroundColor: Scolor }}
               >
-                number cards
+                <span className="font-bold">{category.cardCount}</span> cards
               </span>
-            </Link>
-            <span className="absolute bottom-0 right-[12px] mb-2 z-50">
-              <GoTrash
-                className="w-8 h-8 text-secondary hover:text-white"
-                onClick={() => console.log("deleted")}
-              />
-            </span>
+              <span className="mb-2 absolute right-4 bottom-0">
+                <GoTrash
+                  onMouseEnter={() => handleMouseEnter(index)} // Set the index when hovering
+                  onMouseLeave={handleMouseLeave}
+                  style={{
+                    color: hoveredIndex === index ? "white" : Scolor, // Change color based on hover state
+                  }}
+                  className="w-10 h-10 text-secondary z-10"
+                  onClick={() => console.log("deleted")}
+                />
+              </span>
+            </div>
           </div>
         ))}
       </div>

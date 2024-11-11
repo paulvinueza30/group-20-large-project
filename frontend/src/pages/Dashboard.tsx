@@ -56,28 +56,32 @@ function Dashboard() {
           </div>
 
           <div className="col-span-2 row-span-4 col-start-1 row-start-2 bg-slate-100 rounded-xl shadow-md dark:bg-dark-primary">
-            <RadarCharti color={Pcolor} />
+            <RadarCharti Pcolor={Pcolor} categories={categories ?? []} />
           </div>
 
           <div className="col-span-2 row-span-4 col-start-3 row-start-2 overflow-hidden bg-slate-100 rounded-xl shadow-md dark:bg-dark-primary">
             <CreateDeck Pcolor={Pcolor} Scolor={Scolor} />
           </div>
 
-          <div className="col-span-4 row-span-5 col-start-5 row-start-2 overflow-hidden">
-            <CalendarWidget Pcolor={Pcolor} Scolor={Scolor} />
-          </div>
-
-          <div className="col-span-4 row-span-3 col-start-1 row-start-7 bg-slate-100 rounded-xl shadow-md dark:bg-dark-primary">
-            <RecentDecks Pcolor={Pcolor} Scolor={Scolor} categories={categories ?? []} />
-          </div>
-
-          <div className="col-span-2 row-span-3 col-start-5 row-start-7 bg-slate-100 rounded-xl shadow-md dark:bg-dark-primary">
+          <div className="col-span-2 row-span-4 col-start-5 row-start-2 overflow-hidden bg-slate-100 rounded-xl shadow-md dark:bg-dark-primary ">
             <ColorChange
               Pcolor={Pcolor}
               setPColor={handlePrimaryColorChange}
               Scolor={Scolor}
               setSColor={handleSecondaryColorChange}
             />
+          </div>
+
+          <div className="col-span-4 row-span-5 col-start-1 row-start-6 bg-slate-100 rounded-xl shadow-md dark:bg-dark-primary">
+            <RecentDecks
+              Pcolor={Pcolor}
+              Scolor={Scolor}
+              categories={categories ?? []}
+            />
+          </div>
+
+          <div className="col-span-2 row-span-5 col-start-5 row-start-6 bg-slate-100 rounded-xl shadow-md dark:bg-dark-primary">
+            <CalendarWidget Pcolor={Pcolor} Scolor={Scolor} />
           </div>
 
           <div className="col-span-6 row-span-1 col-start-1 row-start-7 "></div>

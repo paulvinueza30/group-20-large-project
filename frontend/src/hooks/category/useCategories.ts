@@ -6,6 +6,8 @@ import { getAllCategories } from "../../services/categoryApi";
 export interface Category {
   _id: string;
   name: string;
+  experience: number;
+  cardCount: number;
 }
 
 // Define the result structure for the hook

@@ -16,23 +16,27 @@ function ColorChange({ Pcolor, setPColor, Scolor, setSColor }: Props) {
 
   return (
     <div className="w-full p-2">
-      <h1 className="text-center text-xl font-bold py-2 dark:text-white">
+      <h1 className="text-center text-xl font-bold py-2 dark:text-white mb-4">
         Customize the Dashboard
       </h1>
       <input
         type="color"
         value={Pcolor}
         onChange={handlePrimaryColorChange}
-        className="w-full h-[100px] dark:bg-dark-secondary "
+        className="w-full h-[100px] dark:bg-dark-secondary border-none"
       />
-      <p className="dark:text-white">Selected Primary: {Pcolor}</p>
+      <p className="dark:text-white mt-4 mb-4 ml-2 text-xl ">
+        Selected Primary: {Pcolor}
+      </p>
       <input
         type="color"
         value={Scolor}
         onChange={handleSecondaryColorChange}
-        className="w-full h-[100px] dark:bg-dark-secondary"
+        className="w-full h-[100px] dark:bg-dark-secondary border-none"
       />
-      <p className="dark:text-white">Selected Secondary: {Scolor}</p>
+      <p className="dark:text-white mt-4 mb-4 ml-2 text-xl">
+        Selected Secondary: {Scolor}
+      </p>
     </div>
   );
 }
