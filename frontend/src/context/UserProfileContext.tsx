@@ -6,10 +6,11 @@ import React, {
   ReactNode,
 } from "react";
 import {
-  getUserInfo as fetchUserInfo, // Renamed to avoid conflict
-  updateColorPreferences as updateColorPreferencesAPI, // Renamed to avoid conflict
-  uploadProfilePic as uploadProfilePicAPI, // Renamed to avoid conflict
-} from "../services/userApi"; // Make sure you import the correct service functions
+  getUserInfo as fetchUserInfo,
+  updateColorPreferences as updateColorPreferencesAPI,
+  uploadProfilePic as uploadProfilePicAPI,
+} from "../services/userApi";
+import { useNavigate } from "react-router-dom";
 
 interface IColorPreferences {
   primary: string;
@@ -32,13 +33,13 @@ interface IProfileContext {
   updateProfilePic: (profilePic: File) => void;
 }
 
-// Context and Provider
 const UserProfileContext = createContext<IProfileContext | undefined>(
   undefined
 );
 
 export const useUserProfile = (): IProfileContext => {
   const context = useContext(UserProfileContext);
+
   if (!context) {
     throw new Error("useUserProfile must be used within a UserProfileProvider");
   }
@@ -54,21 +55,28 @@ export const UserProfileProvider: React.FC<UserProfileProviderProps> = ({
 }) => {
   const [userProfile, setUserProfile] = useState<IUser | null>(null);
 
+  const navigate = useNavigate(); // Use navigate for redirection
+
   useEffect(() => {
     const fetchUserProfile = async () => {
       try {
-        const response = await fetchUserInfo(); // Renamed fetchUserInfo function
-        console.log("User profile fetched:", response.user); // Debug log
-        setUserProfile(response.user); // Assuming response contains 'user' in its data
+        const response = await fetchUserInfo();
+        if (response.user) {
+          setUserProfile(response.user);
+        } else {
+          setUserProfile(null);
+          // navigate("/login"); // Redirect to login if the user is not authenticated
+        }
       } catch (error) {
         console.error("Error fetching user profile", error);
+        setUserProfile(null);
+        // navigate("/login"); // Redirect to login if error occurs
       }
     };
 
     fetchUserProfile();
-  }, []);
+  }, [navigate]);
 
-  // Update color preferences
   const handleUpdateColorPreferences = async (
     primary: string,
     secondary: string
@@ -81,37 +89,28 @@ export const UserProfileProvider: React.FC<UserProfileProviderProps> = ({
         return;
       }
 
-      // Update the profile locally
       const updatedProfile = {
         ...userProfile,
         colorPreferences: { primary, secondary },
       };
-      setUserProfile(updatedProfile); // Update the state with the new color preferences
+      setUserProfile(updatedProfile);
 
       try {
-        // Call the API to update the color preferences on the backend
-        const response = await updateColorPreferencesAPI(primary, secondary);
+        await updateColorPreferencesAPI(primary, secondary);
       } catch (error) {
         console.error("Error updating color preferences:", error);
       }
     }
   };
 
-  // Update the profile picture (if it changes)
   const handleUpdateProfilePic = async (profilePic: File) => {
     if (userProfile && profilePic) {
-      // Perform the upload first, don't compare based on file name
       try {
-        // Upload the image using the API
         const response = await uploadProfilePicAPI(profilePic);
-
-        // Assuming the response contains the new profilePic URL, update the user profile
         const updatedProfile = {
           ...userProfile,
-          profilePic: response.profilePic, // Set the response profilePic URL
+          profilePic: response.profilePic,
         };
-
-        // Update the context state with the new profile picture URL
         setUserProfile(updatedProfile);
       } catch (error) {
         console.error("Error updating profile picture:", error);

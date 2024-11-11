@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import useRegisterUser from "../../hooks/user/useRegisterUser";
+import { useNavigate } from "react-router-dom";
 
 const SignUpForm: React.FC = () => {
   const { register, loading, error, success } = useRegisterUser();
@@ -10,6 +11,8 @@ const SignUpForm: React.FC = () => {
     password: "",
   });
 
+  const navigate = useNavigate();
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
@@ -19,6 +22,13 @@ const SignUpForm: React.FC = () => {
     e.preventDefault();
     await register(formData);
   };
+
+  // Redirect to dashboard if registration is successful
+  useEffect(() => {
+    if (success) {
+      navigate("/dashboard");
+    }
+  }, [success, navigate]);
 
   return (
     <form onSubmit={handleSubmit} className="flex flex-col items-start">
