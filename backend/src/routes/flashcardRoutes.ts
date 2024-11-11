@@ -4,7 +4,8 @@ import {
     editFlashcard,
     deleteFlashcard,
     getNextFlashcard,
-    reviewFlashcard
+    reviewFlashcard,
+    getAllFlashcards
 } from "../controllers/flashcardController";
 import { isAuthenticated } from "../middlewares/authMiddleware";
 
@@ -15,5 +16,7 @@ router.put("/editFlashcard/:id", isAuthenticated, editFlashcard);
 router.delete("/deleteFlashcard/:id", isAuthenticated, deleteFlashcard);
 router.get("/nextFlashcard/:categoryId", isAuthenticated, getNextFlashcard);
 router.put("/reviewFlashcard/:id", isAuthenticated, reviewFlashcard);
+router.get("/allFlashcards/:categoryId", isAuthenticated, getAllFlashcards);
+
 
 export default router;

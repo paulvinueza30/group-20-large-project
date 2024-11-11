@@ -32,7 +32,7 @@ export const editFlashcard = async (flashcardData: {
 }) => {
   try {
     const response = await axios.put(
-      `${FLASHCARD_API_URL}/edit/${flashcardData.id}`,
+      `${FLASHCARD_API_URL}/editFlashcard/${flashcardData.id}`,
       { frontSide: flashcardData.frontSide, backSide: flashcardData.backSide },
       { withCredentials: true }
     );
@@ -47,7 +47,7 @@ export const editFlashcard = async (flashcardData: {
 // Delete a flashcard
 export const deleteFlashcard = async (id: string) => {
   try {
-    const response = await axios.delete(`${FLASHCARD_API_URL}/delete/${id}`, {
+    const response = await axios.delete(`${FLASHCARD_API_URL}/deleteFlashcard/${id}`, {
       withCredentials: true,
     });
     return response.data;
@@ -95,3 +95,20 @@ export const reviewFlashcard = async (
       : new Error("Internal server error");
   }
 };
+
+export const getAllFlashcards = async (categoryId: string) => {
+  try {
+    const response = await axios.get(
+      `${FLASHCARD_API_URL}/allFlashcards/${categoryId}`,
+      { withCredentials: true }
+    );
+    console.log("API Response:", response.data); // Log to check if the backend is returning data
+    return response.data;
+  } catch (error: any) {
+    console.error("Error in getAllFlashcards:", error);
+    throw error.response
+      ? error.response.data
+      : new Error("Internal server error");
+  }
+};
+

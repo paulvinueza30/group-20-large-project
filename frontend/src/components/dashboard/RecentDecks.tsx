@@ -1,18 +1,22 @@
 import React from "react";
-import { useCategories } from "../../hooks/category/useCategories";
+import { Link } from "react-router-dom";
 import { GoTrash } from "react-icons/go";
 import DeckSkeleton from "./DeckSkeleton";
+import { Category } from "../../hooks/category/useCategories"; // Import the Category interface
 
-// Fix routing
-function RecentDecks({ Pcolor, Scolor }: { Pcolor: string; Scolor: string }) {
-  const { data, loading, error } = useCategories();
+interface RecentDecksProps {
+  Pcolor: string;
+  Scolor: string;
+  categories: Category[] | null; // Use the imported Category interface
+}
 
-  const dataSize = data ? data.length : 0;
+const RecentDecks: React.FC<RecentDecksProps> = ({ Pcolor, Scolor, categories }) => {
+  const dataSize = categories ? categories.length : 0;
   const cardStyle = `relative rounded-xl w-2/5 h-3/6 p-16 mt-2`;
 
-  if (loading) {
+  if (!categories) {
     return (
-      <div className="">
+      <div>
         <h3 className="text-center p-4 text-lg font-bold dark:text-white">
           Recent Decks
         </h3>
@@ -26,30 +30,27 @@ function RecentDecks({ Pcolor, Scolor }: { Pcolor: string; Scolor: string }) {
     );
   }
 
-  if (error) {
-    return <div>Error: {error}</div>;
-  }
-
   return (
     <div className="overflow-hidden">
       <h3 className="text-center p-4 text-lg font-bold dark:text-white">
         Recent Decks
       </h3>
       <p className="text-center text-xl text-gray-500">
-        {dataSize == 0 ? <p className="pt-24">No decks created</p> : ""}
+        {dataSize === 0 ? <span className="pt-24">No decks created</span> : ""}
       </p>
       <div className="flex flex-wrap justify-evenly content-stretch overflow-hidden">
         {/* Only maps up to 4 decks */}
-        {data?.slice(0, 4).map((category) => (
+        {categories.slice(0, 4).map((category) => (
           <div
-            key={category.name}
+            key={category._id}
             style={{ backgroundColor: Pcolor }}
             className={cardStyle}
           >
-            <a
-              href={`/decks/${category.name}`}
-              className="w-max "
-              key={category._id}
+            {/* Link to the review page for the selected deck */}
+            <Link
+              to={`/review/${category._id}`} // Use category._id in the URL for review
+              state={{ categoryName: category.name }} // Pass category name in state
+              className="w-max"
               style={{ backgroundColor: Pcolor }}
             >
               <h3 className="text-lg font-semibold absolute top-[5px] left-[12px] text-white">
@@ -61,8 +62,8 @@ function RecentDecks({ Pcolor, Scolor }: { Pcolor: string; Scolor: string }) {
               >
                 number cards
               </span>
-            </a>
-            <span className=" absolute bottom-0 right-[12px] mb-2 z-50">
+            </Link>
+            <span className="absolute bottom-0 right-[12px] mb-2 z-50">
               <GoTrash
                 className="w-8 h-8 text-secondary hover:text-white"
                 onClick={() => console.log("deleted")}
@@ -73,6 +74,6 @@ function RecentDecks({ Pcolor, Scolor }: { Pcolor: string; Scolor: string }) {
       </div>
     </div>
   );
-}
+};
 
 export default RecentDecks;

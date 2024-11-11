@@ -3,6 +3,8 @@ import "./index.css";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import App from "./App.tsx";
 import Decks from "./pages/Decks.tsx";
+import DeckDetails from "./pages/DeckDetails.tsx";
+import Flashcard from "./components/Flashcard"; // Import Flashcard component for review mode
 import Profile from "./pages/Profile.tsx";
 import Stats from "./pages/Stats.tsx";
 import Login from "./pages/Login.tsx";
@@ -32,15 +34,25 @@ const AppWithRouting = () => {
           path="/decks"
           element={
             <UserProfileProvider>
-              <Decks />
+              <Decks /> {/* Renders Decks.tsx showing the list of categories */}
             </UserProfileProvider>
           }
         />
         <Route
-          path="/decks/:categoryName"
+          path="/decks/:categoryId"
           element={
             <UserProfileProvider>
-              <Decks />
+              <DeckDetails /> {/* Renders DeckDetails.tsx for the selected category */}
+            </UserProfileProvider>
+          }
+        />
+        
+        {/* Add the review route for the Flashcard component */}
+        <Route
+          path="/review/:categoryId"
+          element={
+            <UserProfileProvider>
+              <Flashcard /> {/* Renders Flashcard.tsx to review flashcards in the selected category */}
             </UserProfileProvider>
           }
         />

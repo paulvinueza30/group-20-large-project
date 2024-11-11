@@ -71,12 +71,10 @@ export const getUserInfo = async () => {
     if (axios.isAxiosError(error) && error.response) {
       throw new Error(error.response.data.message || "Internal server error");
     } else {
-      throw error;
+      throw new Error("Internal server error");
     }
   }
 };
-
-// Preferences
 
 // Update user color preferences
 export const updateColorPreferences = async (
@@ -112,6 +110,7 @@ export const uploadProfilePic = async (profilePic: File) => {
       formData,
       {
         withCredentials: true,
+        headers: { "Content-Type": "multipart/form-data" },
       }
     );
     return response.data;

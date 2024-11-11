@@ -1,54 +1,45 @@
+// useCategories.ts
 import { useState, useEffect } from "react";
 import { getAllCategories } from "../../services/categoryApi";
-import axios from "axios";
 
-interface Category {
+// Define and export the Category interface
+export interface Category {
   _id: string;
   name: string;
 }
 
+// Define the result structure for the hook
 interface UseCategoriesResult {
   data: Category[] | null;
   error: string | null;
   loading: boolean;
 }
 
-export const useCategories = (): UseCategoriesResult => {
+export const useCategories = (
+  isAuthenticated: boolean
+): UseCategoriesResult => {
   const [data, setData] = useState<Category[] | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
     const fetchCategories = async () => {
-      setLoading(true);
-      setError(null);
+      if (!isAuthenticated) return; // Don’t fetch categories if not authenticated
 
       try {
-        const healthCheckResponse = await fetch(
-          `${process.env.REACT_APP_API_URL}/healthcheck`
-        );
-        if (!healthCheckResponse.ok) {
-          throw new Error("Server not healthy or user not authenticated");
-        }
-
-        // Fetch categories from the API
-        const fetchedCategories = await getAllCategories();
-        setData(fetchedCategories); // Set the fetched categories
+        const data = await getAllCategories();
+        setData(data);
       } catch (error: any) {
-        if (axios.isAxiosError(error)) {
-          setError(
-            error.response?.data?.message || "Failed to fetch categories"
-          );
-        } else {
-          setError("An unexpected error occurred");
-        }
+        setError(
+          error.response ? error.response.data : "Internal server error"
+        );
       } finally {
         setLoading(false);
       }
     };
 
     fetchCategories();
-  }, []);
+  }, [isAuthenticated]);
 
   return { data, error, loading };
 };
