@@ -4,8 +4,6 @@ import {
   HomeIcon,
   TrophyIcon,
   UserIcon,
-  SunIcon,
-  MoonIcon,
   ChartBarSquareIcon,
   ArrowRightStartOnRectangleIcon,
 } from "@heroicons/react/24/outline";
@@ -43,7 +41,7 @@ function Sidebar({ children, expanded, handleToggle }: SidebarProps) {
   return (
     <div className="relative">
       <aside
-        className={`box-border h-screen transition-all ${
+        className={`box-border h-screen transition-all fixed top-0 left-0 z-50${
           expanded ? "w-5/6 sm:w-64" : "w-0 sm:w-20"
         }`}
       >
@@ -74,7 +72,9 @@ function Sidebar({ children, expanded, handleToggle }: SidebarProps) {
           </div>
           <ul className="flex-1 px-3">{children}</ul>
           <div className="flex border-t p-3 h-[100px]">
-            <div className={`flex items-center ${expanded ? "ml-3" : ""}`}>
+            <div
+              className={`flex flex-col items-center ${expanded ? "ml-3" : ""}`}
+            >
               <a
                 href="/"
                 className="leading-4 flex items-center dark:text-white pb-4"
@@ -82,21 +82,21 @@ function Sidebar({ children, expanded, handleToggle }: SidebarProps) {
                 <ArrowRightStartOnRectangleIcon className="h-6 w-6" />
                 {expanded && <h4 className="text-primary-500 pl-2">Log out</h4>}
               </a>
-              <div className="leading-4 flex items-center pt-2">
-                <label className="inline-flex items-center cursor-pointer">
+              <div className="flex items-center justify-between w-full">
+                <label className="relative inline-flex items-center cursor-pointer">
                   <input
                     type="checkbox"
-                    value=""
                     className="sr-only peer"
                     onClick={handleClick}
                   />
-                  <div className="relative w-11 h-6 bg-gray-200 rounded-full peer dark:bg-gray-700 peer-checked:bg-blue-600"></div>
-                  {expanded && (
-                    <span className="ms-3 text-md text-gray-900 dark:text-gray-300">
-                      Light Mode
-                    </span>
-                  )}
+                  <div className="w-11 h-6 bg-gray-300 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-gray-500 rounded-full peer dark:bg-gray-700 peer-checked:bg-black"></div>
+                  <div className="absolute left-0.5 top-0.5 w-5 h-5 bg-white border border-gray-300 rounded-full transition-transform peer-checked:translate-x-full"></div>
                 </label>
+                {expanded && (
+                  <span className="text-lg text-gray-800 ml-2 dark:text-white">
+                    Light Mode
+                  </span>
+                )}
               </div>
             </div>
           </div>

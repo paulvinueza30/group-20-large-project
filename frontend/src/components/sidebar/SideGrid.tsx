@@ -9,9 +9,9 @@ function SideGrid({ color }: any) {
   };
 
   return (
-    <aside className="h-screen md:h-[1000px] dark:bg-gray-900">
+    <aside className="h-full dark:bg-gray-900 sticky top-0">
       <div
-        className={`min-h-screen shadow-lg ${
+        className={`shadow-lg ${
           sidebarSize ? "w-56" : "w-10"
         } duration-300 ease-in-out dark:bg-gray-800`}
       >
