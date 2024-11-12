@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import User from "../models/userModel";
+import Category from "../models/categoryModel";
 
 import bcrypt from "bcrypt";
 import passport from "../config/passport-config";
@@ -64,13 +65,18 @@ export const loginUser = (
       return res.status(400).json({ message: info.message });
     }
 
-    req.logIn(user, (err) => {
+    req.logIn(user, async (err) => {
       if (err) {
         return next(err);
       }
-
-      const categories = await Category.find({ userId: user._id });
-      await Promise.all(categories.map(category => category.dailyStreakCheck()));
+      
+      try {
+          const categories = await Category.find({ userId: user._id });
+         await Promise.all(categories.map(category => category.dailyStreakCheck()));
+      } catch (error) {
+        console.error("Error in login user", error);
+        return res.status(500).json({ message: "Internal server error" });       
+      }
 
       return res.status(200).json({
         message: "Login successful",
