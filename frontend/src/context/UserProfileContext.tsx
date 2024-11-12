@@ -39,38 +39,40 @@ const UserProfileContext = createContext<IProfileContext | undefined>(
 
 export const useUserProfile = (): IProfileContext => {
   const context = useContext(UserProfileContext);
-
   if (!context) {
     throw new Error("useUserProfile must be used within a UserProfileProvider");
   }
   return context;
 };
 
-interface UserProfileProviderProps {
-  children: ReactNode;
-}
-
-export const UserProfileProvider: React.FC<UserProfileProviderProps> = ({
+export const UserProfileProvider: React.FC<{ children: ReactNode }> = ({
   children,
 }) => {
   const [userProfile, setUserProfile] = useState<IUser | null>(null);
-
-  const navigate = useNavigate(); // Use navigate for redirection
+  const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchUserProfile = async () => {
       try {
+        const userFromStorage = localStorage.getItem("userProfile");
+        if (userFromStorage) {
+          setUserProfile(JSON.parse(userFromStorage));
+          setLoading(false);
+          return;
+        }
         const response = await fetchUserInfo();
         if (response.user) {
           setUserProfile(response.user);
+          localStorage.setItem("userProfile", JSON.stringify(response.user));
         } else {
           setUserProfile(null);
-          // navigate("/login"); // Redirect to login if the user is not authenticated
         }
       } catch (error) {
         console.error("Error fetching user profile", error);
         setUserProfile(null);
-        // navigate("/login"); // Redirect to login if error occurs
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -94,6 +96,7 @@ export const UserProfileProvider: React.FC<UserProfileProviderProps> = ({
         colorPreferences: { primary, secondary },
       };
       setUserProfile(updatedProfile);
+      localStorage.setItem("userProfile", JSON.stringify(updatedProfile));
 
       try {
         await updateColorPreferencesAPI(primary, secondary);
@@ -112,6 +115,7 @@ export const UserProfileProvider: React.FC<UserProfileProviderProps> = ({
           profilePic: response.profilePic,
         };
         setUserProfile(updatedProfile);
+        localStorage.setItem("userProfile", JSON.stringify(updatedProfile));
       } catch (error) {
         console.error("Error updating profile picture:", error);
       }
@@ -126,7 +130,7 @@ export const UserProfileProvider: React.FC<UserProfileProviderProps> = ({
         updateProfilePic: handleUpdateProfilePic,
       }}
     >
-      {children}
+      {!loading && children}
     </UserProfileContext.Provider>
   );
 };
