@@ -31,6 +31,10 @@ const userSchema = new Schema<IUser>({
       secondary: "#BA72E2",
     },
   },
+  userExperience: {
+    type: Number,
+    default: 0,
+  },
   profilePic: { type: String, default: "default_user.png" },
 });
 

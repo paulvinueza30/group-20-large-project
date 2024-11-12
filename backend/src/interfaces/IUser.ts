@@ -12,4 +12,5 @@ export interface IUser extends Document {
   colorPreferences: IColorPreferences;
   profilePic: string;
   createdAt: Date;
+  userExperience?: Number;
 }

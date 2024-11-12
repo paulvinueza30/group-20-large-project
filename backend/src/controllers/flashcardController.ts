@@ -209,7 +209,7 @@ export const reviewFlashcard = async (
       return;
     }
 
-    user.experience += xpGain;
+    user.userExperience += xpGain;
     await user.save();
 
     // Update due date based on feedback
