@@ -1,24 +1,20 @@
 import { useState, useEffect } from "react";
 import { useCreateFlashcard } from "../hooks/flashcard/useCreateFlashcard";
-import { useParams } from "react-router-dom";
-import { useCategories } from "../hooks/category/useCategories";
+import { Link, useLocation } from "react-router-dom";
 
 function AddFlashcard({ color }: any) {
   const [showModal, setShowModal] = useState(false);
-  const { categoryName } = useParams<{ categoryName: string }>();
-  const { data } = useCategories(true);
+
+  const location = useLocation();
 
   // Find the category ID based on the categoryName from URL params
   const [categoryId, setCategoryId] = useState<string>("");
 
   useEffect(() => {
-    if (data && categoryName) {
-      const category = data.find((category) => category.name === categoryName);
-      if (category) {
-        setCategoryId(category._id);
-      }
-    }
-  }, [data, categoryName]);
+    const pathSegments = location.pathname.split("/"); // Split the URL into segments
+    const idFromUrl = pathSegments[pathSegments.length - 1]; // Get the last segment as ID
+    setCategoryId(idFromUrl); // Set the ID in the state
+  }, [location.pathname]);
 
   // Create Flashcard API
   const { create, loading, error, success } = useCreateFlashcard();
@@ -73,15 +69,23 @@ function AddFlashcard({ color }: any) {
 
   return (
     <>
-      <button
-        style={{ backgroundColor: color }}
-        className=" text-white active:bg-purple-800 font-bold uppercase text-sm rounded-full p-4 px-6 shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
-        type="button"
-        onClick={() => setShowModal(true)}
-      >
-        Add Flashcard
-      </button>
-
+      <div className="flex justify-between">
+        <button
+          style={{ backgroundColor: color }}
+          className=" text-white active:bg-purple-800 font-bold uppercase text-sm rounded-full p-4 px-6 shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+          type="button"
+          onClick={() => setShowModal(true)}
+        >
+          Add Flashcard
+        </button>
+        <Link
+          to={`/decks/${categoryId}`}
+          style={{ backgroundColor: color }}
+          className="text-white active:bg-purple-800 font-bold uppercase text-sm rounded-full p-4 px-6 shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+        >
+          View All Cards
+        </Link>
+      </div>
       {showModal && (
         <>
           <div className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none">

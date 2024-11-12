@@ -2,6 +2,15 @@
 @tailwind components;
 @tailwind utilities;
 
+
+.bg1 {
+  background-image: url("./assets/bg1.jpg");
+}
+
+.bg2 {
+  background-image: url("./assets/bg2.jpg");
+}
+
 .sub-menu {
     overflow: hidden;
     transition: height 300ms;

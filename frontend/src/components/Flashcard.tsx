@@ -75,11 +75,9 @@ function Flashcard() {
 
   return (
     <div>
-      <h2 className="text-center text-lg font-bold">{categoryName}</h2>{" "}
-      {/* Display category name */}
       {!showBackCard && (
         <div className="dark:text-white">
-          <div className="p-20 bg-slate-100 dark:bg-dark-primary rounded-xl min-h-96">
+          <div className="p-20 bg-slate-100 dark:bg-dark-primary rounded-xl min-h-96 min-w-full flex justify-center items-center">
             <h1 className="text-5xl text-center">{flashcard?.frontSide}</h1>
           </div>
           <div className="flex justify-between">
@@ -97,7 +95,7 @@ function Flashcard() {
       )}
       {showBackCard && (
         <div className="dark:text-white">
-          <div className="p-20 bg-slate-100 dark:bg-dark-primary rounded-xl">
+          <div className="p-20 bg-slate-100 dark:bg-dark-primary rounded-xl min-h-96 min-w-full flex justify-center items-center">
             <h1 className="text-5xl text-center">{flashcard?.backSide}</h1>
           </div>
           <div className="flex justify-between">

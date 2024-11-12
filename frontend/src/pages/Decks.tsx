@@ -4,6 +4,7 @@ import { getAllCategories } from "../services/categoryApi";
 import { ICategory } from "../interfaces/ICategory"; // Import ICategory
 import SideGrid from "../components/sidebar/SideGrid";
 import { useUserProfile } from "../context/UserProfileContext";
+import "../index.css";
 
 function Decks() {
   const { userProfile } = useUserProfile();
@@ -46,7 +47,7 @@ function Decks() {
                 <div
                   key={category._id}
                   className={`bg-cover mb-8 rounded-xl shadow-lg h-72 relative flex w-full ${
-                    index % 2 === 0 ? "bg-card-bg1" : "bg-card-bg2"
+                    index % 2 === 0 ? "bg1" : "bg2"
                   }`}
                 >
                   <h3 className="text-4xl text-start ml-6 uppercase font-bold relative -bottom-44 ">
@@ -81,8 +82,8 @@ function Decks() {
               categories.slice(catSize / 2, catSize).map((category, index) => (
                 <div
                   key={category._id}
-                  className={`mb-8 bg-cover rounded-xl shadow-lg h-72 relative flex w-full ${
-                    index % 2 === 1 ? "bg-card-bg1" : "bg-card-bg2"
+                  className={`mb-8 bg-cover rounded-xl shadow-lg h-72 relative flex w-full  ${
+                    index % 2 === 1 ? "bg1" : "bg2"
                   }`}
                 >
                   <h3 className="text-4xl text-start ml-6 uppercase font-bold relative -bottom-44 ">

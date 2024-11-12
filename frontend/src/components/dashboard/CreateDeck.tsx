@@ -44,11 +44,11 @@ function CreateDeck({ Pcolor, Scolor }: CreateDeckProps) {
   const hueRotation = getHueRotation(Pcolor);
 
   return (
-    <div className="flex justify-center p-6">
-      <div className="max-w-sm bg-slate-100 dark:bg-dark-primary rounded-lg overflow-hidden  transition-all">
+    <div className="flex justify-center relative">
+      <div className="max-w-sm bg-slate-100 dark:bg-dark-primary overflow-hidden  transition-all">
         <div className="relative">
           <img
-            className="rounded-t-lg h-full w-full object-cover transition-all duration-500 ease-in-out"
+            className="h-full w-full object-cover transition-all duration-500 ease-in-out"
             src={Image}
             alt="Create Deck"
             style={{ filter: `hue-rotate(${hueRotation}deg)` }}
@@ -63,7 +63,7 @@ function CreateDeck({ Pcolor, Scolor }: CreateDeckProps) {
           ></div>
         </div>
 
-        <div className="p-5">
+        <div className="p-5 absolute -bottom-20 right-0 bg-slate-100 dark:bg-dark-primary w-full">
           <h5
             className="mb-2 text-xl font-bold dark:text-white transition-colors duration-300"
             style={{ color: Pcolor }}
