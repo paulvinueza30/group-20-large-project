@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useUserProfile } from "../context/UserProfileContext";
 import placeholder from "../assets/Transhumans - Astro.png";
 import { PhotoIcon } from "@heroicons/react/24/outline";
+import background from "../assets/profileBg.png";
 
 interface UserInfoProps {
   Pcolor: string;
@@ -12,7 +13,7 @@ const UserInfo: React.FC<UserInfoProps> = ({ Pcolor, Scolor }) => {
   const [isHover, setIsHover] = useState(false);
   const { userProfile, updateProfilePic } = useUserProfile();
   const textStyle =
-    "rounded-xl mb-2 bg-white p-2 m-4 dark:bg-dark-secondary dark:text-white";
+    "rounded-xl mb-2 bg-white p-5 m-4 dark:bg-dark-secondary dark:text-white text-xl z-10";
 
   // Handle the file input change
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -39,30 +40,27 @@ const UserInfo: React.FC<UserInfoProps> = ({ Pcolor, Scolor }) => {
     : placeholder;
 
   return (
-    <div>
-      <h2 className="text-center font-bold text-xl py-4 dark:text-white">
-        User Info
-      </h2>
-      <div className="flex flex-col items-center">
+    <div className="h-full relative bg-slate-100 dark:bg-dark-primary shadow-md rounded-[30px]">
+      <div className="flex flex-col items-center h-5/6">
         <div
-          className="w-[140px] h-[140px] object-cover self-center border-2 rounded-full p-1 relative"
+          className="w-72 h-72 object-cover self-center border-2 rounded-full p-1 relative -top-40 shadow-xl"
           style={{
             backgroundColor: Scolor,
             borderColor: Scolor,
           }}
         >
-          <div className="text-white ">
+          <div className="text-white">
             <label
               onMouseEnter={handleMouseEnter}
               onMouseLeave={handleMouseLeave}
               htmlFor="files"
-              className="-bottom-[3px] left-0 opacity-0 hover:opacity-100 border-none text-center absolute pt-12 hover:bg-opacity-70 rounded-full w-[140px] h-[140px]"
+              className="-bottom-[3px] left-0 opacity-0 hover:opacity-100 border-none text-center absolute pt-12 hover:bg-opacity-70 rounded-full w-72 h-72 text-4xl text-gray-800"
               style={{
                 backgroundColor: isHover ? Scolor : "transparent",
                 opacity: isHover ? 0.8 : 0,
               }}
             >
-              <PhotoIcon className="w-10 h-10 place-self-center " />
+              <PhotoIcon className="w-20 h-20 place-self-center " />
               Select Image
             </label>
             <input
@@ -78,13 +76,23 @@ const UserInfo: React.FC<UserInfoProps> = ({ Pcolor, Scolor }) => {
             className="w-full h-full object-cover rounded-full" // Ensures the image fills the wrapper
           />
         </div>
-        <div className="flex flex-col justify-start">
-          <p className={textStyle}>Name: {userProfile.name}</p>
-          <p className={textStyle}>Current Level: </p>
-          <p className={textStyle}>Daily Streak: </p>
-          <p className={textStyle}>Email: {userProfile.email}</p>
+        <div className="flex flex-col justify-start w-full relative -top-32">
+          <p className={textStyle}>
+            <span className="font-bold">Name:</span> {userProfile.name}
+          </p>
+          <p className={textStyle}>
+            {" "}
+            <span className="font-bold">Current Level:</span>{" "}
+          </p>
+          <p className={textStyle}>
+            <span className="font-bold">Daily Streak:</span>{" "}
+          </p>
+          <p className={textStyle}>
+            <span className="font-bold">Email:</span> {userProfile.email}
+          </p>
         </div>
       </div>
+      <img src={background} alt="" className="absolute bottom-0 opacity-70" />
     </div>
   );
 };

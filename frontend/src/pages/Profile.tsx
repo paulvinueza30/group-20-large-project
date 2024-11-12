@@ -1,4 +1,3 @@
-import RadarCharti from "../components/dashboard/RadarCharti";
 import SideGrid from "../components/sidebar/SideGrid";
 import TodoList from "../components/todo/TodoList";
 import UserInfo from "../components/userInfo";
@@ -30,7 +29,7 @@ function Profile() {
               </div>
               <h1 className="font-bold text-2xl dark:text-white">Profile</h1>
             </div>
-            <div className="col-span-2 row-span-4 col-start-1 row-start-2 bg-slate-100 rounded-xl shadow-md dark:bg-dark-primary">
+            <div className="col-span-2 row-span-7 col-start-1 row-start-3 ">
               <UserInfo Pcolor={Pcolor} Scolor={Scolor} />
             </div>
             <div className="col-span-2 row-span-4 col-start-3 row-start-2 overflow-hidden bg-slate-100 rounded-xl shadow-md dark:bg-dark-primary">
@@ -41,7 +40,7 @@ function Profile() {
             <div className="col-span-2 row-span-4 col-start-5 row-start-2 bg-slate-100 rounded-xl shadow-md dark:bg-dark-primary">
               <TodoList />
             </div>
-            <div className="col-span-6 row-span-4 row-start-6 col-start-1 bg-slate-100 rounded-xl shadow-md dark:bg-dark-primary">
+            <div className="col-span-4 row-span-4 row-start-6 col-start-3 bg-slate-100 rounded-xl shadow-md dark:bg-dark-primary">
               <h2 className="text-center font-bold text-xl py-4 dark:text-white">
                 Achievements Display
               </h2>
