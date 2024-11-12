@@ -1,4 +1,3 @@
-// DeckDetails.tsx
 import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { getAllFlashcards, deleteFlashcard } from "../services/flashCardApi";
@@ -8,31 +7,38 @@ import SideGrid from "../components/sidebar/SideGrid";
 import { HomeIcon } from "@heroicons/react/24/outline";
 
 function DeckDetails() {
-  const { categoryId } = useParams<{ categoryId: string }>(); // Fetch categoryId from URL
+  const { categoryId } = useParams<{ categoryId: string }>();
   const [flashcards, setFlashcards] = useState<IFlashcard[]>([]);
   const navigate = useNavigate();
 
   // Fetch all flashcards for the specified category
-  useEffect(() => {
+  const fetchFlashcards = async () => {
     if (categoryId) {
-      getAllFlashcards(categoryId)
-        .then((response) => setFlashcards(response))
-        .catch((error) => console.error("Error fetching flashcards:", error));
+      try {
+        const response = await getAllFlashcards(categoryId);
+        setFlashcards(response);
+      } catch (error) {
+        console.error("Error fetching flashcards:", error);
+      }
     }
+  };
+
+  useEffect(() => {
+    fetchFlashcards();
   }, [categoryId]);
 
-  // Handle editing a flashcard
-  const handleEditFlashcard = (flashcardId: string) => {
-    navigate(`/edit-flashcard/${flashcardId}`); // Navigate to edit page with the flashcard ID
+  // Handle updating a flashcard (re-fetch all flashcards to ensure update)
+  const handleUpdateFlashcard = async (updatedFlashcard: IFlashcard) => {
+    await fetchFlashcards(); // Re-fetch after update
   };
 
   // Handle deletion of a flashcard
   const handleDeleteFlashcard = async (flashcardId: string) => {
     try {
-      await deleteFlashcard(flashcardId); // Call the delete API
+      await deleteFlashcard(flashcardId);
       setFlashcards((prevFlashcards) =>
         prevFlashcards.filter((card) => card._id !== flashcardId)
-      ); // Update the state to remove the deleted card
+      );
     } catch (error) {
       console.error("Error deleting flashcard:", error);
     }
@@ -57,8 +63,8 @@ function DeckDetails() {
                 <FlashcardDisplay
                   key={card._id}
                   flashcard={card}
-                  onEdit={() => handleEditFlashcard(card._id)} // Pass onEdit prop
-                  onDelete={() => handleDeleteFlashcard(card._id)} // Pass onDelete prop
+                  onDelete={() => handleDeleteFlashcard(card._id)}
+                  onUpdate={handleUpdateFlashcard} // Use updated onUpdate prop
                 />
               ))
             ) : (
