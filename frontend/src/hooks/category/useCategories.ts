@@ -1,8 +1,6 @@
-// useCategories.ts
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { getAllCategories } from "../../services/categoryApi";
 
-// Define and export the Category interface
 export interface Category {
   _id: string;
   name: string;
@@ -10,38 +8,40 @@ export interface Category {
   cardCount: number;
 }
 
-// Define the result structure for the hook
 interface UseCategoriesResult {
   data: Category[] | null;
   error: string | null;
   loading: boolean;
+  refreshCategories: () => void;
 }
 
 export const useCategories = (
-  isAuthenticated: boolean
+  isAuthenticated: boolean,
+  refreshToken: number = 0 // Set a default value for refreshToken
 ): UseCategoriesResult => {
   const [data, setData] = useState<Category[] | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
 
-  useEffect(() => {
-    const fetchCategories = async () => {
-      if (!isAuthenticated) return; // Don’t fetch categories if not authenticated
+  const fetchCategories = useCallback(async () => {
+    if (!isAuthenticated) return;
 
-      try {
-        const data = await getAllCategories();
-        setData(data);
-      } catch (error: any) {
-        setError(
-          error.response ? error.response.data : "Internal server error"
-        );
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchCategories();
+    setLoading(true);
+    try {
+      const categories = await getAllCategories();
+      setData(categories);
+    } catch (error: any) {
+      setError(
+        error.response ? error.response.data : "Internal server error"
+      );
+    } finally {
+      setLoading(false);
+    }
   }, [isAuthenticated]);
 
-  return { data, error, loading };
+  useEffect(() => {
+    fetchCategories();
+  }, [fetchCategories, refreshToken]); // Add refreshToken as a dependency
+
+  return { data, error, loading, refreshCategories: fetchCategories };
 };

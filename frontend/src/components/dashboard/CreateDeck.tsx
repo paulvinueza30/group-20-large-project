@@ -2,19 +2,25 @@ import Image from "../../assets/CreateCropped.png";
 import { PlusCircleIcon } from "@heroicons/react/24/outline";
 import { useCreateCategory } from "../../hooks/category/useCreateCategories";
 import { useState } from "react";
+import { Category } from "../../hooks/category/useCategories";
 
 interface CreateDeckProps {
   Pcolor: string;
   Scolor: string;
+  onCategoryCreated: (newCategory: Category) => void;
 }
 
-function CreateDeck({ Pcolor, Scolor }: CreateDeckProps) {
+function CreateDeck({ Pcolor, Scolor, onCategoryCreated }: CreateDeckProps) {
   const { loading, error, success, create } = useCreateCategory();
   const [categoryName, setCategoryName] = useState<string>("");
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
-    await create(categoryName);
+    const newCategory = await create(categoryName); // Now this should return the new category
+    if (newCategory) {
+      onCategoryCreated(newCategory);
+      setCategoryName("");
+    }
   };
 
   // Convert hex color to RGB
@@ -81,7 +87,6 @@ function CreateDeck({ Pcolor, Scolor }: CreateDeckProps) {
               onChange={(e) => setCategoryName(e.target.value)}
               placeholder="Deck name"
               className="w-4/5 rounded-md p-2 bg-gray-100 text-gray-900 border-2 focus:outline-none focus:ring-2 focus:ring-offset-2 transition-all duration-300 dark:bg-slate-500 dark:border-none "
-              style={{}}
               required
             />
             <button

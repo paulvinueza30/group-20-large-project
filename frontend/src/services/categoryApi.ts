@@ -56,3 +56,22 @@ export const deleteCategory = async (categoryId: string) => {
       : new Error("Internal server error");
   }
 };
+
+// Edit a category name
+export const editCategory = async (categoryId: string, newName: string) => {
+  try {
+    const response = await axios.put(
+      `${CATEGORY_API_URL}/edit/${categoryId}`, // Updated to match Express route
+      { name: newName.toLowerCase() }, // Ensure new name is lowercase for consistency
+      { withCredentials: true }
+    );
+    return response.data;
+  } catch (error: any) {
+    // Catch and handle errors properly
+    console.error("Error updating category:", error);
+    throw error.response
+      ? new Error(error.response.data.message || "Failed to update category")
+      : new Error("Internal server error");
+  }
+};
+

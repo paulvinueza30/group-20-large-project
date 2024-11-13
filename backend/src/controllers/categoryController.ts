@@ -72,3 +72,44 @@ export const deleteCategory = async (req: Request, res: Response): Promise<void>
         res.status(500).json({ message: "Failed to delete category and flashcards", error });
     }
 };
+
+// Edit Category Name
+export const editCategory = async (req: Request, res: Response): Promise<void> => {
+    try {
+        const { categoryId } = req.params;
+        const { name } = req.body;
+        const user = req.user as IUser;
+        const userId = user._id;
+
+        // Ensure the category name does not already exist for this user
+        const existingCategory = await Category.findOne({
+            name: name.toLowerCase(),
+            userId,
+            _id: { $ne: categoryId } // Ensure we’re not checking against the same category we’re editing
+        });
+
+        if (existingCategory) {
+            res.status(400).json({ message: `Category '${name}' already exists for this user.` });
+            return;
+        }
+
+        // Find and update the category
+        const updatedCategory = await Category.findOneAndUpdate(
+            { _id: categoryId, userId },
+            { name: name.toLowerCase() }, // Normalize name to lowercase for consistency
+            { new: true }
+        );
+
+        if (!updatedCategory) {
+            res.status(404).json({ message: "Category not found or does not belong to the user" });
+            return;
+        }
+
+        res.status(200).json({
+            message: "Category updated successfully",
+            category: updatedCategory,
+        });
+    } catch (error) {
+        res.status(500).json({ message: "Failed to update category", error });
+    }
+};

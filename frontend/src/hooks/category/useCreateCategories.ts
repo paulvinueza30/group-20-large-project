@@ -1,11 +1,12 @@
 import { useState } from "react";
-import { createCategory } from "../../services/categoryApi";
+import { createCategory as createCategoryAPI } from "../../services/categoryApi";
+import { Category } from "./useCategories";
 
 interface UseCreateCategoryResult {
   loading: boolean;
   error: string | null;
   success: boolean;
-  create: (categoryName: string) => Promise<void>;
+  create: (name: string) => Promise<Category | null>; // Updated return type
 }
 
 export const useCreateCategory = (): UseCreateCategoryResult => {
@@ -13,20 +14,22 @@ export const useCreateCategory = (): UseCreateCategoryResult => {
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<boolean>(false);
 
-  const create = async (categoryName: string) => {
+  const create = async (name: string): Promise<Category | null> => {
     setLoading(true);
     setError(null);
     setSuccess(false);
 
     try {
-      await createCategory(categoryName); // No need to return response
+      const newCategory = await createCategoryAPI(name); // Assuming this API returns the created category
       setSuccess(true);
-    } catch (error: any) {
-      setError(error?.message || "Failed to create category");
+      return newCategory;
+    } catch (error) {
+      setError("Failed to create category");
+      return null;
     } finally {
       setLoading(false);
     }
   };
 
-  return { create, loading, error, success };
+  return { loading, error, success, create };
 };

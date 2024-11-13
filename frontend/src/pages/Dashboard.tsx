@@ -8,11 +8,10 @@ import RecentDecks from "../components/dashboard/RecentDecks";
 import SideGrid from "../components/sidebar/SideGrid";
 import { HomeIcon } from "@heroicons/react/24/outline";
 import CalendarWidget from "../components/dashboard/CalendarWidget/CalendarWidget";
-import { ICategory } from "../interfaces/ICategory"; // Import ICategory
 
 function Dashboard() {
   const { userProfile, updateColorPreferences } = useUserProfile();
-  const { data: categories, error, loading } = useCategories(!!userProfile);
+  const { data: categories, error, loading, refreshCategories } = useCategories(!!userProfile);
 
   const [Pcolor, setPColor] = useState<string>("#5C0B86");
   const [Scolor, setSColor] = useState<string>("#BA72E2");
@@ -25,13 +24,9 @@ function Dashboard() {
     }
   }, [userProfile]);
 
-  if (!userProfile || loading) {
-    return <div>Loading...</div>;
-  }
-
-  if (error) {
-    return <div>Error loading categories: {error}</div>;
-  }
+  const handleCategoryCreated = () => {
+    refreshCategories(); // Refresh categories list after creating a new deck
+  };
 
   const handlePrimaryColorChange = (color: string) => {
     setPColor(color);
@@ -42,6 +37,14 @@ function Dashboard() {
     setSColor(color);
     updateColorPreferences(Pcolor, color);
   };
+
+  if (!userProfile || loading) {
+    return <div>Loading...</div>;
+  }
+
+  if (error) {
+    return <div>Error loading categories: {error}</div>;
+  }
 
   return (
     <div className="flex dark:bg-dark-secondary">
@@ -60,7 +63,7 @@ function Dashboard() {
           </div>
 
           <div className="col-span-2 row-span-4 col-start-3 row-start-2 overflow-hidden bg-slate-100 rounded-xl shadow-md dark:bg-dark-primary">
-            <CreateDeck Pcolor={Pcolor} Scolor={Scolor} />
+            <CreateDeck Pcolor={Pcolor} Scolor={Scolor} onCategoryCreated={handleCategoryCreated} />
           </div>
 
           <div className="col-span-2 row-span-4 col-start-5 row-start-2 overflow-hidden bg-slate-100 rounded-xl shadow-md dark:bg-dark-primary ">

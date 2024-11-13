@@ -3,21 +3,25 @@ import { Link } from "react-router-dom";
 import { GoTrash } from "react-icons/go";
 import DeckSkeleton from "./DeckSkeleton";
 import { Category } from "../../hooks/category/useCategories"; // Import the Category interface
+import { deleteCategory } from "../../services/categoryApi"; // Import deleteCategory function
 
 interface RecentDecksProps {
   Pcolor: string;
   Scolor: string;
   categories: Category[] | null; // Use the imported Category interface
+  onDeleteCategory?: (categoryId: string) => void; // Optional callback for handling deletion
 }
 
 const RecentDecks: React.FC<RecentDecksProps> = ({
   Pcolor,
   Scolor,
   categories,
+  onDeleteCategory,
 }) => {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
-  const dataSize = categories ? categories.length : 0;
-  const cardStyle = `relative rounded-xl w-2/5 h-2/6 z-1 mb-6`;
+  const [localCategories, setLocalCategories] = useState(categories || []); // Local state for categories
+
+  const cardStyle = `relative rounded-xl w-2/5 h-2/6 z-1 mb-6`; // Add cardStyle definition
 
   const handleMouseEnter = (index: number) => {
     setHoveredIndex(index); // Set the index of the hovered item
@@ -27,7 +31,25 @@ const RecentDecks: React.FC<RecentDecksProps> = ({
     setHoveredIndex(null); // Reset hover state when mouse leaves
   };
 
-  if (!categories) {
+  const handleDeleteClick = async (categoryId: string, index: number) => {
+    try {
+      await deleteCategory(categoryId); // Call the delete API function
+      // Remove the category from local state after deletion
+      const updatedCategories = localCategories.filter(
+        (category) => category._id !== categoryId
+      );
+      setLocalCategories(updatedCategories);
+
+      // Optional: Trigger callback to update the parent component
+      if (onDeleteCategory) {
+        onDeleteCategory(categoryId);
+      }
+    } catch (error) {
+      console.error("Error deleting category:", error);
+    }
+  };
+
+  if (!localCategories) {
     return (
       <div>
         <h3 className="text-center p-4 text-lg font-bold dark:text-white">
@@ -51,17 +73,19 @@ const RecentDecks: React.FC<RecentDecksProps> = ({
         Recent Decks
       </h3>
       <p className="text-center text-xl text-gray-500">
-        {dataSize === 0 ? <span className="pt-24">No decks created</span> : ""}
+        {localCategories.length === 0 ? (
+          <span className="pt-24">No decks created</span>
+        ) : (
+          ""
+        )}
       </p>
       <div className="flex flex-wrap justify-evenly content-stretch overflow-hidden">
-        {/* Only maps up to 4 decks */}
-        {categories.slice(0, 6).map((category, index) => (
+        {localCategories.slice(0, 6).map((category, index) => (
           <div
             key={category._id}
             style={{ backgroundColor: Pcolor }}
-            className={`flex flex-col ${cardStyle} `}
+            className={`flex flex-col ${cardStyle}`}
           >
-            {/* Link to the review page for the selected deck */}
             <Link
               to={`/review/${category._id}`} // Use category._id in the URL for review
               state={{ categoryName: category.name }} // Pass category name in state
@@ -81,13 +105,13 @@ const RecentDecks: React.FC<RecentDecksProps> = ({
               </span>
               <span className="mb-2 absolute right-4 bottom-0">
                 <GoTrash
-                  onMouseEnter={() => handleMouseEnter(index)} // Set the index when hovering
+                  onMouseEnter={() => handleMouseEnter(index)}
                   onMouseLeave={handleMouseLeave}
                   style={{
-                    color: hoveredIndex === index ? "white" : Scolor, // Change color based on hover state
+                    color: hoveredIndex === index ? "white" : Scolor,
                   }}
-                  className="w-10 h-10 text-secondary z-10"
-                  onClick={() => console.log("deleted")}
+                  className="w-10 h-10 text-secondary z-10 cursor-pointer"
+                  onClick={() => handleDeleteClick(category._id, index)}
                 />
               </span>
             </div>
