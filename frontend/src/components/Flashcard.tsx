@@ -3,10 +3,16 @@ import { useParams, useLocation } from "react-router-dom";
 import { useGetNextFlashcard } from "../hooks/flashcard/useGetNextFlashcard";
 import { useReviewFlashcard } from "../hooks/flashcard/useReviewFlashcard";
 import Confetti from "react-confetti";
+import { useUserProfile } from "../context/UserProfileContext";
 
 type Feedback = "Forgot" | "Hard" | "Good" | "Easy";
 
 function Flashcard() {
+
+  const { userProfile } = useUserProfile();
+
+  const Pcolor = userProfile ? userProfile.colorPreferences.primary : "#5C0B86"; // Default color if no userProfile
+
   const buttonStyle =
     "text-white mt-4 bg-primary hover:bg-purple-800 focus:outline-none focus:ring-4 focus:ring-purple-300 font-medium rounded-full text-sm text-center mb-2 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-900 w-1/5 p-3";
 
@@ -81,13 +87,13 @@ function Flashcard() {
             <h1 className="text-5xl text-center">{flashcard?.frontSide}</h1>
           </div>
           <div className="flex justify-between">
-            <button type="button" className={buttonStyle}>
+            <button type="button" className={buttonStyle} style={{backgroundColor: Pcolor}}>
               Edit
             </button>
-            <button type="button" className={buttonStyle} onClick={handleClick}>
+            <button type="button" className={buttonStyle} onClick={handleClick} style={{backgroundColor: Pcolor}}>
               Show Answer
             </button>
-            <button type="button" className={buttonStyle}>
+            <button type="button" className={buttonStyle} style={{backgroundColor: Pcolor}}>
               Delete
             </button>
           </div>
@@ -102,6 +108,7 @@ function Flashcard() {
             <button
               type="button"
               className={buttonStyle}
+              style={{backgroundColor: Pcolor}}
               onClick={() => handleReview("Forgot")}
             >
               Forgot
@@ -109,6 +116,7 @@ function Flashcard() {
             <button
               type="button"
               className={buttonStyle}
+              style={{backgroundColor: Pcolor}}
               onClick={() => handleReview("Hard")}
             >
               Hard
@@ -116,6 +124,7 @@ function Flashcard() {
             <button
               type="button"
               className={buttonStyle}
+              style={{backgroundColor: Pcolor}}
               onClick={() => handleReview("Good")}
             >
               Good
@@ -123,6 +132,7 @@ function Flashcard() {
             <button
               type="button"
               className={buttonStyle}
+              style={{backgroundColor: Pcolor}}
               onClick={() => handleReview("Easy")}
             >
               Easy

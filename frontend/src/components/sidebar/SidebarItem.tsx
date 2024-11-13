@@ -96,10 +96,11 @@ export default function SidebarItem({
             <div
               className={`
                 text-primary-500 invisible absolute left-full ml-6 -translate-x-3
-                rounded-md bg-secondary px-2
+                rounded-md bg-secondary px-2 z-50
                 py-1 text-sm opacity-20 transition-all
                 group-hover:visible group-hover:translate-x-0 group-hover:opacity-100 dark:text-white dark:bg-secondary
               `}
+              style={{backgroundColor: color}}
             >
               {!subMenu
                 ? text

@@ -87,7 +87,7 @@ function Dashboard() {
             <CalendarWidget Pcolor={Pcolor} Scolor={Scolor} />
           </div>
 
-          <div className="col-span-6 row-span-1 col-start-1 row-start-7 "></div>
+          <div className="col-span-6 row-span-1 col-start-1 row-start-11 "></div>
         </div>
       </div>
     </div>

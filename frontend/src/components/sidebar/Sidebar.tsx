@@ -73,14 +73,14 @@ function Sidebar({ children, expanded, handleToggle }: SidebarProps) {
           <ul className="flex-1 px-3">{children}</ul>
           <div className="flex border-t p-3 h-[100px]">
             <div
-              className={`flex flex-col items-center ${expanded ? "ml-3" : ""}`}
+              className={`flex flex-col items-start ${expanded ? "ml-3" : ""}`}
             >
               <a
                 href="/"
                 className="leading-4 flex items-center dark:text-white pb-4"
               >
                 <ArrowRightStartOnRectangleIcon className="h-6 w-6" />
-                {expanded && <h4 className="text-primary-500 pl-2">Log out</h4>}
+                {expanded && <h4 className="text-lg pl-7">Log out</h4>}
               </a>
               <div className="flex items-center justify-between w-full">
                 <label className="relative inline-flex items-center cursor-pointer">

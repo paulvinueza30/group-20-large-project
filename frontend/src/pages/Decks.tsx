@@ -49,20 +49,18 @@ function Decks() {
   return (
     <div className="flex">
       <SideGrid color={Pcolor} />
-      <div className="flex w-full ml-20">
+      <div className="w-full ml-20 mr-[30px]">
         <div className="grid grid-cols-8 auto-rows-[100px] gap-6 w-full">
-          <div className="h-full w-full col-span-6">
+          <div className="h-full w-full col-span-8">
             <h1 className="font-bold text-2xl dark:text-white pt-14">
               Deck Selection
             </h1>
           </div>
-          <div className="col-span-3 col-start-2 row-span-5 row-start-2">
-            {categories?.slice(0, Math.ceil(categories.length / 2)).map((category, index) => (
+          <div className="col-span-8 col-start-1 row-span-5 row-start-2 flex flex-row flex-wrap w-full justify-center">
+            {categories?.map((category, index) => (
               <div
                 key={category._id}
-                className={`bg-cover mb-8 rounded-xl shadow-lg h-72 relative flex w-full ${
-                  index % 2 === 0 ? "bg1" : "bg2"
-                }`}
+                className={`bg-none m-4 rounded-xl shadow-lg h-72 relative w-72 mt-0 ${index % 2 === 0 ? "bg1" : "bg2"}`}
               >
                 {editingCategoryId === category._id ? (
                   <div className="absolute top-6 left-6 w-full px-4">
