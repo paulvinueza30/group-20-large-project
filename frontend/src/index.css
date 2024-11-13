@@ -2,7 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-
 .bg1 {
   background-image: url("./assets/bg1.jpg");
 }
@@ -12,17 +11,18 @@
 }
 
 .sub-menu {
-    overflow: hidden;
-    transition: height 300ms;
-
+  overflow: hidden;
+  transition: height 300ms;
 }
 
 @font-face {
   font-family: "pixel";
-  src: url("./font/Nabla-Regular.ttf");
+  src: url("./font/BebasNeue-Regular.ttf");
 }
 
-.loader, .loader:before, .loader:after {
+.loader,
+.loader:before,
+.loader:after {
   border-radius: 50%;
   width: 2.5em;
   height: 2.5em;
@@ -30,7 +30,7 @@
   animation: bblFadInOut 1.8s infinite ease-in-out;
 }
 .loader {
-  color: #FFF;
+  color: #fff;
   font-size: 7px;
   position: relative;
   text-indent: -9999em;
@@ -39,7 +39,7 @@
 }
 .loader:before,
 .loader:after {
-  content: '';
+  content: "";
   position: absolute;
   top: 0;
 }
@@ -52,6 +52,12 @@
 }
 
 @keyframes bblFadInOut {
-  0%, 80%, 100% { box-shadow: 0 2.5em 0 -1.3em }
-  40% { box-shadow: 0 2.5em 0 0 }
+  0%,
+  80%,
+  100% {
+    box-shadow: 0 2.5em 0 -1.3em;
+  }
+  40% {
+    box-shadow: 0 2.5em 0 0;
+  }
 }

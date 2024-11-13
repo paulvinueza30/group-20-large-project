@@ -1,6 +1,10 @@
 import { useState, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import { getAllCategories, deleteCategory, editCategory } from "../services/categoryApi";
+import {
+  getAllCategories,
+  deleteCategory,
+  editCategory,
+} from "../services/categoryApi";
 import { ICategory } from "../interfaces/ICategory";
 import SideGrid from "../components/sidebar/SideGrid";
 import { useUserProfile } from "../context/UserProfileContext";
@@ -11,19 +15,27 @@ import "../index.css";
 function Decks() {
   const { userProfile } = useUserProfile();
   const Pcolor = userProfile ? userProfile.colorPreferences.primary : "#5C0B86";
-  const Scolor = userProfile ? userProfile.colorPreferences.secondary : "#BA72E2";
+  const Scolor = userProfile
+    ? userProfile.colorPreferences.secondary
+    : "#BA72E2";
 
-  const [editingCategoryId, setEditingCategoryId] = useState<string | null>(null);
+  const [editingCategoryId, setEditingCategoryId] = useState<string | null>(
+    null
+  );
   const [editedCategoryName, setEditedCategoryName] = useState<string>("");
   const [refreshToken, setRefreshToken] = useState(0); // Initialize refreshToken state
 
-  const { data: categories, loading, error } = useCategories(!!userProfile, refreshToken);
+  const {
+    data: categories,
+    loading,
+    error,
+  } = useCategories(!!userProfile, refreshToken);
   const navigate = useNavigate();
 
   const handleDeleteCategory = async (categoryId: string) => {
     try {
       await deleteCategory(categoryId);
-      setRefreshToken(prev => prev + 1); // Trigger re-fetch
+      setRefreshToken((prev) => prev + 1); // Trigger re-fetch
     } catch (error) {
       console.error("Error deleting category:", error);
     }
@@ -32,7 +44,7 @@ function Decks() {
   const handleEditCategorySave = async (categoryId: string) => {
     try {
       await editCategory(categoryId, editedCategoryName);
-      setRefreshToken(prev => prev + 1); // Trigger re-fetch
+      setRefreshToken((prev) => prev + 1); // Trigger re-fetch
       setEditingCategoryId(null);
     } catch (error) {
       console.error("Error editing category:", error);
@@ -60,7 +72,9 @@ function Decks() {
             {categories?.map((category, index) => (
               <div
                 key={category._id}
-                className={`bg-none m-4 rounded-xl shadow-lg h-72 relative w-72 mt-0 ${index % 2 === 0 ? "bg1" : "bg2"}`}
+                className={`bg-cover m-4 rounded-xl shadow-lg h-72 relative w-96 mt-0 ${
+                  index % 2 === 0 ? "bg1" : "bg2"
+                }`}
               >
                 {editingCategoryId === category._id ? (
                   <div className="absolute top-6 left-6 w-full px-4">
@@ -101,7 +115,9 @@ function Decks() {
                       <button
                         style={{ backgroundColor: Pcolor }}
                         className="ml-2 text-white text-xl rounded-xl px-5 py-2"
-                        onClick={() => handleReviewClick(category._id, category.name)}
+                        onClick={() =>
+                          handleReviewClick(category._id, category.name)
+                        }
                       >
                         Review
                       </button>

@@ -3,13 +3,18 @@ import { useUserProfile } from "../context/UserProfileContext";
 import placeholder from "../assets/Transhumans - Astro.png";
 import { PhotoIcon } from "@heroicons/react/24/outline";
 import background from "../assets/profileBg.png";
+import waves from "../assets/waves.png";
+import blossoms from "../assets/blossoms.png";
+import cat from "../assets/catFrame.png";
+import frog from "../assets/frogFrame.png";
 
 interface UserInfoProps {
   Pcolor: string;
   Scolor: string;
+  frame: string;
 }
 
-const UserInfo: React.FC<UserInfoProps> = ({ Pcolor, Scolor }) => {
+const UserInfo: React.FC<UserInfoProps> = ({ Pcolor, Scolor, frame }) => {
   const [isHover, setIsHover] = useState(false);
   const { userProfile, updateProfilePic } = useUserProfile();
   const textStyle =
@@ -54,7 +59,7 @@ const UserInfo: React.FC<UserInfoProps> = ({ Pcolor, Scolor }) => {
               onMouseEnter={handleMouseEnter}
               onMouseLeave={handleMouseLeave}
               htmlFor="files"
-              className="-bottom-[3px] left-0 opacity-0 hover:opacity-100 border-none text-center absolute pt-12 hover:bg-opacity-70 rounded-full w-72 h-72 text-4xl text-gray-800"
+              className="z-50 -bottom-[3px] left-0 opacity-0 hover:opacity-100 border-none text-center absolute pt-12 hover:bg-opacity-70 rounded-full w-72 h-72 text-4xl text-gray-800"
               style={{
                 backgroundColor: isHover ? Scolor : "transparent",
                 opacity: isHover ? 0.8 : 0,
@@ -69,6 +74,34 @@ const UserInfo: React.FC<UserInfoProps> = ({ Pcolor, Scolor }) => {
               onChange={handleFileChange}
               className="hidden"
             />
+            {frame === blossoms && (
+              <img
+                src={blossoms}
+                alt=""
+                className="min-w-[20rem] -top-[1rem] -left-[1.2rem] absolute"
+              />
+            )}
+            {frame === waves && (
+              <img
+                src={waves}
+                alt=""
+                className="min-w-[21rem] top-2 -left-5 absolute"
+              />
+            )}
+            {frame === cat && (
+              <img
+                src={cat}
+                alt=""
+                className="min-w-[32rem] -top-[7.5rem] -right-[7rem] absolute"
+              />
+            )}
+            {frame === frog && (
+              <img
+                src={frog}
+                alt=""
+                className="min-w-[27rem] -top-[1rem] -right-[4.5rem] absolute"
+              />
+            )}
           </div>
           <img
             src={profilePicUrl}

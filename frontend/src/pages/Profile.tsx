@@ -3,10 +3,13 @@ import TodoList from "../components/todo/TodoList";
 import UserInfo from "../components/userInfo";
 import { HomeIcon } from "@heroicons/react/24/outline";
 import { useUserProfile } from "../context/UserProfileContext";
+import FrameSelection from "../components/frameSelection";
+import { useState } from "react";
 
 // TODO: Add components
 // TODO: Add color attribute to todo and other stats
 function Profile() {
+  const [frame, setFrame] = useState("");
   const { userProfile } = useUserProfile();
 
   // Check if the user profile is loaded
@@ -30,7 +33,7 @@ function Profile() {
               <h1 className="font-bold text-2xl dark:text-white">Profile</h1>
             </div>
             <div className="col-span-2 row-span-7 col-start-1 row-start-3 ">
-              <UserInfo Pcolor={Pcolor} Scolor={Scolor} />
+              <UserInfo Pcolor={Pcolor} Scolor={Scolor} frame={frame} />
             </div>
             <div className="col-span-2 row-span-4 col-start-3 row-start-2 overflow-hidden bg-slate-100 rounded-xl shadow-md dark:bg-dark-primary">
               <h2 className="text-center font-bold text-xl py-4 dark:text-white">
@@ -42,7 +45,7 @@ function Profile() {
             </div>
             <div className="col-span-4 row-span-4 row-start-6 col-start-3 bg-slate-100 rounded-xl shadow-md dark:bg-dark-primary">
               <h2 className="text-center font-bold text-xl py-4 dark:text-white">
-                Achievements Display
+                <FrameSelection frame={frame} setFrame={setFrame} />
               </h2>
             </div>
             {/* This is just to have a bit of spacing at the bottom of the page */}

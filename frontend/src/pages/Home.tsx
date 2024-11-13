@@ -13,19 +13,19 @@ function Home() {
         <NavBar />
       </div>
       <div className="col-span-3 row-span-5 col-start-2 row-start-2 pt-10 flex flex-col z-10">
-        <h1 className="text-8xl font-pixel tracking-wide hue-rotate-[210deg] leading-[5rem]">
+        <h1 className="text-8xl font-pixel tracking-wide ">
           Level up your learning
         </h1>
         <br />
-        <h3 className="text-2xl pb-10 font-sans pt-5 text-gray-600">
+        <h3 className="text-2xl pb-10 font-sans text-gray-600 relative bottom-8 mb-2">
           Master any subject with fun, interactive
         </h3>
-        <h3 className="text-2xl pb-10 font-sans relative bottom-10 text-gray-600">
+        <h3 className="text-2xl pb-5 font-sans relative bottom-20 text-gray-600">
           flashcards
         </h3>
         <a
           href="/signup"
-          className="rounded-xl bg-primary text-white text-center p-4 px-6 w-[200px] text-2xl font-bold relative bottom-8"
+          className="rounded-xl bg-primary text-white text-center p-4 px-6 w-[200px] text-2xl font-bold relative bottom-12  hover:bg-tertiary"
         >
           Sign Up Now
         </a>
@@ -40,7 +40,7 @@ function Home() {
         <div className="flex justify-evenly pt-10 text-white">
           <div className="">
             <FaBookOpen className="text-white" size={30} />
-            <h3 className="text-2xl font-bold">Various learning modes</h3>
+            <h3 className="text-2xl font-bold">Spaced Repetition</h3>
             <p className="text-balance text-lg">
               Lorem ipsum odor amet, consectetuer adipiscing elit. Neque donec
               vitae ipsum facilisi cubilia dictumst.
@@ -48,7 +48,7 @@ function Home() {
           </div>
           <div className="px-4">
             <IoExtensionPuzzle className="text-white" size={30} />
-            <h3 className="text-2xl font-bold">Challenges</h3>
+            <h3 className="text-2xl font-bold">Levels</h3>
             <p className="text-balance text-lg">
               Lorem ipsum odor amet, consectetuer adipiscing elit. Neque donec
               vitae ipsum facilisi cubilia dictumst.

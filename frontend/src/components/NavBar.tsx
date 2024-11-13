@@ -3,9 +3,8 @@ function NavBar() {
     <nav className="bg-white border-gray-200 pt-5">
       <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto py-4">
         <a href="#" className="flex items-center space-x-3 rtl:space-x-reverse">
-          <span className="self-center text-xl font-pixel whitespace-nowrap hue-rotate-[210deg]">
-            {/* Just a placeholder */}
-            FlashGame
+          <span className="self-center text-2xl font-pixel whitespace-nowrap hue-rotate-[210deg]">
+            Atama
           </span>
         </a>
         <div className="lock w-auto " id="navbar-default">

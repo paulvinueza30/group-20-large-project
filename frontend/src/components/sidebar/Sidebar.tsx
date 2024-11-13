@@ -53,11 +53,11 @@ function Sidebar({ children, expanded, handleToggle }: SidebarProps) {
               alt=""
             />
             <h1
-              className={`font-bold dark:text-white ${
+              className={`font-bold dark:text-white text-2xl tracking-wide ${
                 expanded ? "block" : "hidden"
               }`}
             >
-              Group 20
+              Atama
             </h1>
             <button
               onClick={handleToggle}
