@@ -80,7 +80,9 @@ function Sidebar({ children, expanded, handleToggle }: SidebarProps) {
                 className="leading-4 flex items-center dark:text-white pb-4"
               >
                 <ArrowRightStartOnRectangleIcon className="h-6 w-6" />
-                {expanded && <h4 className="text-lg pl-7">Log out</h4>}
+                {expanded && (
+                  <h4 className="text-lg pl-7 text-gray-800">Log out</h4>
+                )}
               </a>
               <div className="flex items-center justify-between w-full">
                 <label className="relative inline-flex items-center cursor-pointer">

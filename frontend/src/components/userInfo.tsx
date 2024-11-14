@@ -3,10 +3,11 @@ import { useUserProfile } from "../context/UserProfileContext";
 import placeholder from "../assets/Transhumans - Astro.png";
 import { PhotoIcon } from "@heroicons/react/24/outline";
 import background from "../assets/profileBg.png";
-import waves from "../assets/waves.png";
-import blossoms from "../assets/blossoms.png";
-import cat from "../assets/catFrame.png";
-import frog from "../assets/frogFrame.png";
+import level1 from "../assets/level1.png";
+import level2 from "../assets/level2.png";
+import level5 from "../assets/level5.png";
+import level10 from "../assets/level10.png";
+import level20 from "../assets/level20.png";
 
 interface UserInfoProps {
   Pcolor: string;
@@ -44,6 +45,29 @@ const UserInfo: React.FC<UserInfoProps> = ({ Pcolor, Scolor, frame }) => {
     ? `${process.env.REACT_APP_SERVER_URL}${userProfile.profilePic}` // Ensure the correct base URL
     : placeholder;
 
+  const frames = [
+    {
+      name: level1,
+      style: "min-w-[25rem] -top-[5.2rem] -left-[4.2rem] absolute",
+    },
+    {
+      name: level2,
+      style: "min-w-[23rem] -top-[3.2rem] -left-[2.9rem] absolute",
+    },
+    {
+      name: level5,
+      style: "min-w-[26rem] -top-[3.2rem] -left-[4.5rem] absolute",
+    },
+    {
+      name: level10,
+      style: "min-w-[27rem] -top-[4.5rem] -left-[4.7rem] absolute",
+    },
+    {
+      name: level20,
+      style: "min-w-[27.5rem] -top-[3.9rem] -left-[5.2rem] absolute",
+    },
+  ];
+
   return (
     <div className="h-full relative bg-slate-100 dark:bg-dark-primary shadow-md rounded-[30px]">
       <div className="flex flex-col items-center h-5/6">
@@ -74,33 +98,10 @@ const UserInfo: React.FC<UserInfoProps> = ({ Pcolor, Scolor, frame }) => {
               onChange={handleFileChange}
               className="hidden"
             />
-            {frame === blossoms && (
-              <img
-                src={blossoms}
-                alt=""
-                className="min-w-[20rem] -top-[1rem] -left-[1.2rem] absolute"
-              />
-            )}
-            {frame === waves && (
-              <img
-                src={waves}
-                alt=""
-                className="min-w-[21rem] top-2 -left-5 absolute"
-              />
-            )}
-            {frame === cat && (
-              <img
-                src={cat}
-                alt=""
-                className="min-w-[32rem] -top-[7.5rem] -right-[7rem] absolute"
-              />
-            )}
-            {frame === frog && (
-              <img
-                src={frog}
-                alt=""
-                className="min-w-[27rem] -top-[1rem] -right-[4.5rem] absolute"
-              />
+            {frames.map(({ name, style }) =>
+              frame === name ? (
+                <img key={name} src={name} className={style} />
+              ) : null
             )}
           </div>
           <img
