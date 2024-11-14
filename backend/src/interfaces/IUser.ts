@@ -14,4 +14,6 @@ export interface IUser extends Document {
   createdAt: Date;
   userExperience: Number;
   userLevel: Number;
+  calculateLevel(): Number;
+  levelUp(): Promise<void>;
 }

@@ -11,6 +11,6 @@ export interface ICategory extends Document {
     createdAt?: Date;
     editedAt?: Date;
     updateExperience(feedback: 'Forgot' | 'Hard' | 'Good' | 'Easy'): Promise<ICategory>;
-
+    dailyStreakCheck: () => Promise<void>;
 }
 
