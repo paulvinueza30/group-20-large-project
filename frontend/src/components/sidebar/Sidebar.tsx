@@ -81,7 +81,9 @@ function Sidebar({ children, expanded, handleToggle }: SidebarProps) {
               >
                 <ArrowRightStartOnRectangleIcon className="h-6 w-6" />
                 {expanded && (
-                  <h4 className="text-lg pl-7 text-gray-800">Log out</h4>
+                  <h4 className="text-lg pl-7 text-gray-800 dark:text-white">
+                    Log out
+                  </h4>
                 )}
               </a>
               <div className="flex items-center justify-between w-full">

@@ -3,7 +3,7 @@ import TodoList from "../components/todo/TodoList";
 import UserInfo from "../components/userInfo";
 import { HomeIcon } from "@heroicons/react/24/outline";
 import { useUserProfile } from "../context/UserProfileContext";
-import FrameSelection from "../components/frameSelection";
+import FrameSelection from "../components/FrameSelection";
 import { useState } from "react";
 
 // TODO: Add components

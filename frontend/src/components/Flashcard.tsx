@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useParams, useLocation } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { useGetNextFlashcard } from "../hooks/flashcard/useGetNextFlashcard";
 import { useReviewFlashcard } from "../hooks/flashcard/useReviewFlashcard";
 import Confetti from "react-confetti";
@@ -8,7 +8,6 @@ import { useUserProfile } from "../context/UserProfileContext";
 type Feedback = "Forgot" | "Hard" | "Good" | "Easy";
 
 function Flashcard() {
-
   const { userProfile } = useUserProfile();
 
   const Pcolor = userProfile ? userProfile.colorPreferences.primary : "#5C0B86"; // Default color if no userProfile
@@ -18,8 +17,6 @@ function Flashcard() {
 
   const [showBackCard, setShowBackCard] = useState(false);
   const { categoryId } = useParams<{ categoryId: string }>(); // Get categoryId from URL parameters
-  const location = useLocation();
-  const categoryName = location.state?.categoryName || "Default Category"; // Fallback for categoryName
 
   // Check that categoryId is not null or undefined before using it
   if (!categoryId) {
@@ -30,13 +27,48 @@ function Flashcard() {
   const [category, setCategory] = useState<string>(categoryId);
   const { flashcard, loading, error, refetch } = useGetNextFlashcard(category);
 
-  const { review, loadingFeedback, errorFeedback } = useReviewFlashcard();
+  const { review, errorFeedback } = useReviewFlashcard();
+
+  // Store the floating numbers in the state along with their position (stacked vertically)
+  const [experienceNumbers, setFloatingNumbers] = useState<
+    { id: number; value: number; top: number }[]
+  >([]);
+
+  // Function to handle adding a floating number with stacking
+  const addFloatingNumber = (value: number) => {
+    // Create a new floating number with a unique ID
+    const newFloatingNumber = {
+      id: Date.now(), // Unique ID based on timestamp
+      value: value,
+      top: experienceNumbers.length * 25 + 300, // Stack vertically (space them by 25px)
+    };
+
+    // Add the new floating number to the state
+    setFloatingNumbers((prevNumbers) => [...prevNumbers, newFloatingNumber]);
+
+    // Remove the floating number after 2 seconds
+    setTimeout(() => {
+      setFloatingNumbers(
+        (prevNumbers) =>
+          prevNumbers.filter((num) => num.id !== newFloatingNumber.id) // Remove by ID
+      );
+    }, 2000);
+  };
 
   const handleReview = async (feedback: Feedback) => {
     const flashcardId = flashcard?._id;
     if (flashcardId) {
       try {
         await review(flashcardId, feedback);
+        if (feedback === "Forgot") {
+          addFloatingNumber(0.25); // Add a new floating number
+        } else if (feedback === "Hard") {
+          addFloatingNumber(0.5);
+        } else if (feedback === "Good") {
+          addFloatingNumber(0.75);
+        } else if (feedback === "Easy") {
+          addFloatingNumber(1);
+        }
         setShowBackCard(false);
         refetch();
       } catch (err) {
@@ -72,75 +104,109 @@ function Flashcard() {
     return <p className="dark:text-white">Error: {error}</p>;
   }
 
-  if (loadingFeedback) return <p>Loading...</p>;
-  if (errorFeedback) return <p>Error: {errorFeedback}</p>;
-
   const handleClick = () => {
     setShowBackCard(!showBackCard);
   };
 
   return (
-    <div>
-      {!showBackCard && (
-        <div className="dark:text-white">
-          <div className="p-20 bg-slate-100 dark:bg-dark-primary rounded-xl min-h-96 min-w-full flex justify-center items-center">
-            <h1 className="text-5xl text-center">{flashcard?.frontSide}</h1>
-          </div>
-          <div className="flex justify-between">
-            <button type="button" className={buttonStyle} style={{backgroundColor: Pcolor}}>
-              Edit
-            </button>
-            <button type="button" className={buttonStyle} onClick={handleClick} style={{backgroundColor: Pcolor}}>
-              Show Answer
-            </button>
-            <button type="button" className={buttonStyle} style={{backgroundColor: Pcolor}}>
-              Delete
-            </button>
-          </div>
+    <>
+      {/* XP Display*/}
+      {experienceNumbers.map((num) => (
+        <div
+          key={num.id}
+          className="absolute text-green-600 text-3xl font-bold animate-float z-50"
+          style={{
+            top: `${num.top}px`,
+            left: "70%",
+            transform: "translateX(-50%)",
+          }}
+        >
+          + {num.value} xp
         </div>
-      )}
-      {showBackCard && (
-        <div className="dark:text-white">
-          <div className="p-20 bg-slate-100 dark:bg-dark-primary rounded-xl min-h-96 min-w-full flex justify-center items-center">
-            <h1 className="text-5xl text-center">{flashcard?.backSide}</h1>
+      ))}
+      <div className="relative">
+        {errorFeedback && (
+          <div className="fixed bottom-10 right-10 border-b-4 border-red-500 bg-slate-100 h-32 flex p-10 rounded-xl">
+            <h1 className="text-2xl font-semibold self-center">
+              Feedback error: {errorFeedback}
+            </h1>
           </div>
-          <div className="flex justify-between">
-            <button
-              type="button"
-              className={buttonStyle}
-              style={{backgroundColor: Pcolor}}
-              onClick={() => handleReview("Forgot")}
-            >
-              Forgot
-            </button>
-            <button
-              type="button"
-              className={buttonStyle}
-              style={{backgroundColor: Pcolor}}
-              onClick={() => handleReview("Hard")}
-            >
-              Hard
-            </button>
-            <button
-              type="button"
-              className={buttonStyle}
-              style={{backgroundColor: Pcolor}}
-              onClick={() => handleReview("Good")}
-            >
-              Good
-            </button>
-            <button
-              type="button"
-              className={buttonStyle}
-              style={{backgroundColor: Pcolor}}
-              onClick={() => handleReview("Easy")}
-            >
-              Easy
-            </button>
+        )}
+
+        {!showBackCard && (
+          <div className="dark:text-white">
+            <div className="p-20 bg-slate-100 dark:bg-dark-primary rounded-xl min-h-96 min-w-full flex justify-center items-center">
+              <h1 className="text-5xl text-center">{flashcard?.frontSide}</h1>
+            </div>
+            <div className="flex justify-between">
+              <button
+                type="button"
+                className={buttonStyle}
+                style={{ backgroundColor: Pcolor }}
+              >
+                Edit
+              </button>
+              <button
+                type="button"
+                className={buttonStyle}
+                onClick={handleClick}
+                style={{ backgroundColor: Pcolor }}
+              >
+                Show Answer
+              </button>
+              <button
+                type="button"
+                className={buttonStyle}
+                style={{ backgroundColor: Pcolor }}
+              >
+                Delete
+              </button>
+            </div>
           </div>
-        </div>
-      )}
-    </div>
+        )}
+        {showBackCard && (
+          <div className="dark:text-white">
+            <div className="p-20 bg-slate-100 dark:bg-dark-primary rounded-xl min-h-96 min-w-full flex justify-center items-center">
+              <h1 className="text-5xl text-center">{flashcard?.backSide}</h1>
+            </div>
+            <div className="flex justify-between">
+              <button
+                type="button"
+                className={buttonStyle}
+                style={{ backgroundColor: Pcolor }}
+                onClick={() => handleReview("Forgot")}
+              >
+                Forgot
+              </button>
+              <button
+                type="button"
+                className={buttonStyle}
+                style={{ backgroundColor: Pcolor }}
+                onClick={() => handleReview("Hard")}
+              >
+                Hard
+              </button>
+              <button
+                type="button"
+                className={buttonStyle}
+                style={{ backgroundColor: Pcolor }}
+                onClick={() => handleReview("Good")}
+              >
+                Good
+              </button>
+              <button
+                type="button"
+                className={buttonStyle}
+                style={{ backgroundColor: Pcolor }}
+                onClick={() => handleReview("Easy")}
+              >
+                Easy
+              </button>
+            </div>
+          </div>
+        )}
+      </div>
+    </>
   );
 }
 

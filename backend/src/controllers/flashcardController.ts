@@ -74,20 +74,16 @@ export const editFlashcard = async (
     );
 
     if (!updatedFlashcard) {
-      res
-        .status(404)
-        .json({
-          message: "Flashcard not found or does not belong to the user",
-        });
+      res.status(404).json({
+        message: "Flashcard not found or does not belong to the user",
+      });
       return;
     }
 
-    res
-      .status(200)
-      .json({
-        message: "Flashcard updated successfully",
-        flashcard: updatedFlashcard,
-      });
+    res.status(200).json({
+      message: "Flashcard updated successfully",
+      flashcard: updatedFlashcard,
+    });
   } catch (error) {
     res.status(500).json({ message: "Failed to update flashcard", error });
   }
@@ -110,11 +106,9 @@ export const deleteFlashcard = async (
     });
 
     if (!flashcardToDelete) {
-      res
-        .status(404)
-        .json({
-          message: "Flashcard not found or does not belong to the user",
-        });
+      res.status(404).json({
+        message: "Flashcard not found or does not belong to the user",
+      });
       return;
     }
 
@@ -160,12 +154,14 @@ export const getNextFlashcard = async (
     const nextCard = queueController.getNextCard();
 
     if (!nextCard) {
-      res.status(204).json({ message: "No flashcards due for review in this category" });
+      res
+        .status(204)
+        .json({ message: "No flashcards due for review in this category" });
       return;
     }
-    
+
     categoryDoc.cardsStudied += 1;
-    await categoryDoc.save();  
+    await categoryDoc.save();
 
     res.json(nextCard);
   } catch (error) {
@@ -189,11 +185,11 @@ export const reviewFlashcard = async (
     return;
   }
 
-  const xpMap = {                                               
-       Forgot: .25,
-       Hard: .5,
-       Good: .75,
-       Easy: 1,
+  const xpMap = {
+    Forgot: 0.25,
+    Hard: 0.5,
+    Good: 0.75,
+    Easy: 1,
   };
   const xpGain = xpMap[feedback];
 
@@ -201,16 +197,15 @@ export const reviewFlashcard = async (
     // Check if the flashcard exists and belongs to the user
     const card = await flashcard.findOne({ _id: id, userId });
     if (!card) {
-      res
-        .status(404)
-        .json({
-          message: "Flashcard not found or does not belong to the user",
-        });
+      res.status(404).json({
+        message: "Flashcard not found or does not belong to the user",
+      });
       return;
     }
 
     user.userExperience += xpGain;
-    await user.levelUp();
+    // Causing problems when reviewing flashcard (not sure what)
+    // await user.levelUp();
     await user.save();
 
     // Update due date based on feedback
@@ -222,7 +217,10 @@ export const reviewFlashcard = async (
 };
 
 // Get All Flashcards in a Category (Non-Review Mode)
-export const getAllFlashcards = async (req: Request, res: Response): Promise<void> => {
+export const getAllFlashcards = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
   try {
     const categoryId = req.params.categoryId;
     const user = req.user as IUser;
@@ -237,7 +235,9 @@ export const getAllFlashcards = async (req: Request, res: Response): Promise<voi
     // Verify the category exists and belongs to the user
     const categoryDoc = await Category.findOne({ _id: categoryId, userId });
     if (!categoryDoc) {
-      res.status(404).json({ message: "Category not found or does not belong to the user" });
+      res
+        .status(404)
+        .json({ message: "Category not found or does not belong to the user" });
       return;
     }
 
