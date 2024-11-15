@@ -1,59 +1,31 @@
-import { useState } from "react";
+// src/components/Flashcard.tsx
+import React, { useState } from "react";
 import { useParams } from "react-router-dom";
+import Confetti from "react-confetti";
 import { useGetNextFlashcard } from "../hooks/flashcard/useGetNextFlashcard";
 import { useReviewFlashcard } from "../hooks/flashcard/useReviewFlashcard";
-import Confetti from "react-confetti";
 import { useUserProfile } from "../context/UserProfileContext";
+import Button from "../components/flashcard/Button";
+import FlashcardSide from "../components/flashcard/FlashcardSide";
+import FloatingXP from "../components/flashcard/FloatingXP";
+import { useFloatingNumbers } from "../hooks/flashcard/useFloatingNumber";
+import Loader from "../components/flashcard/Loader";
+import ErrorFeedback from "../components/flashcard/ErrorFeedback";
 
 type Feedback = "Forgot" | "Hard" | "Good" | "Easy";
 
-function Flashcard() {
+const Flashcard: React.FC = () => {
   const { userProfile } = useUserProfile();
-
-  const Pcolor = userProfile ? userProfile.colorPreferences.primary : "#5C0B86"; // Default color if no userProfile
-
-  const buttonStyle =
-    "text-white mt-4 bg-primary hover:bg-purple-800 focus:outline-none focus:ring-4 focus:ring-purple-300 font-medium rounded-full text-sm text-center mb-2 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-900 w-1/5 p-3";
+  const Pcolor = userProfile ? userProfile.colorPreferences.primary : "#5C0B86";
 
   const [showBackCard, setShowBackCard] = useState(false);
-  const { categoryId } = useParams<{ categoryId: string }>(); // Get categoryId from URL parameters
-
-  // Check that categoryId is not null or undefined before using it
-  if (!categoryId) {
-    throw new Error("Category ID is missing. Please try again.");
-  }
-
-  // Set category to use with useGetNextFlashcard
-  const [category, setCategory] = useState<string>(categoryId);
-  const { flashcard, loading, error, refetch } = useGetNextFlashcard(category);
-
+  const { categoryId } = useParams<{ categoryId: string }>();
+  const { flashcard, loading, error, refetch } = useGetNextFlashcard(
+    categoryId || ""
+  );
   const { review, errorFeedback } = useReviewFlashcard();
 
-  // Store the floating numbers in the state along with their position (stacked vertically)
-  const [experienceNumbers, setFloatingNumbers] = useState<
-    { id: number; value: number; top: number }[]
-  >([]);
-
-  // Function to handle adding a floating number with stacking
-  const addFloatingNumber = (value: number) => {
-    // Create a new floating number with a unique ID
-    const newFloatingNumber = {
-      id: Date.now(), // Unique ID based on timestamp
-      value: value,
-      top: experienceNumbers.length * 25 + 300, // Stack vertically (space them by 25px)
-    };
-
-    // Add the new floating number to the state
-    setFloatingNumbers((prevNumbers) => [...prevNumbers, newFloatingNumber]);
-
-    // Remove the floating number after 2 seconds
-    setTimeout(() => {
-      setFloatingNumbers(
-        (prevNumbers) =>
-          prevNumbers.filter((num) => num.id !== newFloatingNumber.id) // Remove by ID
-      );
-    }, 2000);
-  };
+  const { experienceNumbers, addFloatingNumber } = useFloatingNumbers();
 
   const handleReview = async (feedback: Feedback) => {
     const flashcardId = flashcard?._id;
@@ -61,7 +33,7 @@ function Flashcard() {
       try {
         await review(flashcardId, feedback);
         if (feedback === "Forgot") {
-          addFloatingNumber(0.25); // Add a new floating number
+          addFloatingNumber(0.25);
         } else if (feedback === "Hard") {
           addFloatingNumber(0.5);
         } else if (feedback === "Good") {
@@ -74,20 +46,10 @@ function Flashcard() {
       } catch (err) {
         console.error("Error during review:", err);
       }
-    } else {
-      console.log("Flashcard ID is missing");
     }
   };
 
-  if (loading)
-    return (
-      <div className="">
-        <div className="p-20 bg-gray-300 dark:bg-gray-600 rounded-xl min-h-[300px] animate-pulse flex justify-center items-center">
-          <span className="loader"></span>
-        </div>
-      </div>
-    );
-
+  if (loading) return <Loader />;
   if (error === "No flashcards left in this category") {
     return (
       <div className="p-20 bg-slate-100 dark:bg-dark-primary rounded-xl min-h-[450px] flex justify-center flex-col">
@@ -104,110 +66,57 @@ function Flashcard() {
     return <p className="dark:text-white">Error: {error}</p>;
   }
 
-  const handleClick = () => {
-    setShowBackCard(!showBackCard);
-  };
-
   return (
     <>
-      {/* XP Display*/}
-      {experienceNumbers.map((num) => (
-        <div
-          key={num.id}
-          className="absolute text-green-600 text-3xl font-bold animate-float z-50"
-          style={{
-            top: `${num.top}px`,
-            left: "70%",
-            transform: "translateX(-50%)",
-          }}
-        >
-          + {num.value} xp
-        </div>
-      ))}
+      <FloatingXP experienceNumbers={experienceNumbers} />
       <div className="relative">
-        {errorFeedback && (
-          <div className="fixed bottom-10 right-10 border-b-4 border-red-500 bg-slate-100 h-32 flex p-10 rounded-xl">
-            <h1 className="text-2xl font-semibold self-center">
-              Feedback error: {errorFeedback}
-            </h1>
-          </div>
+        {errorFeedback && <ErrorFeedback message={errorFeedback} />}
+
+        {!showBackCard ? (
+          <FlashcardSide content={flashcard?.frontSide} />
+        ) : (
+          <FlashcardSide content={flashcard?.backSide} />
         )}
 
         {!showBackCard && (
-          <div className="dark:text-white">
-            <div className="p-20 bg-slate-100 dark:bg-dark-primary rounded-xl min-h-96 min-w-full flex justify-center items-center">
-              <h1 className="text-5xl text-center">{flashcard?.frontSide}</h1>
-            </div>
-            <div className="flex justify-between">
-              <button
-                type="button"
-                className={buttonStyle}
-                style={{ backgroundColor: Pcolor }}
-              >
-                Edit
-              </button>
-              <button
-                type="button"
-                className={buttonStyle}
-                onClick={handleClick}
-                style={{ backgroundColor: Pcolor }}
-              >
-                Show Answer
-              </button>
-              <button
-                type="button"
-                className={buttonStyle}
-                style={{ backgroundColor: Pcolor }}
-              >
-                Delete
-              </button>
-            </div>
+          <div className="flex justify-between">
+            <Button text="Edit" style={{ backgroundColor: Pcolor }} />
+            <Button
+              text="Show Answer"
+              onClick={() => setShowBackCard(!showBackCard)}
+              style={{ backgroundColor: Pcolor }}
+            />
+            <Button text="Delete" style={{ backgroundColor: Pcolor }} />
           </div>
         )}
+
         {showBackCard && (
-          <div className="dark:text-white">
-            <div className="p-20 bg-slate-100 dark:bg-dark-primary rounded-xl min-h-96 min-w-full flex justify-center items-center">
-              <h1 className="text-5xl text-center">{flashcard?.backSide}</h1>
-            </div>
-            <div className="flex justify-between">
-              <button
-                type="button"
-                className={buttonStyle}
-                style={{ backgroundColor: Pcolor }}
-                onClick={() => handleReview("Forgot")}
-              >
-                Forgot
-              </button>
-              <button
-                type="button"
-                className={buttonStyle}
-                style={{ backgroundColor: Pcolor }}
-                onClick={() => handleReview("Hard")}
-              >
-                Hard
-              </button>
-              <button
-                type="button"
-                className={buttonStyle}
-                style={{ backgroundColor: Pcolor }}
-                onClick={() => handleReview("Good")}
-              >
-                Good
-              </button>
-              <button
-                type="button"
-                className={buttonStyle}
-                style={{ backgroundColor: Pcolor }}
-                onClick={() => handleReview("Easy")}
-              >
-                Easy
-              </button>
-            </div>
+          <div className="flex justify-between">
+            <Button
+              text="Forgot"
+              onClick={() => handleReview("Forgot")}
+              style={{ backgroundColor: Pcolor }}
+            />
+            <Button
+              text="Hard"
+              onClick={() => handleReview("Hard")}
+              style={{ backgroundColor: Pcolor }}
+            />
+            <Button
+              text="Good"
+              onClick={() => handleReview("Good")}
+              style={{ backgroundColor: Pcolor }}
+            />
+            <Button
+              text="Easy"
+              onClick={() => handleReview("Easy")}
+              style={{ backgroundColor: Pcolor }}
+            />
           </div>
         )}
       </div>
     </>
   );
-}
+};
 
 export default Flashcard;
