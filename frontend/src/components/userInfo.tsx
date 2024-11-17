@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useUserProfile } from "../context/UserProfileContext";
 import placeholder from "../assets/Transhumans - Astro.png";
 import { PhotoIcon } from "@heroicons/react/24/outline";

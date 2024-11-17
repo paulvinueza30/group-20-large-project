@@ -11,6 +11,7 @@ import { useUserProfile } from "../context/UserProfileContext";
 import { GoTrash, GoPencil } from "react-icons/go";
 import { useCategories } from "../hooks/category/useCategories"; // Import updated useCategories hook
 import "../index.css";
+import darkbg1 from "../assets/bgDark1.jpg";
 
 function Decks() {
   const { userProfile } = useUserProfile();
@@ -72,8 +73,10 @@ function Decks() {
             {categories?.map((category, index) => (
               <div
                 key={category._id}
-                className={`bg-cover m-4 rounded-xl shadow-lg h-72 relative w-96 mt-0 ${
-                  index % 2 === 0 ? "bg1" : "bg2"
+                className={`bg-cover m-4 rounded-xl shadow-lg h-72 relative w-96 mt-0 dark:text-white ${
+                  index % 2 === 0
+                    ? "bg1 dark:bg-[url('/src/assets/bgDark1.jpg')] "
+                    : "bg2 dark:bg-[url('/src/assets/bgDark2.jpg')]"
                 }`}
               >
                 {editingCategoryId === category._id ? (

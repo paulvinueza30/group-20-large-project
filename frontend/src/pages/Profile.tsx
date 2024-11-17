@@ -4,12 +4,20 @@ import UserInfo from "../components/userInfo";
 import { HomeIcon } from "@heroicons/react/24/outline";
 import { useUserProfile } from "../context/UserProfileContext";
 import FrameSelection from "../components/FrameSelection";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 // TODO: Add components
 // TODO: Add color attribute to todo and other stats
 function Profile() {
-  const [frame, setFrame] = useState("");
+  const [frame, setFrame] = useState<string>(() => {
+    return localStorage.getItem("selectedFrame") || ""; // Get frame from localStorage or default to an empty string
+  });
+
+  useEffect(() => {
+    if (frame) {
+      localStorage.setItem("selectedFrame", frame); // Persist frame selection to localStorage
+    }
+  }, [frame]);
   const { userProfile } = useUserProfile();
 
   // Check if the user profile is loaded

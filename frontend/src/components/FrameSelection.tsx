@@ -21,7 +21,7 @@ function FrameSelection({ frame, setFrame }: Props) {
   ];
 
   const handleFrameSelection = (name: string) => {
-    setFrame(name);
+    setFrame(name); // Update the selected frame in the parent state
   };
 
   return (
