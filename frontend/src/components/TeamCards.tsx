@@ -1,8 +1,11 @@
 import Slider from "react-slick";
 import team from "../assets/Transhumans - Astro.png";
+import jacob from "../assets/jacobCropped.png";
+import anthony from "../assets/anthonys pfp.jpg";
+import trevor from "../assets/Trevor pic.jpg";
 
 function PauseOnHover() {
-  const cardStyle = "w-[250px] p-0 rounded-2xl";
+  const cardStyle = "w-[250px] p-0 rounded-2xl overflow-hidden";
 
   var settings = {
     infinite: true,
@@ -52,8 +55,12 @@ function PauseOnHover() {
           </div>
         </div>
         <div>
-          <div className={`${cardStyle} bg-purple-500`}>
-            <img src={team} alt="" className="self-end  relative top-4" />
+          <div className={`${cardStyle}`}>
+            <img
+              src={trevor}
+              alt=""
+              className="self-end relative w-[250px] h-[320px]"
+            />
           </div>
           <div className="pt-2 pl-4 leading-3">
             <h3 className="text-2xl font-bold">Trevor Mongar</h3>
@@ -62,7 +69,7 @@ function PauseOnHover() {
         </div>
         <div>
           <div className={`${cardStyle} bg-purple-400`}>
-            <img src={team} alt="" className="self-end  relative top-4" />
+            <img src={jacob} alt="" className="w-[250px] h-[320px]" />
           </div>
           <div className="pt-2 pl-4 leading-3">
             <h3 className="text-2xl font-bold">Jacob Spitler</h3>
@@ -71,7 +78,7 @@ function PauseOnHover() {
         </div>
         <div>
           <div className={`${cardStyle} bg-purple-300`}>
-            <img src={team} alt="" className="self-end relative top-4" />
+            <img src={anthony} alt="" className="w-[250px] h-[320px]" />
           </div>
           <div className="pt-2 pl-4 leading-3">
             <h3 className="text-2xl font-bold">Anthony Le</h3>

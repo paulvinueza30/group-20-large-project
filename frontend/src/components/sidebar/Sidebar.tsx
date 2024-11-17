@@ -20,13 +20,25 @@ interface SidebarProps {
 }
 
 function Sidebar({ children, expanded, handleToggle }: SidebarProps) {
-  function handleClick() {
-    if (localStorage.theme === "dark" || !("theme" in localStorage)) {
+  // Add state for tracking dark mode
+  const [isDarkMode, setIsDarkMode] = useState<boolean>(() => {
+    return localStorage.theme === "dark";
+  });
+
+  // Sync theme changes with localStorage and document class
+  useEffect(() => {
+    if (isDarkMode) {
       document.documentElement.classList.add("dark");
+      localStorage.setItem("theme", "dark");
     } else {
       document.documentElement.classList.remove("dark");
+      localStorage.setItem("theme", "light");
     }
-    localStorage.theme = localStorage.theme === "dark" ? "light" : "dark";
+  }, [isDarkMode]);
+
+  function handleClick() {
+    // Toggle the isDarkMode state
+    setIsDarkMode((prevMode) => !prevMode);
   }
 
   const { userProfile } = useUserProfile();
@@ -50,7 +62,7 @@ function Sidebar({ children, expanded, handleToggle }: SidebarProps) {
             <img
               src={profilePicUrl}
               className={`transition-all ${expanded ? "w-10" : "w-0"}`}
-              alt=""
+              alt="Profile"
             />
             <h1
               className={`font-bold dark:text-white text-2xl tracking-wide ${
@@ -92,6 +104,7 @@ function Sidebar({ children, expanded, handleToggle }: SidebarProps) {
                     type="checkbox"
                     className="sr-only peer"
                     onClick={handleClick}
+                    checked={isDarkMode} // Use the isDarkMode state here
                   />
                   <div className="w-11 h-6 bg-gray-300 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-gray-500 rounded-full peer dark:bg-gray-700 peer-checked:bg-black"></div>
                   <div className="absolute left-0.5 top-0.5 w-5 h-5 bg-white border border-gray-300 rounded-full transition-transform peer-checked:translate-x-full"></div>
@@ -129,38 +142,12 @@ export default function MakeSidebar({ sendSizeChange, color }: any) {
     });
   };
 
-  // Commented out for now
-  // const { data } = useCategories();
-  const data = null;
-
-  // const subMenuData = data?.map((category) => ({
-  //   icon: <></>,
-  //   text: category.name,
-  //   to: `/decks/${category.name}`,
-  // }));
-
+  // Placeholder for navBar items and profile info
   const navBarItems = [
-    {
-      icon: <HomeIcon />,
-      text: "Dashboard",
-      to: "/dashboard",
-    },
-    {
-      icon: <ChartBarSquareIcon />,
-      // subMenu: subMenuData,
-      text: "Decks",
-      to: "/decks",
-    },
-    {
-      icon: <TrophyIcon />,
-      text: "Achievements",
-      to: "/achievements",
-    },
-    {
-      icon: <UserIcon />,
-      text: "Profile",
-      to: "/profile",
-    },
+    { icon: <HomeIcon />, text: "Dashboard", to: "/dashboard" },
+    { icon: <ChartBarSquareIcon />, text: "Decks", to: "/decks" },
+    { icon: <TrophyIcon />, text: "Achievements", to: "/achievements" },
+    { icon: <UserIcon />, text: "Profile", to: "/profile" },
   ];
 
   return (
