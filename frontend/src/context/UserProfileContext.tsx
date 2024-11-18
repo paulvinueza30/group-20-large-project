@@ -25,6 +25,8 @@ interface IUser {
   createdAt: string;
   colorPreferences: IColorPreferences;
   profilePic: string;
+  userExperience: number;
+  userLevel: number;
 }
 
 interface IProfileContext {

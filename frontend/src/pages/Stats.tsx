@@ -1,20 +1,22 @@
 import SideGrid from "../components/sidebar/SideGrid";
 import { useUserProfile } from "../context/UserProfileContext";
+import useGetUserAchievements from "../hooks/achievement/useGetAchievement";
 
-// TODO: Add components
-// Honestly still not sure what will be displayed here
-// Maybe indivudual decks stats like how Anki does
 function Stats() {
   const { userProfile } = useUserProfile();
 
-  // Check if the user profile is loaded
   if (!userProfile) {
     return <div>Loading...</div>; // Loading state if profile hasn't been fetched yet
   }
 
-  // Get the primary and secondary colors from the user profile
+  const { achievements, loading, error } = useGetUserAchievements();
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
   const Pcolor = userProfile.colorPreferences.primary;
-  const Scolor = userProfile.colorPreferences.secondary;
+
   return (
     <>
       <div className="flex">
@@ -26,14 +28,38 @@ function Stats() {
                 Achievements
               </h1>
             </div>
-            <div className="border-2 h-full col-span-2 row-span-6 col-start-1 row-start-2 ">
-              Player
-            </div>
-            <div className="border-2 h-full col-span-2 row-span-6 col-start-3 row-start-2 ">
-              Decks
-            </div>
-            <div className="border-2 h-full col-span-2 row-span-6 col-start-5 row-start-2 ">
-              Streaks
+            <div className="col-span-6 col-start-1 row-span-4 row-start-2">
+              {achievements && achievements.length > 0 ? (
+                <ul>
+                  {achievements.map((achievement) => (
+                    <div
+                      key={achievement._id}
+                      className="border-2 m-2 rounded-xl p-3"
+                    >
+                      {" "}
+                      {/* Add key prop here */}
+                      <h1 className="text-2xl font-bold">
+                        {achievement.achievementId.type}
+                      </h1>{" "}
+                      <h3 className="text-xl">
+                        {achievement.achievementId.name}
+                      </h3>{" "}
+                      {/* Use the achievement's _id */}
+                      <p className="text-sm">
+                        {achievement.achievementId.description}
+                      </p>{" "}
+                      {/* Access description from achievementId */}
+                    </div>
+                  ))}
+                </ul>
+              ) : (
+                <p className="text-2xl dark:text-white">
+                  No achievements found
+                </p>
+              )}
+              {error && (
+                <div className="text-xl dark:text-white">Error: {error}</div>
+              )}
             </div>
           </div>
         </div>

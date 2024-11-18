@@ -5,6 +5,8 @@ interface User {
   id: string;
   name: string;
   email: string;
+  userExperience: number;
+  userLevel: number;
 }
 
 const useGetUserInfo = () => {

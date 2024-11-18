@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import {
   ArrowRightIcon,
   ArrowLeftIcon,
@@ -7,14 +8,13 @@ import {
   ChartBarSquareIcon,
   ArrowRightStartOnRectangleIcon,
 } from "@heroicons/react/24/outline";
-import { ReactNode, useEffect, useState } from "react";
 import SidebarItem from "./SidebarItem";
 import Logo from "../../assets/logo.webp";
 import { useLocation } from "react-router-dom";
 import { useUserProfile } from "../../context/UserProfileContext";
 
 interface SidebarProps {
-  children: ReactNode;
+  children: React.ReactNode;
   expanded: boolean;
   handleToggle: () => void;
 }
@@ -103,8 +103,8 @@ function Sidebar({ children, expanded, handleToggle }: SidebarProps) {
                   <input
                     type="checkbox"
                     className="sr-only peer"
-                    onClick={handleClick}
-                    checked={isDarkMode} // Use the isDarkMode state here
+                    onChange={handleClick} // Updated event handler
+                    checked={isDarkMode} // Controlled input state
                   />
                   <div className="w-11 h-6 bg-gray-300 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-gray-500 rounded-full peer dark:bg-gray-700 peer-checked:bg-black"></div>
                   <div className="absolute left-0.5 top-0.5 w-5 h-5 bg-white border border-gray-300 rounded-full transition-transform peer-checked:translate-x-full"></div>

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useUserProfile } from "../context/UserProfileContext";
 import placeholder from "../assets/Transhumans - Astro.png";
 import { PhotoIcon } from "@heroicons/react/24/outline";
@@ -48,23 +48,28 @@ const UserInfo: React.FC<UserInfoProps> = ({ Pcolor, Scolor, frame }) => {
   const frames = [
     {
       name: level1,
-      style: "min-w-[25rem] -top-[5.2rem] -left-[4.2rem] absolute",
+      style:
+        "md:min-w-[22rem] sm:min-w-20 -top-[4.6rem] -left-[3.5rem] absolute",
     },
     {
       name: level2,
-      style: "min-w-[23rem] -top-[3.2rem] -left-[2.9rem] absolute",
+      style:
+        "md:min-w-[20rem]  sm:min-w-20 -top-[2.7rem] -left-[2.3rem] absolute",
     },
     {
       name: level5,
-      style: "min-w-[26rem] -top-[3.2rem] -left-[4.5rem] absolute",
+      style:
+        "md:min-w-[23.5rem] sm:min-w-20 -top-[3rem] -left-[4.1rem] absolute",
     },
     {
       name: level10,
-      style: "min-w-[27rem] -top-[4.5rem] -left-[4.7rem] absolute",
+      style:
+        "md:min-w-[23.2rem] sm:min-w-20 -top-[3.5rem] -left-[3.7rem] absolute",
     },
     {
       name: level20,
-      style: "min-w-[27.5rem] -top-[3.9rem] -left-[5.2rem] absolute",
+      style:
+        "md:min-w-[24.5rem] sm:min-w-20 -top-[3.5rem] -left-[4.6rem] absolute",
     },
   ];
 
@@ -72,7 +77,7 @@ const UserInfo: React.FC<UserInfoProps> = ({ Pcolor, Scolor, frame }) => {
     <div className="h-full relative bg-slate-100 dark:bg-dark-primary shadow-md rounded-[30px]">
       <div className="flex flex-col items-center h-5/6">
         <div
-          className="w-72 h-72 object-cover self-center border-2 rounded-full p-1 relative -top-40 shadow-xl"
+          className="md:w-64 md:h-64 sm:w-32 sm:h-32 object-cover self-center border-2 rounded-full p-1 relative -top-40 shadow-xl"
           style={{
             backgroundColor: Scolor,
             borderColor: Scolor,
@@ -83,7 +88,7 @@ const UserInfo: React.FC<UserInfoProps> = ({ Pcolor, Scolor, frame }) => {
               onMouseEnter={handleMouseEnter}
               onMouseLeave={handleMouseLeave}
               htmlFor="files"
-              className="z-50 -bottom-[3px] left-0 opacity-0 hover:opacity-100 border-none text-center absolute pt-12 hover:bg-opacity-70 rounded-full w-72 h-72 text-4xl text-gray-800"
+              className="z-50 -bottom-[3px] left-0 opacity-0 hover:opacity-100 border-none text-center absolute pt-12 hover:bg-opacity-70 rounded-full md:w-64 md:h-64 sm:w-32 sm:h-32 text-4xl text-gray-800"
               style={{
                 backgroundColor: isHover ? Scolor : "transparent",
                 opacity: isHover ? 0.8 : 0,
@@ -116,10 +121,12 @@ const UserInfo: React.FC<UserInfoProps> = ({ Pcolor, Scolor, frame }) => {
           </p>
           <p className={textStyle}>
             {" "}
-            <span className="font-bold">Current Level:</span>{" "}
+            <span className="font-bold">Current Level:</span>
+            {userProfile.userLevel}
           </p>
           <p className={textStyle}>
-            <span className="font-bold">Daily Streak:</span>{" "}
+            <span className="font-bold">Daily Streak:</span>
+            {userProfile.userExperience}
           </p>
           <p className={textStyle}>
             <span className="font-bold">Email:</span> {userProfile.email}

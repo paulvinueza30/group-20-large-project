@@ -1,5 +1,4 @@
 import SideGrid from "../components/sidebar/SideGrid";
-import TodoList from "../components/todo/TodoList";
 import UserInfo from "../components/userInfo";
 import { HomeIcon } from "@heroicons/react/24/outline";
 import { useUserProfile } from "../context/UserProfileContext";
@@ -43,13 +42,10 @@ function Profile() {
             <div className="col-span-2 row-span-7 col-start-1 row-start-3 ">
               <UserInfo Pcolor={Pcolor} Scolor={Scolor} frame={frame} />
             </div>
-            <div className="col-span-2 row-span-4 col-start-3 row-start-2 overflow-hidden bg-slate-100 rounded-xl shadow-md dark:bg-dark-primary">
+            <div className="col-span-4 row-span-4 col-start-3 row-start-2 overflow-hidden bg-slate-100 rounded-xl shadow-md dark:bg-dark-primary">
               <h2 className="text-center font-bold text-xl py-4 dark:text-white">
                 Achievements Display
               </h2>
-            </div>
-            <div className="col-span-2 row-span-4 col-start-5 row-start-2 bg-slate-100 rounded-xl shadow-md dark:bg-dark-primary">
-              <TodoList />
             </div>
             <div className="col-span-4 row-span-4 row-start-6 col-start-3 bg-slate-100 rounded-xl shadow-md dark:bg-dark-primary">
               <h2 className="text-center font-bold text-xl py-4 dark:text-white">
