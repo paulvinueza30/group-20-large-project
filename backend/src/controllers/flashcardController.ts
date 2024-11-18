@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import flashcard from "../models/flashcardModel";
 import Category from "../models/categoryModel";
 import QueueController from "../services/queueController";
+import { incrementUserAchievement } from "./userAchievementController";
 import { IUser } from "../interfaces/IUser";
 import mongoose from "mongoose";
 
@@ -160,8 +161,16 @@ export const getNextFlashcard = async (
       return;
     }
 
-    categoryDoc.cardsStudied += 1;
-    await categoryDoc.save();
+    // Only increment cardsStudied if the streak has not been updated today
+    if (!categoryDoc.hasStreakUpdatedToday()) {
+      categoryDoc.cardsStudied += 1;
+      await categoryDoc.save();
+
+      // Check if cardsStudied meets the streak threshold and update the streak
+      await categoryDoc.dailyStreakCheck();
+    } else {
+      console.log("Streak already updated today. Skipping further updates.");
+    }
 
     res.json(nextCard);
   } catch (error) {
@@ -170,48 +179,54 @@ export const getNextFlashcard = async (
 };
 
 // Review Flashcard
-export const reviewFlashcard = async (
-  req: Request,
-  res: Response
-): Promise<void> => {
-  const { id } = req.params;
-  const { feedback } = req.body;
-  const user = req.user as IUser;
+export const reviewFlashcard = async (req: Request, res: Response): Promise<void> => {
+  const { id } = req.params; // Flashcard ID
+  const { feedback } = req.body; // User's feedback
+  const user = req.user as IUser; // Logged-in user
   const userId = user._id;
 
   // Validate feedback
-  if (!["Forgot", "Hard", "Good", "Easy"].includes(feedback)) {
-    res.status(400).json({ message: "Invalid feedback" });
-    return;
-  }
-
   const xpMap = {
     Forgot: 0.25,
     Hard: 0.5,
     Good: 0.75,
     Easy: 1,
   };
+  if (!xpMap[feedback]) {
+    res.status(400).json({ message: "Invalid feedback" });
+    return;
+  }
   const xpGain = xpMap[feedback];
 
   try {
-    // Check if the flashcard exists and belongs to the user
+    // Fetch the flashcard and category
     const card = await flashcard.findOne({ _id: id, userId });
-    if (!card) {
-      res.status(404).json({
-        message: "Flashcard not found or does not belong to the user",
-      });
+    const categoryDoc = await Category.findOne({ _id: card.category, userId });
+
+    if (!card || !categoryDoc) {
+      res.status(404).json({ message: "Flashcard or category not found" });
       return;
     }
 
+    // Increment user XP and category XP
     user.userExperience += xpGain;
-    // Causing problems when reviewing flashcard (not sure what)
-    // await user.levelUp();
-    await user.save();
+    categoryDoc.categoryExperience += xpGain;
 
-    // Update due date based on feedback
-    await queueController.reviewCard(id, feedback);
-    res.json({ message: "Flashcard reviewed successfully" });
+    // Save user and category updates
+    await user.levelUp(); // Preserve the levelUp function call
+    await incrementUserAchievement(userId.toString(), "Player", user.userLevel); // Increment Player achievements based on user level
+    await user.save();
+    await categoryDoc.save();
+
+    // Increment progress for Deck achievements
+    await incrementUserAchievement(userId.toString(), "Deck", xpGain, { categoryId: categoryDoc._id.toString() });
+
+    // Update the due date for the flashcard
+    await card.updateDueDate(feedback);
+
+    res.status(200).json({ message: "Flashcard reviewed successfully" });
   } catch (error) {
+    console.error("Error reviewing flashcard:", error);
     res.status(500).json({ message: "Error reviewing flashcard", error });
   }
 };

@@ -1,5 +1,6 @@
 import { Schema, model } from "mongoose";
 import { ICategory } from "../interfaces/ICategory";
+import { incrementUserAchievement } from "../controllers/userAchievementController";
 
 const categorySchema = new Schema<ICategory>({
     name: {
@@ -15,7 +16,7 @@ const categorySchema = new Schema<ICategory>({
         type: Number,
         default: 0,
     },
-    experience: {
+    categoryExperience: {
         type: Number,
         default: 0,
     },
@@ -56,13 +57,43 @@ categorySchema.methods.updateExperience = function (feedback: 'Forgot' | 'Hard' 
 };
 
 // Define the dailyStreakCheck method
-categorySchema.methods.dailyStreakCheck = async function (): Promise<void> {
-   const currDate = new Date();
-   if (this.streakLastUpdated && (currDate.getTime() - this.streakLastUpdated.getTime()) > (24 * 60 * 60 * 1000)) {
-      this.streakCount = 0;
-      this.streakLastUpdated = currDate;
-      await this.save();
-   }
+categorySchema.methods.dailyStreakCheck = async function () {
+    const currDate = new Date();
+
+    // Ensure cardsStudied meets the threshold to update the streak
+    const streakThreshold = 5; // Replace 5 with your desired value
+    if (this.cardsStudied == streakThreshold) {
+        // If a new day, increment the streak and update streakLastUpdated
+        if (!this.streakLastUpdated || currDate.toDateString() !== this.streakLastUpdated.toDateString()) {
+            this.streakCount += 1; // Increment streak
+            this.streakLastUpdated = currDate; // Update streakLastUpdated
+            // Increment Streak-type achievements
+            await incrementUserAchievement(this.userId, "Streak", 1, { categoryId: this._id });
+        }
+        // Reset cardsStudied after successful streak update
+        this.cardsStudied = 0;
+    } else if (
+        this.streakLastUpdated &&
+        currDate.getTime() - this.streakLastUpdated.getTime() > 2 * 24 * 60 * 60 * 1000
+    ) {
+        // Reset streak if more than 2 days have passed since streakLastUpdated
+        this.streakCount = 0;
+        this.streakLastUpdated = null;
+    }
+
+    await this.save();
+};
+
+categorySchema.methods.hasStreakUpdatedToday = function (): boolean {
+    const currDate = new Date();
+
+    // If streakLastUpdated exists and matches today's date, the streak has already been updated
+    if (this.streakLastUpdated) {
+        return currDate.toDateString() === this.streakLastUpdated.toDateString();
+    }
+
+    // If streakLastUpdated does not exist, the streak has not been updated today
+    return false;
 };
 
 const Category = model<ICategory>("Category", categorySchema);

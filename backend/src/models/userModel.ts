@@ -44,24 +44,27 @@ const userSchema = new Schema<IUser>({
 
 // Helper function to calculate level
 userSchema.methods.calculateLevel = function (): number {
-    xpThreshold = (level: number) => 100 * level;
+  // Define the XP threshold function
+  const xpThreshold = (level: number) => 100 * level; // Each level requires 100 * current level XP
 
-    let newLevel = this.level;
-    while (this.userExperience >= xpThreshold(newLevel)) {
-       newlevel++;
-    }
-    
-    return newLevel;
-}; 
+  let newLevel = this.userLevel; // Start from the current level
+  while (this.userExperience >= xpThreshold(newLevel)) {
+    newLevel++; // Increment the level as long as XP exceeds the threshold
+  }
+
+  return newLevel;
+};
 
 // Helper function to apply level up
 userSchema.methods.levelUp = async function (): Promise<void> {
-    const newLevel = this.calculateLevel();
-    if (newLevel > this.level) {
-       this.level = newLevel;
-       await this.save();
-    }
+  const newLevel = this.calculateLevel(); // Calculate the new level
+  if (newLevel > this.userLevel) { // Check if the user has leveled up
+    this.userLevel = newLevel; // Update the level
+    console.log("user is now level: " + newLevel);
+    await this.save(); // Save the user with the updated level
+  }
 };
+
 
 const User = model<IUser>("User", userSchema);
 

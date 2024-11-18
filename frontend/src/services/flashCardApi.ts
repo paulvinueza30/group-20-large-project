@@ -66,7 +66,7 @@ export const getNextFlashcard = async (categoryId: string) => {
       { withCredentials: true }
     );
     if (response.status === 204) {
-      // Handle the no content situation specifically for frontend
+      // Handle no content for frontend
       return { message: "No flashcards left in this category" };
     }
     return response.data;
@@ -96,6 +96,7 @@ export const reviewFlashcard = async (
   }
 };
 
+// Fetch all flashcards in a specific category
 export const getAllFlashcards = async (categoryId: string) => {
   try {
     const response = await axios.get(
@@ -111,4 +112,3 @@ export const getAllFlashcards = async (categoryId: string) => {
       : new Error("Internal server error");
   }
 };
-

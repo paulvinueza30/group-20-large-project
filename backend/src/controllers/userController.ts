@@ -1,34 +1,47 @@
 import { Request, Response } from "express";
 import User from "../models/userModel";
 import Category from "../models/categoryModel";
-
+import UserAchievement from "../models/userAchievementModel";
+import Achievement from "../models/achievmentModel";
 import bcrypt from "bcrypt";
 import passport from "../config/passport-config";
 import { IUser } from "../interfaces/IUser";
 import upload from "../config/multer-config";
 
-// Register user
-export const registerUser = async (
-  req: Request,
-  res: Response
-): Promise<any> => {
+// ** Register User **
+export const registerUser = async (req: Request, res: Response): Promise<any> => {
   const { name, userName, email, password } = req.body;
 
   try {
+    // Check if user already exists
     const userExists = await User.findOne({ email });
     if (userExists) {
       return res.status(400).json({ message: "User already exists" });
     }
 
+    // Hash the password
     const saltRounds = 10;
     const hashedPassword = await bcrypt.hash(password, saltRounds);
 
+    // Create the user
     const user = await User.create({
       name,
       userName,
       email,
       password: hashedPassword,
     });
+
+    // Fetch predefined achievements
+    const achievements = await Achievement.find({});
+
+    // Initialize user achievements
+    const userAchievements = achievements.map((achievement) => ({
+      userId: user._id,
+      achievementId: achievement._id,
+      progress: 0,
+      isCompleted: false,
+    }));
+    await UserAchievement.insertMany(userAchievements);
 
     // Automatically log in the user after registration
     req.logIn(user, (err) => {
@@ -51,7 +64,7 @@ export const registerUser = async (
   }
 };
 
-// Login user
+// ** Login User **
 export const loginUser = (
   req: Request,
   res: Response,
@@ -69,13 +82,13 @@ export const loginUser = (
       if (err) {
         return next(err);
       }
-      
+
       try {
-          const categories = await Category.find({ userId: user._id });
-         await Promise.all(categories.map(category => category.dailyStreakCheck()));
+        const categories = await Category.find({ userId: user._id });
+        await Promise.all(categories.map((category) => category.dailyStreakCheck()));
       } catch (error) {
-        console.error("Error in login user", error);
-        return res.status(500).json({ message: "Internal server error" });       
+        console.error("Error in login user:", error);
+        return res.status(500).json({ message: "Internal server error" });
       }
 
       return res.status(200).json({
@@ -92,22 +105,19 @@ export const loginUser = (
   })(req, res, next);
 };
 
-// Logout user
+// ** Logout User **
 export const logoutUser = (req: Request, res: Response): void => {
-  req.logout((err) => { //function provided by passport
+  req.logout((err) => {
     if (err) {
-      console.error("Error logging out user: ", err);
+      console.error("Error logging out user:", err);
       return res.status(500).json({ message: "Internal server error during logout" });
     }
     res.status(200).json({ message: "Logout successful" });
   });
 };
 
-// Get user info
-export const getUserInfo = async (
-  req: Request,
-  res: Response
-): Promise<void> => {
+// ** Get User Info **
+export const getUserInfo = async (req: Request, res: Response): Promise<void> => {
   const user = req.user as IUser;
 
   if (!user) {
@@ -115,7 +125,7 @@ export const getUserInfo = async (
     return;
   }
   if (user.profilePic && !user.profilePic.startsWith("/uploads/")) {
-    user.profilePic = `/uploads/${user.profilePic}`; // Add /uploads/ to the default image
+    user.profilePic = `/uploads/${user.profilePic}`;
   }
 
   res.status(200).json({
@@ -128,23 +138,22 @@ export const getUserInfo = async (
       createdAt: user.createdAt,
       colorPreferences: user.colorPreferences,
       profilePic: user.profilePic,
+      userExperience: user.userExperience,
+      userLevel: user.userLevel,
     },
   });
 };
 
-// Preferences
-
-// Update user color preferences
+// ** Update User Color Preferences **
 export const updateColorPreferences = async (
   req: Request,
   res: Response
 ): Promise<void> => {
   const user = req.user as IUser;
-  const userId = user._id; // Assuming userId is passed in the URL
-  const { primary, secondary } = req.body; // Colors sent in the request body
+  const userId = user._id;
+  const { primary, secondary } = req.body;
 
   try {
-    // Find the user by ID and update the color preferences
     const updatedUser = await User.findByIdAndUpdate(
       userId,
       { colorPreferences: { primary, secondary } },
@@ -162,53 +171,63 @@ export const updateColorPreferences = async (
     });
   } catch (error) {
     console.error(error);
-    res
-      .status(500)
-      .json({ message: "Failed to update color preferences", error });
+    res.status(500).json({ message: "Failed to update color preferences", error });
   }
 };
 
-// Profile picture upload handler
+// ** Upload Profile Picture **
 export const uploadProfilePic = async (
   req: Request,
   res: Response
 ): Promise<void> => {
-  // Upload the image
   upload(req, res, async (err) => {
     if (err) {
-      return res
-        .status(400)
-        .json({ message: "Error uploading file", error: err.message });
+      return res.status(400).json({ message: "Error uploading file", error: err.message });
     }
 
-    // If file is uploaded, update user's profile picture URL
     const user = req.user as IUser;
     const userId = user._id;
 
     try {
-      // Update the user with the new profile picture
       const updatedUser = await User.findByIdAndUpdate(
         userId,
-        {
-          profilePic: `/uploads/${req.file?.filename}`, // Update profilePic field
-        },
-        { new: true } // Ensure it returns the updated user
+        { profilePic: `/uploads/${req.file?.filename}` },
+        { new: true }
       );
 
       if (!updatedUser) {
         return res.status(404).json({ message: "User not found" });
       }
 
-      // Respond with the full updated user object
       res.status(200).json({
         message: "Profile picture updated successfully",
         profilePic: updatedUser.profilePic,
       });
     } catch (error) {
       console.error(error);
-      res
-        .status(500)
-        .json({ message: "Error updating profile picture", error });
+      res.status(500).json({ message: "Error updating profile picture", error });
     }
   });
+};
+
+// ** Increment User Experience **
+export const incrementUserExperience = async (
+  userId: string,
+  incrementBy: number
+): Promise<void> => {
+  try {
+    const user = await User.findById(userId);
+    if (!user) {
+      console.error("User not found");
+      return;
+    }
+
+    user.userExperience += incrementBy;
+    await user.levelUp(); // Automatically handles leveling up if necessary
+    await user.save();
+    console.log(`User ${userId} experience incremented by ${incrementBy}.`);
+  } catch (error) {
+    console.error("Error incrementing user experience:", error);
+    throw error;
+  }
 };

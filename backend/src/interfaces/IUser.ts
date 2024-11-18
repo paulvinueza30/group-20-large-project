@@ -12,8 +12,8 @@ export interface IUser extends Document {
   colorPreferences: IColorPreferences;
   profilePic: string;
   createdAt: Date;
-  userExperience: Number;
-  userLevel: Number;
-  calculateLevel(): Number;
+  userExperience: number;
+  userLevel: number;
+  calculateLevel(): number;
   levelUp(): Promise<void>;
 }

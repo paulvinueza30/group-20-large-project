@@ -5,12 +5,13 @@ export interface ICategory extends Document {
     name: string;
     cardCount: number;
     streakCount?: number;
-    experience?: number;
+    categoryExperience?: number;
     cardsStudied?: number;
     streakLastUpdated?: Date;
     createdAt?: Date;
     editedAt?: Date;
     updateExperience(feedback: 'Forgot' | 'Hard' | 'Good' | 'Easy'): Promise<ICategory>;
     dailyStreakCheck: () => Promise<void>;
+    hasStreakUpdatedToday: () => Promise<boolean>;
 }
 
