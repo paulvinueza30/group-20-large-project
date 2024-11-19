@@ -8,68 +8,26 @@ import Stats from "./pages/Stats.tsx";
 import Login from "./pages/Login.tsx";
 import SignUp from "./pages/SignUp.tsx";
 import Dashboard from "./pages/Dashboard.tsx";
-import { UserProfileProvider } from "./context/UserProfileContext"; // Import the provider
+import { UserProfileProvider } from "./context/UserProfileContext";
 import Review from "./pages/Review.tsx";
-import { useNavigate } from "react-router-dom";
-import { useUserProfile } from "./context/UserProfileContext"; // Ensure this is correctly imported
-import { useState, useEffect } from "react";
+import AuthGuard from "./components/AuthGuard"; // Import the new AuthGuard component
 
-const ProtectedRoute = ({ element }: { element: JSX.Element }) => {
-  const { userProfile } = useUserProfile();
-  const navigate = useNavigate();
-  const [showMessage, setShowMessage] = useState(false);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const checkAuth = async () => {
-      if (userProfile !== null) {
-        setLoading(false);
-      } else {
-        setLoading(false);
-        setShowMessage(true);
-        setTimeout(() => navigate("/login"), 2000); // Redirect after 2 seconds if not logged in
-      }
-    };
-    checkAuth();
-  }, [userProfile, navigate]);
-
-  if (loading) {
-    return <div>Loading...</div>;
-  }
-
-  if (!userProfile && showMessage) {
-    return (
-      <div className="text-center mt-8 bg-red-100 p-4 border border-red-400 rounded-md">
-        <h2 className="text-xl font-semibold text-red-700">
-          Please log in to access the app
-        </h2>
-        <p className="text-red-600">
-          You need to be logged in to view this page.
-        </p>
-      </div>
-    );
-  }
-
-  // Render the protected element if authenticated
-  return element;
-};
-
-export default ProtectedRoute;
 const AppWithRouting = () => {
   return (
     <BrowserRouter>
       <Routes>
-        {/* Routes that don't need the context */}
         <Route path="/" element={<App />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<SignUp />} />
 
-        {/* Wrap the protected routes with the UserProfileProvider and ProtectedRoute */}
+        {/* Protected routes wrapped with AuthGuard */}
         <Route
           path="/dashboard"
           element={
             <UserProfileProvider>
-              <ProtectedRoute element={<Dashboard />} />
+              <AuthGuard>
+                <Dashboard />
+              </AuthGuard>
             </UserProfileProvider>
           }
         />
@@ -77,7 +35,9 @@ const AppWithRouting = () => {
           path="/decks"
           element={
             <UserProfileProvider>
-              <ProtectedRoute element={<Decks />} />
+              <AuthGuard>
+                <Decks />
+              </AuthGuard>
             </UserProfileProvider>
           }
         />
@@ -85,7 +45,9 @@ const AppWithRouting = () => {
           path="/decks/:categoryId"
           element={
             <UserProfileProvider>
-              <ProtectedRoute element={<DeckDetails />} />
+              <AuthGuard>
+                <DeckDetails />
+              </AuthGuard>
             </UserProfileProvider>
           }
         />
@@ -93,7 +55,9 @@ const AppWithRouting = () => {
           path="/review/:categoryId"
           element={
             <UserProfileProvider>
-              <ProtectedRoute element={<Review />} />
+              <AuthGuard>
+                <Review />
+              </AuthGuard>
             </UserProfileProvider>
           }
         />
@@ -101,7 +65,9 @@ const AppWithRouting = () => {
           path="/achievements"
           element={
             <UserProfileProvider>
-              <ProtectedRoute element={<Stats />} />
+              <AuthGuard>
+                <Stats />
+              </AuthGuard>
             </UserProfileProvider>
           }
         />
@@ -109,7 +75,9 @@ const AppWithRouting = () => {
           path="/profile"
           element={
             <UserProfileProvider>
-              <ProtectedRoute element={<Profile />} />
+              <AuthGuard>
+                <Profile />
+              </AuthGuard>
             </UserProfileProvider>
           }
         />
