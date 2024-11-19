@@ -10,8 +10,9 @@ import {
 } from "@heroicons/react/24/outline";
 import SidebarItem from "./SidebarItem";
 import Logo from "../../assets/logo.webp";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useUserProfile } from "../../context/UserProfileContext";
+import { logoutUser } from "../../services/userApi";
 
 interface SidebarProps {
   children: React.ReactNode;
@@ -35,6 +36,18 @@ function Sidebar({ children, expanded, handleToggle }: SidebarProps) {
       localStorage.setItem("theme", "light");
     }
   }, [isDarkMode]);
+  const navigate = useNavigate();
+
+  const handleLogout = async () => {
+    try {
+      await logoutUser();
+      document.cookie = "connect.sid=; Max-Age=0; path=/";
+      localStorage.clear();
+      navigate("/login");
+    } catch (error) {
+      console.error("Logout failed", error);
+    }
+  };
 
   function handleClick() {
     // Toggle the isDarkMode state
@@ -88,7 +101,8 @@ function Sidebar({ children, expanded, handleToggle }: SidebarProps) {
               className={`flex flex-col items-start ${expanded ? "ml-3" : ""}`}
             >
               <a
-                href="/"
+                href="#"
+                onClick={handleLogout}
                 className="leading-4 flex items-center dark:text-white pb-4"
               >
                 <ArrowRightStartOnRectangleIcon className="h-6 w-6" />

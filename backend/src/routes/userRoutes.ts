@@ -21,5 +21,4 @@ router.post("/logout", isAuthenticated, logoutUser);
 router.post("/user/profile-pic", isAuthenticated, uploadProfilePic);
 router.put("/user/color-preferences", isAuthenticated, updateColorPreferences);
 
-
 export default router;

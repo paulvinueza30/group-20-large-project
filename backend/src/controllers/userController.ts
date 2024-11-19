@@ -9,7 +9,10 @@ import { IUser } from "../interfaces/IUser";
 import upload from "../config/multer-config";
 
 // ** Register User **
-export const registerUser = async (req: Request, res: Response): Promise<any> => {
+export const registerUser = async (
+  req: Request,
+  res: Response
+): Promise<any> => {
   const { name, userName, email, password } = req.body;
 
   try {
@@ -85,7 +88,9 @@ export const loginUser = (
 
       try {
         const categories = await Category.find({ userId: user._id });
-        await Promise.all(categories.map((category) => category.dailyStreakCheck()));
+        await Promise.all(
+          categories.map((category) => category.dailyStreakCheck())
+        );
       } catch (error) {
         console.error("Error in login user:", error);
         return res.status(500).json({ message: "Internal server error" });
@@ -110,14 +115,20 @@ export const logoutUser = (req: Request, res: Response): void => {
   req.logout((err) => {
     if (err) {
       console.error("Error logging out user:", err);
-      return res.status(500).json({ message: "Internal server error during logout" });
+      return res
+        .status(500)
+        .json({ message: "Internal server error during logout" });
     }
+    res.clearCookie("connect.sid", { path: "/" });
     res.status(200).json({ message: "Logout successful" });
   });
 };
 
 // ** Get User Info **
-export const getUserInfo = async (req: Request, res: Response): Promise<void> => {
+export const getUserInfo = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
   const user = req.user as IUser;
 
   if (!user) {
@@ -171,7 +182,9 @@ export const updateColorPreferences = async (
     });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: "Failed to update color preferences", error });
+    res
+      .status(500)
+      .json({ message: "Failed to update color preferences", error });
   }
 };
 
@@ -182,7 +195,9 @@ export const uploadProfilePic = async (
 ): Promise<void> => {
   upload(req, res, async (err) => {
     if (err) {
-      return res.status(400).json({ message: "Error uploading file", error: err.message });
+      return res
+        .status(400)
+        .json({ message: "Error uploading file", error: err.message });
     }
 
     const user = req.user as IUser;
@@ -205,7 +220,9 @@ export const uploadProfilePic = async (
       });
     } catch (error) {
       console.error(error);
-      res.status(500).json({ message: "Error updating profile picture", error });
+      res
+        .status(500)
+        .json({ message: "Error updating profile picture", error });
     }
   });
 };

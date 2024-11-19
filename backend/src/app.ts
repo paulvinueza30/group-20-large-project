@@ -41,7 +41,7 @@ app.use(
     secret: process.env.SESSION_SECRET || "PUTAKEYINTHEENVFILEEEEEE",
     resave: false,
     saveUninitialized: false,
-    cookie: { secure: false },
+    cookie: { httpOnly: true, secure: false, sameSite: "Lax" },
   })
 );
 

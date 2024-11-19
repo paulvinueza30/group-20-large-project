@@ -1,8 +1,7 @@
 import axios from "axios";
 
 const USER_API_URL =
-  `${process.env.REACT_APP_API_URL}/users` ||
-  "http://localhost:5000/api/users";
+  `${process.env.REACT_APP_API_URL}/users` || "http://localhost:5000/api/users";
 
 // Register user
 export const registerUser = async (userData: {
@@ -47,9 +46,13 @@ export const loginUser = async (userData: {
 // Logout user
 export const logoutUser = async () => {
   try {
-    const response = await axios.post(`${USER_API_URL}/logout`, {}, {
-      withCredentials: true,
-    });
+    const response = await axios.post(
+      `${USER_API_URL}/logout`,
+      {},
+      {
+        withCredentials: true,
+      }
+    );
     return response.data;
   } catch (error: unknown) {
     if (axios.isAxiosError(error) && error.response) {

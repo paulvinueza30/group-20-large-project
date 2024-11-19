@@ -17,21 +17,41 @@ import { useState, useEffect } from "react";
 const ProtectedRoute = ({ element }: { element: JSX.Element }) => {
   const { userProfile } = useUserProfile();
   const navigate = useNavigate();
+  const [showMessage, setShowMessage] = useState(false);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (userProfile === null && !loading) {
-      navigate("/login");
-    } else {
-      setLoading(false);
-    }
-  }, [userProfile, navigate, loading]);
+    const checkAuth = async () => {
+      if (userProfile !== null) {
+        setLoading(false);
+      } else {
+        setLoading(false);
+        setShowMessage(true);
+        setTimeout(() => navigate("/login"), 2000); // Redirect after 2 seconds if not logged in
+      }
+    };
+    checkAuth();
+  }, [userProfile, navigate]);
 
   if (loading) {
     return <div>Loading...</div>;
   }
 
-  return userProfile ? element : null;
+  if (!userProfile && showMessage) {
+    return (
+      <div className="text-center mt-8 bg-red-100 p-4 border border-red-400 rounded-md">
+        <h2 className="text-xl font-semibold text-red-700">
+          Please log in to access the app
+        </h2>
+        <p className="text-red-600">
+          You need to be logged in to view this page.
+        </p>
+      </div>
+    );
+  }
+
+  // Render the protected element if authenticated
+  return element;
 };
 
 export default ProtectedRoute;
