@@ -10,7 +10,7 @@ import SignUp from "./pages/SignUp.tsx";
 import Dashboard from "./pages/Dashboard.tsx";
 import { UserProfileProvider } from "./context/UserProfileContext";
 import Review from "./pages/Review.tsx";
-import AuthGuard from "./components/AuthGuard"; // Import the new AuthGuard component
+import AuthGuard from "./components/AuthGuard";
 
 const AppWithRouting = () => {
   return (
