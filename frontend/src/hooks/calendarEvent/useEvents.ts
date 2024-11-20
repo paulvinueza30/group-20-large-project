@@ -40,6 +40,11 @@ const useEvents = (currentMonth: Date) => {
 
   const [refresh, setRefresh] = useState(false);
 
+  useEffect(() => {
+    // This will be triggered when 'refresh' changes
+    // You can perform side effects here, such as fetching new data
+  }, [refresh]);
+
   const handleCreateEvent = async (event: any) => {
     try {
       const newEvent = await createEvent(event);

@@ -10,7 +10,7 @@ interface CreateDeckProps {
   onCategoryCreated: (newCategory: Category) => void;
 }
 
-function CreateDeck({ Pcolor, Scolor, onCategoryCreated }: CreateDeckProps) {
+function CreateDeck({ Pcolor, Scolor: _, onCategoryCreated }: CreateDeckProps) {
   const { loading, error, success, create } = useCreateCategory();
   const [categoryName, setCategoryName] = useState<string>("");
 

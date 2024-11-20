@@ -11,6 +11,7 @@ interface Category {
 function StreaksDisplay() {
   const { userProfile } = useUserProfile();
   const [refreshToken, setRefreshToken] = useState(0); // Initialize refreshToken state
+  console.log(setRefreshToken);
   const { data: categories } = useCategories(!!userProfile, refreshToken);
 
   // Default values in case categories are empty or undefined

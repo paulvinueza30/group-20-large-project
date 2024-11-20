@@ -1,5 +1,3 @@
-import React from "react";
-
 function DeckSkeleton() {
   return (
     <div

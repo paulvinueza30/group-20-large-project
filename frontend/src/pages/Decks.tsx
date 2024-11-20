@@ -1,11 +1,6 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import {
-  getAllCategories,
-  deleteCategory,
-  editCategory,
-} from "../services/categoryApi";
-import { ICategory } from "../interfaces/ICategory";
+import { deleteCategory, editCategory } from "../services/categoryApi";
 import SideGrid from "../components/sidebar/SideGrid";
 import { useUserProfile } from "../context/UserProfileContext";
 import { GoTrash, GoPencil } from "react-icons/go";

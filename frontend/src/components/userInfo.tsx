@@ -15,7 +15,7 @@ interface UserInfoProps {
   frame: string;
 }
 
-const UserInfo: React.FC<UserInfoProps> = ({ Pcolor, Scolor, frame }) => {
+const UserInfo: React.FC<UserInfoProps> = ({ Pcolor: _, Scolor, frame }) => {
   const [isHover, setIsHover] = useState(false);
   const { userProfile, updateProfilePic } = useUserProfile();
   const textStyle =

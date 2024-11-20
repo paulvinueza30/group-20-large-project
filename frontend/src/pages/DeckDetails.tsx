@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
 import { getAllFlashcards, deleteFlashcard } from "../services/flashCardApi";
 import FlashcardDisplay from "../components/FlashcardDisplay";
 import { IFlashcard } from "../interfaces/IFlashcard";
@@ -9,7 +9,7 @@ import { HomeIcon } from "@heroicons/react/24/outline";
 function DeckDetails() {
   const { categoryId } = useParams<{ categoryId: string }>();
   const [flashcards, setFlashcards] = useState<IFlashcard[]>([]);
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
   // Fetch all flashcards for the specified category
   const fetchFlashcards = async () => {
@@ -28,7 +28,7 @@ function DeckDetails() {
   }, [categoryId]);
 
   // Handle updating a flashcard (re-fetch all flashcards to ensure update)
-  const handleUpdateFlashcard = async (updatedFlashcard: IFlashcard) => {
+  const handleUpdateFlashcard = async () => {
     await fetchFlashcards(); // Re-fetch after update
   };
 

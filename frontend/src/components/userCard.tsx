@@ -1,9 +1,5 @@
-import React from 'react'
-
 function userCard() {
-  return (
-    <div>userCard</div>
-  )
+  return <div>userCard</div>;
 }
 
-export default userCard
+export default userCard;

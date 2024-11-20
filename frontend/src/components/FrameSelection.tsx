@@ -10,7 +10,7 @@ interface Props {
   setFrame: (frame: string) => void;
 }
 
-function FrameSelection({ frame, setFrame }: Props) {
+function FrameSelection({ frame: _, setFrame }: Props) {
   const { userProfile } = useUserProfile();
   let playerLevel = 1;
   if (userProfile?.userLevel) {

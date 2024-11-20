@@ -32,6 +32,7 @@ const RecentDecks: React.FC<RecentDecksProps> = ({
   };
 
   const handleDeleteClick = async (categoryId: string, index: number) => {
+    console.log(index); // linting error come back!
     try {
       await deleteCategory(categoryId); // Call the delete API function
       // Remove the category from local state after deletion

@@ -1,5 +1,5 @@
 import { Radar, RadarChart, PolarGrid, PolarAngleAxis } from "recharts";
-import { useCategories } from "../../hooks/category/useCategories";
+// import { useCategories } from "../../hooks/category/useCategories";
 import { Category } from "../../hooks/category/useCategories";
 
 interface RadarProps {
