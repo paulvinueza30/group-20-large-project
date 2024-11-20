@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useUserProfile } from "../context/UserProfileContext";
 import placeholder from "../assets/Transhumans - Astro.png";
 import { PhotoIcon } from "@heroicons/react/24/outline";
-import background from "../assets/profileBg.png";
+import background from "../assets/profileBg2.png";
 import level1 from "../assets/level1.png";
 import level2 from "../assets/level2.png";
 import level5 from "../assets/level5.png";
@@ -79,8 +79,14 @@ const UserInfo: React.FC<UserInfoProps> = ({ Pcolor, Scolor, frame }) => {
   const w = xpBar + "%"; // setting the width for the xp bar
 
   return (
-    <div className="h-full relative bg-slate-100 dark:bg-dark-primary shadow-md rounded-[30px]">
-      <div className="flex flex-col items-center h-5/6">
+    <div
+      className="h-full relative bg-slate-100 dark:bg-dark-primary shadow-md rounded-[30px]"
+      style={{
+        position: "relative",
+      }}
+    >
+      <div className="rain-container absolute top-0 left-0 right-0 bottom-0 z-0"></div>
+      <div className="flex flex-col items-center h-5/6 ">
         <div
           className="md:w-64 md:h-64 sm:w-32 sm:h-32 object-cover self-center border-2 rounded-full p-1 relative -top-40 shadow-xl"
           style={{
@@ -117,19 +123,19 @@ const UserInfo: React.FC<UserInfoProps> = ({ Pcolor, Scolor, frame }) => {
           <img
             src={profilePicUrl}
             alt="User Profile"
-            className="w-full h-full object-cover rounded-full" // Ensures the image fills the wrapper
+            className="w-full h-full object-cover rounded-full z-10" // Ensures the image fills the wrapper
           />
         </div>
-        <div className="flex flex-col justify-start w-full relative -top-32">
+        <div className="flex flex-col justify-start w-full relative -top-32 min-h-full overflow-hidden">
           <p className={textStyle}>
             <span className="font-bold">Name:</span> {userProfile.name}
           </p>
-          <p className={textStyle}>
+          <p className={`${textStyle} pb-8`}>
             {" "}
             <span className="font-bold">Current Level: </span>
             {userProfile.userLevel}
           </p>
-          <div className="w-5/6 bg-gray-200 rounded-full h-2.5 dark:bg-gray-700 self-center">
+          <div className="w-5/6 bg-gray-200 rounded-full h-2.5 dark:bg-gray-700 self-center relative bottom-8 z-20">
             <div
               className="bg-purple-600 h-2.5 rounded-full dark:bg-purple-500 mb-2"
               style={{ width: w }}
@@ -138,9 +144,13 @@ const UserInfo: React.FC<UserInfoProps> = ({ Pcolor, Scolor, frame }) => {
           <p className={`${textStyle} mt-4`}>
             <span className="font-bold">Email:</span> {userProfile.email}
           </p>
+          <img
+            src={background}
+            alt=""
+            className="absolute -bottom-2 opacity-80 w-[20rem] -right-5 z-20"
+          />
         </div>
       </div>
-      <img src={background} alt="" className="absolute bottom-0 opacity-70" />
     </div>
   );
 };

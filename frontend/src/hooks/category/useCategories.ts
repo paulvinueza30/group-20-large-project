@@ -6,6 +6,7 @@ export interface Category {
   name: string;
   experience: number;
   cardCount: number;
+  streakCount: number;
 }
 
 interface UseCategoriesResult {
@@ -31,9 +32,7 @@ export const useCategories = (
       const categories = await getAllCategories();
       setData(categories);
     } catch (error: any) {
-      setError(
-        error.response ? error.response.data : "Internal server error"
-      );
+      setError(error.response ? error.response.data : "Internal server error");
     } finally {
       setLoading(false);
     }

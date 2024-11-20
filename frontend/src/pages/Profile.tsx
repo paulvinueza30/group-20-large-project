@@ -4,6 +4,7 @@ import { HomeIcon } from "@heroicons/react/24/outline";
 import { useUserProfile } from "../context/UserProfileContext";
 import FrameSelection from "../components/FrameSelection";
 import { useEffect, useState } from "react";
+import StreaksDisplay from "../components/profile/StreaksDisplay";
 
 // TODO: Add components
 // TODO: Add color attribute to todo and other stats
@@ -43,9 +44,7 @@ function Profile() {
               <UserInfo Pcolor={Pcolor} Scolor={Scolor} frame={frame} />
             </div>
             <div className="col-span-4 row-span-4 col-start-3 row-start-2 overflow-hidden bg-slate-100 rounded-xl shadow-md dark:bg-dark-primary">
-              <h2 className="text-center font-bold text-xl py-4 dark:text-white">
-                Streaks Display
-              </h2>
+              <StreaksDisplay />
             </div>
             <div className="col-span-4 row-span-4 row-start-6 col-start-3 bg-slate-100 rounded-xl shadow-md dark:bg-dark-primary">
               <h2 className="text-center font-bold text-xl py-4 dark:text-white">

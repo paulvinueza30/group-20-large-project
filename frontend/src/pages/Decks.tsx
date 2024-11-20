@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import {
   getAllCategories,
@@ -11,7 +11,6 @@ import { useUserProfile } from "../context/UserProfileContext";
 import { GoTrash, GoPencil } from "react-icons/go";
 import { useCategories } from "../hooks/category/useCategories"; // Import updated useCategories hook
 import "../index.css";
-import darkbg1 from "../assets/bgDark1.jpg";
 
 function Decks() {
   const { userProfile } = useUserProfile();
