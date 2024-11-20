@@ -3,6 +3,7 @@ import level2 from "../assets/level2.png";
 import level5 from "../assets/level5.png";
 import level10 from "../assets/level10.png";
 import level20 from "../assets/level20.png";
+import { useUserProfile } from "../context/UserProfileContext";
 
 interface Props {
   frame: string;
@@ -10,7 +11,11 @@ interface Props {
 }
 
 function FrameSelection({ frame, setFrame }: Props) {
-  const playerLevel = 20; // Define the player's current level
+  const { userProfile } = useUserProfile();
+  let playerLevel = 1;
+  if (userProfile?.userLevel) {
+    playerLevel = userProfile?.userLevel; // Define the player's current level
+  }
 
   const frames = [
     {

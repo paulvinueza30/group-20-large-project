@@ -73,6 +73,11 @@ const UserInfo: React.FC<UserInfoProps> = ({ Pcolor, Scolor, frame }) => {
     },
   ];
 
+  const xpRequired = (userProfile.userLevel - 1) * 100;
+  const xpRemaining = xpRequired - userProfile.userExperience;
+  const xpBar = xpRemaining * -1; // ensure it's not negative
+  const w = xpBar + "%"; // setting the width for the xp bar
+
   return (
     <div className="h-full relative bg-slate-100 dark:bg-dark-primary shadow-md rounded-[30px]">
       <div className="flex flex-col items-center h-5/6">
@@ -121,14 +126,16 @@ const UserInfo: React.FC<UserInfoProps> = ({ Pcolor, Scolor, frame }) => {
           </p>
           <p className={textStyle}>
             {" "}
-            <span className="font-bold">Current Level:</span>
+            <span className="font-bold">Current Level: </span>
             {userProfile.userLevel}
           </p>
-          <p className={textStyle}>
-            <span className="font-bold">Daily Streak:</span>
-            {userProfile.userExperience}
-          </p>
-          <p className={textStyle}>
+          <div className="w-5/6 bg-gray-200 rounded-full h-2.5 dark:bg-gray-700 self-center">
+            <div
+              className="bg-purple-600 h-2.5 rounded-full dark:bg-purple-500 mb-2"
+              style={{ width: w }}
+            ></div>
+          </div>
+          <p className={`${textStyle} mt-4`}>
             <span className="font-bold">Email:</span> {userProfile.email}
           </p>
         </div>

@@ -44,7 +44,7 @@ function Profile() {
             </div>
             <div className="col-span-4 row-span-4 col-start-3 row-start-2 overflow-hidden bg-slate-100 rounded-xl shadow-md dark:bg-dark-primary">
               <h2 className="text-center font-bold text-xl py-4 dark:text-white">
-                Achievements Display
+                Streaks Display
               </h2>
             </div>
             <div className="col-span-4 row-span-4 row-start-6 col-start-3 bg-slate-100 rounded-xl shadow-md dark:bg-dark-primary">

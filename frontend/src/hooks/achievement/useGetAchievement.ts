@@ -23,7 +23,6 @@ const useGetUserAchievements = () => {
     const fetchUserAchievements = async () => {
       try {
         const data = await getUserAchievements();
-        console.log(data); // Log the data to verify its structure
         setAchievements(data);
         setLoading(false);
       } catch (error: any) {
