@@ -17,39 +17,89 @@ function Stats() {
 
   const Pcolor = userProfile.colorPreferences.primary;
 
+  const categorizeAchievements = {
+    Player: achievements?.filter((ach) => ach.achievementId.type === "Player"),
+    Deck: achievements?.filter((ach) => ach.achievementId.type === "Deck"),
+    Streak: achievements?.filter((ach) => ach.achievementId.type === "Streak"),
+  };
+  
   return (
-    <>
-      <div className="flex">
+   <div className="flex">
         <SideGrid color={Pcolor} />
-        <div className="flex w-full ml-20">
+      <div className="flex w-full ml-20">
           <div className="grid grid-cols-6 auto-rows-[100px] gap-4 w-full">
             <div className=" h-full w-full col-span-6">
               <h1 className="font-bold text-2xl dark:text-white pt-14">
                 Achievements
               </h1>
             </div>
-            <div className="col-span-6 col-start-1 row-span-4 row-start-2">
+
+            {/*Player Column*/}
+            <div className = "col-span-1 col-start-1 row-span-6">
               {achievements && achievements.length > 0 ? (
-                <ul>
-                  {achievements.map((achievement) => (
-                    <div
-                      key={achievement._id}
-                      className="border-2 m-2 rounded-xl p-3"
-                    >
-                      {" "}
-                      {/* Add key prop here */}
-                      <h1 className="text-2xl font-bold">
-                        {achievement.achievementId.type}
-                      </h1>{" "}
-                      <h3 className="text-xl">
-                        {achievement.achievementId.name}
-                      </h3>{" "}
-                      {/* Use the achievement's _id */}
-                      <p className="text-sm">
-                        {achievement.achievementId.description}
-                      </p>{" "}
-                      {/* Access description from achievementId */}
-                    </div>
+                <ul className = "border-2 m-2 rounded-xl p-3">
+                <h1 className = "font-bold text-2xl">Player</h1>
+                  {categorizeAchievements.Player?.map((ach) => (
+                    <li key = {ach._id} >
+                      <h3 className = "text-xl">
+                        {ach.achievementId.name}
+                      </h3>
+                      <p className = "text-sm">
+                        {ach.achievementId.description}
+                      </p>
+                    </li>
+                  ))}
+                </ul>
+              ) : (
+                <p className="text-2xl dark:text-white">
+                    No achievements found
+                  </p>
+                )}
+                {error && (
+                  <div className="text-xl dark:text-white">Error: {error}</div>
+              )}
+            </div>
+
+            {/*Deck column*/}
+            <div className = "col-span-1 col-start-2 row-span-6">
+              {achievements && achievements.length > 0 ? (
+                <ul className = "border-2 m-2 rounded-xl p-3">
+                <h1 className = "font-bold text-2xl">Deck</h1>
+                  {categorizeAchievements.Deck?.map((ach) => (
+                    <li key = {ach._id} >
+                      <h3 className = "text-xl">
+                        {ach.achievementId.name}
+                      </h3>
+                      <p className = "text-sm">
+                        {ach.achievementId.description}
+                      </p>
+                    </li>
+                  ))}
+                </ul>
+              ) : (
+                  <p className="text-2xl dark:text-white">
+                    No achievements found
+                  </p>
+                )}
+                {error && (
+                  <div className="text-xl dark:text-white">Error: {error}</div>
+                )}
+            </div>
+
+            {/*Streak column*/}
+            <div className = "col-span-1 col-start-3 row-span-6">
+              {achievements && achievements.length > 0 ? (
+                <ul className = "border-2 m-2 rounded-xl p-3">
+                <h1 className = "font-bold text-2xl">Streaks</h1>
+                  {categorizeAchievements.Streak?.map((ach) => (
+                    <li key = {ach._id} >
+                      <h3 className = "text-xl">
+                        {ach.achievementId.name}
+                      </h3>
+                      <p className = "text-sm">
+                        {ach.achievementId.description}
+                      </p>
+                    </li>
                   ))}
                 </ul>
               ) : (
@@ -63,8 +113,7 @@ function Stats() {
             </div>
           </div>
         </div>
-      </div>
-    </>
+    </div>
   );
 }
 
