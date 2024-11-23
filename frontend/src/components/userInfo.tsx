@@ -8,6 +8,9 @@ import level2 from "../assets/level2.png";
 import level5 from "../assets/level5.png";
 import level10 from "../assets/level10.png";
 import level20 from "../assets/level20.png";
+import badge1 from "../assets/badge1.png";
+import badge3 from "../assets/badge3.png";
+import badge5 from "../assets/badge5.png";
 
 interface UserInfoProps {
   Pcolor: string;
@@ -15,7 +18,7 @@ interface UserInfoProps {
   frame: string;
 }
 
-const UserInfo: React.FC<UserInfoProps> = ({ Pcolor: _, Scolor, frame }) => {
+const UserInfo: React.FC<UserInfoProps> = ({ Pcolor, Scolor, frame }) => {
   const [isHover, setIsHover] = useState(false);
   const { userProfile, updateProfilePic } = useUserProfile();
   const textStyle =
@@ -79,33 +82,28 @@ const UserInfo: React.FC<UserInfoProps> = ({ Pcolor: _, Scolor, frame }) => {
   const w = xpBar + "%"; // setting the width for the xp bar
 
   return (
-    <div
-      className="h-full relative bg-slate-100 dark:bg-dark-primary shadow-md rounded-[30px]"
-      style={{
-        position: "relative",
-      }}
-    >
-      <div className="rain-container absolute top-0 left-0 right-0 bottom-0 z-0"></div>
+    <div className="h-full relative bg-slate-100 dark:bg-dark-primary shadow-md rounded-[30px]">
       <div className="flex flex-col items-center h-5/6 ">
         <div
-          className="md:w-64 md:h-64 sm:w-32 sm:h-32 object-cover self-center border-2 rounded-full p-1 relative -top-40 shadow-xl"
+          className="w-64 h-64 object-cover self-center border-2 rounded-full p-1 relative -top-40 shadow-xl"
           style={{
             backgroundColor: Scolor,
             borderColor: Scolor,
           }}
         >
           <div className="text-white">
+            {/* this is the change image circle */}
             <label
               onMouseEnter={handleMouseEnter}
               onMouseLeave={handleMouseLeave}
               htmlFor="files"
-              className="z-50 -bottom-[3px] left-0 opacity-0 hover:opacity-100 border-none text-center absolute pt-12 hover:bg-opacity-70 rounded-full md:w-64 md:h-64 sm:w-32 sm:h-32 text-4xl text-gray-800"
+              className="z-50 -bottom-[3px] left-0 opacity-0 hover:opacity-100 border-none text-center absolute pt-12 hover:bg-opacity-70 rounded-full w-64 h-64 text-4xl text-gray-800"
               style={{
                 backgroundColor: isHover ? Scolor : "transparent",
                 opacity: isHover ? 0.8 : 0,
               }}
             >
-              <PhotoIcon className="w-20 h-20 place-self-center " />
+              <PhotoIcon className="w-20 h-20 place-self-center" />
               Select Image
             </label>
             <input
@@ -114,36 +112,56 @@ const UserInfo: React.FC<UserInfoProps> = ({ Pcolor: _, Scolor, frame }) => {
               onChange={handleFileChange}
               className="hidden"
             />
+            {/* end of change image circle */}
+
+            {/* frames */}
             {frames.map(({ name, style }) =>
               frame === name ? (
                 <img key={name} src={name} className={style} />
               ) : null
             )}
           </div>
+
+          {/* user image */}
           <img
             src={profilePicUrl}
             alt="User Profile"
-            className="w-full h-full object-cover rounded-full z-10" // Ensures the image fills the wrapper
+            className="w-64 h-64 object-cover rounded-full z-10" // Ensures the image fills the wrapper
           />
         </div>
         <div className="flex flex-col justify-start w-full relative -top-32 min-h-full overflow-hidden">
-          <p className={textStyle}>
-            <span className="font-bold">Name:</span> {userProfile.name}
+          <p className="font-bold self-center text-4xl font-pixel tracking-wider pt-5 dark:text-white">
+            {userProfile.name}
           </p>
-          <p className={`${textStyle} pb-8`}>
-            {" "}
-            <span className="font-bold">Current Level: </span>
-            {userProfile.userLevel}
+          <p className="self-center pt-10 font-bold tracking-wide dark:text-white ">
+            LEVEL {userProfile.userLevel}
           </p>
-          <div className="w-5/6 bg-gray-200 rounded-full h-2.5 dark:bg-gray-700 self-center relative bottom-8 z-20">
+          <div className="w-5/6 bg-gray-200 rounded-full h-4 dark:bg-gray-700 self-center relative bottom-12 z-20">
             <div
-              className="bg-purple-600 h-2.5 rounded-full dark:bg-purple-500 mb-2"
-              style={{ width: w }}
+              className="bg-purple-600 h-4 rounded-full dark:bg-purple-500 mb-2"
+              style={{ width: w, backgroundColor: Pcolor }}
             ></div>
           </div>
-          <p className={`${textStyle} mt-4`}>
-            <span className="font-bold">Email:</span> {userProfile.email}
-          </p>
+          <div className="rounded-xl bg-white w-[90%] self-center h-40 dark:bg-dark-secondary flex content-center items-center justify-between">
+            <div className="flex flex-col">
+              <h3 className="self-center text-xl font-semibold font-pixel tracking-wider dark:text-white">
+                Player
+              </h3>
+              <img src={badge1} alt="" className="w-24 h-20" />
+            </div>
+            <div className="flex flex-col">
+              <h3 className="self-center text-xl font-semibold font-pixel tracking-wider dark:text-white">
+                Deck
+              </h3>
+              <img src={badge3} alt="" className="w-24 h-20" />
+            </div>
+            <div className="flex flex-col">
+              <h3 className="self-center text-xl font-semibold font-pixel tracking-wider dark:text-white">
+                Streaks
+              </h3>
+              <img src={badge5} alt="" className="w-24 h-20" />
+            </div>
+          </div>
           <img
             src={background}
             alt=""
