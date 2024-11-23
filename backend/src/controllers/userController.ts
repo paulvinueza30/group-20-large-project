@@ -6,7 +6,7 @@ import Achievement from "../models/achievmentModel";
 import bcrypt from "bcrypt";
 import passport from "../config/passport-config";
 import { IUser } from "../interfaces/IUser";
-import upload from "../config/multer-config";
+import { upload, resizeImage } from "../config/multer-config";
 
 // ** Register User **
 export const registerUser = async (
@@ -193,40 +193,48 @@ export const uploadProfilePic = async (
   req: Request,
   res: Response
 ): Promise<void> => {
-  upload(req, res, async (err) => {
+  upload(req, res, (err) => {
     if (err) {
       return res
         .status(400)
         .json({ message: "Error uploading file", error: err.message });
     }
 
-    const user = req.user as IUser;
-    const userId = user._id;
-
-    try {
-      const updatedUser = await User.findByIdAndUpdate(
-        userId,
-        { profilePic: `/uploads/${req.file?.filename}` },
-        { new: true }
-      );
-
-      if (!updatedUser) {
-        return res.status(404).json({ message: "User not found" });
+    // Resize the image after uploading
+    resizeImage(req, res, async (resizeErr) => {
+      if (resizeErr) {
+        return res
+          .status(500)
+          .json({ message: "Error resizing image", error: resizeErr.message });
       }
 
-      res.status(200).json({
-        message: "Profile picture updated successfully",
-        profilePic: updatedUser.profilePic,
-      });
-    } catch (error) {
-      console.error(error);
-      res
-        .status(500)
-        .json({ message: "Error updating profile picture", error });
-    }
+      const user = req.user as IUser; // Assuming req.user contains the authenticated user
+      const userId = user._id;
+
+      try {
+        const updatedUser = await User.findByIdAndUpdate(
+          userId,
+          { profilePic: `/uploads/${req.file?.filename}` },
+          { new: true }
+        );
+
+        if (!updatedUser) {
+          return res.status(404).json({ message: "User not found" });
+        }
+
+        res.status(200).json({
+          message: "Profile picture updated successfully",
+          profilePic: updatedUser.profilePic,
+        });
+      } catch (error) {
+        console.error(error);
+        res
+          .status(500)
+          .json({ message: "Error updating profile picture", error });
+      }
+    });
   });
 };
-
 // ** Increment User Experience **
 export const incrementUserExperience = async (
   userId: string,
