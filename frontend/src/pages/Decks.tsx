@@ -6,6 +6,7 @@ import { useUserProfile } from "../context/UserProfileContext";
 import { GoTrash, GoPencil } from "react-icons/go";
 import { useCategories } from "../hooks/category/useCategories"; // Import updated useCategories hook
 import "../index.css";
+import { HomeIcon } from "@heroicons/react/24/outline";
 
 function Decks() {
   const { userProfile } = useUserProfile();
@@ -59,9 +60,10 @@ function Decks() {
       <div className="w-full ml-20 mr-[30px]">
         <div className="grid grid-cols-8 auto-rows-[100px] gap-6 w-full">
           <div className="h-full w-full col-span-8">
-            <h1 className="font-bold text-2xl dark:text-white pt-14">
-              Deck Selection
-            </h1>
+            <div className="pt-8 text-sm flex flex-colum text-gray-400">
+              <HomeIcon className="h-[15px] w-[15px]" /> / Decks
+            </div>
+            <h1 className="font-bold text-3xl dark:text-white">Decks</h1>
           </div>
           <div className="col-span-8 col-start-1 row-span-5 row-start-2 flex flex-row flex-wrap w-full justify-center">
             {categories?.map((category, index) => (

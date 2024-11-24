@@ -9,8 +9,14 @@ import level5 from "../assets/level5.png";
 import level10 from "../assets/level10.png";
 import level20 from "../assets/level20.png";
 import badge1 from "../assets/badge1.png";
+import badge2 from "../assets/badge2.png";
 import badge3 from "../assets/badge3.png";
+import badge4 from "../assets/badge4.png";
 import badge5 from "../assets/badge5.png";
+import badge6 from "../assets/badge6.png";
+import badge7 from "../assets/badge7.png";
+
+import useGetUserAchievements from "../hooks/achievement/useGetAchievement";
 
 interface UserInfoProps {
   Pcolor: string;
@@ -18,9 +24,87 @@ interface UserInfoProps {
   frame: string;
 }
 
+interface Achievement {
+  _id: string;
+  achievementId: {
+    name: string;
+    description: string;
+    goal: number;
+    type: string;
+  };
+  progress: number;
+  isCompleted: boolean;
+}
+
 const UserInfo: React.FC<UserInfoProps> = ({ Pcolor, Scolor, frame }) => {
   const [isHover, setIsHover] = useState(false);
   const { userProfile, updateProfilePic } = useUserProfile();
+  const { achievements } = useGetUserAchievements();
+
+  const categorizeAchievements = {
+    Player: achievements?.filter((ach) => ach.achievementId.type === "Player"),
+    Deck: achievements?.filter((ach) => ach.achievementId.type === "Deck"),
+    Streak: achievements?.filter((ach) => ach.achievementId.type === "Streak"),
+  };
+
+  // Function to get the index of the last completed achievement in a list
+  const getLastCompletedAchievementIndex = (
+    categoryAchievements: Achievement[] | undefined
+  ) => {
+    // Find the index of the last completed achievement
+    const completedAchievements =
+      categoryAchievements?.filter(
+        (ach: { isCompleted: boolean }) => ach.isCompleted === true
+      ) || [];
+
+    // If there are completed achievements, return the index of the last one in the original list
+    if (completedAchievements.length > 0) {
+      // Find the index of the last completed achievement in the original list
+      const lastCompletedAchievement =
+        completedAchievements[completedAchievements.length - 1];
+      return categoryAchievements?.findIndex(
+        (ach: any) => ach === lastCompletedAchievement
+      );
+    }
+
+    // Return -1 if no completed achievements are found
+    return -1;
+  };
+
+  // Get the index of the last completed achievement for each category
+  const lastPlayerAchievementIndex = getLastCompletedAchievementIndex(
+    categorizeAchievements.Player
+  );
+  const lastDeckAchievementIndex = getLastCompletedAchievementIndex(
+    categorizeAchievements.Deck
+  );
+  const lastStreakAchievementIndex = getLastCompletedAchievementIndex(
+    categorizeAchievements.Streak
+  );
+
+  // Output the index of the last completed achievement for each category
+  console.log({
+    lastPlayerAchievementIndex,
+    lastDeckAchievementIndex,
+    lastStreakAchievementIndex,
+  });
+
+  const badgeImages = [badge2, badge3, badge4, badge5, badge6, badge7];
+
+  const imageStreaks =
+    lastStreakAchievementIndex === -1
+      ? badge1
+      : badgeImages[lastStreakAchievementIndex!];
+
+  const imagePlayer =
+    lastPlayerAchievementIndex === -1
+      ? badge1
+      : badgeImages[lastPlayerAchievementIndex!];
+
+  const imageDeck =
+    lastDeckAchievementIndex === -1
+      ? badge1
+      : badgeImages[lastDeckAchievementIndex!];
 
   // Handle the file input change
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -145,19 +229,19 @@ const UserInfo: React.FC<UserInfoProps> = ({ Pcolor, Scolor, frame }) => {
               <h3 className="self-center text-xl font-semibold font-pixel tracking-wider dark:text-white">
                 Player
               </h3>
-              <img src={badge1} alt="" className="w-24 h-20" />
+              <img src={imagePlayer} alt="" className="w-24 h-20" />
             </div>
             <div className="flex flex-col">
               <h3 className="self-center text-xl font-semibold font-pixel tracking-wider dark:text-white">
                 Deck
               </h3>
-              <img src={badge3} alt="" className="w-24 h-20" />
+              <img src={imageDeck} alt="" className="w-24 h-20" />
             </div>
             <div className="flex flex-col">
               <h3 className="self-center text-xl font-semibold font-pixel tracking-wider dark:text-white">
                 Streaks
               </h3>
-              <img src={badge5} alt="" className="w-24 h-20" />
+              <img src={imageStreaks} alt="" className="w-24 h-20" />
             </div>
           </div>
           <img

@@ -9,20 +9,11 @@ import badge4 from "../assets/badge4.png";
 import badge5 from "../assets/badge5.png";
 import badge6 from "../assets/badge6.png";
 import badge7 from "../assets/badge7.png";
+import { HomeIcon } from "@heroicons/react/24/outline";
 
 function Stats() {
-  const levelicon = badge1;
   const { achievements, loading, error } = useGetUserAchievements();
 
-  const [frame, setFrame] = useState<string>(() => {
-    return localStorage.getItem("selectedFrame") || ""; // Get frame from localStorage or default to an empty string
-  });
-
-  useEffect(() => {
-    if (frame) {
-      localStorage.setItem("selectedFrame", frame); // Persist frame selection to localStorage
-    }
-  }, [frame]);
   const { userProfile } = useUserProfile();
 
   if (!userProfile) {
@@ -41,10 +32,9 @@ function Stats() {
     Streak: achievements?.filter((ach) => ach.achievementId.type === "Streak"),
   };
 
-  const badgeImages = [badge1, badge2, badge3, badge4, badge5, badge6, badge7];
+  const badgeImages = [badge2, badge3, badge4, badge5, badge6, badge7];
 
   const badgeStyles = [
-    "w-[6.2rem] h-[5.4rem] relative -left-1 ", // style for badge1
     "w-[5.5rem] h-[5.7rem] relative -left-1", // style for badge2
     "w-[5.7rem] h-[5.4rem] relative -left-1 ", // style for badge3
     "w-[6rem] h-[6rem] relative -left-1 ", // style for badge4
@@ -59,9 +49,10 @@ function Stats() {
       <div className="flex w-full ml-20 ">
         <div className="grid grid-cols-6 auto-rows-[100px] gap-4 w-full">
           <div className=" h-full w-full col-span-6">
-            <h1 className="font-bold text-2xl dark:text-white pt-14">
-              Achievements
-            </h1>
+            <div className="pt-8 text-sm flex flex-colum text-gray-400">
+              <HomeIcon className="h-[15px] w-[15px]" /> / Achievements
+            </div>
+            <h1 className="font-bold text-3xl dark:text-white">Achievements</h1>
           </div>
 
           {/*Player Column*/}
@@ -77,10 +68,8 @@ function Stats() {
                     {index === 0 && (
                       <>
                         <img
-                          className={`${
-                            badgeStyles[index % badgeStyles.length]
-                          }`}
-                          src={badgeImages[index % badgeImages.length]}
+                          className="w-[6.2rem] h-[5.4rem] relative -left-1"
+                          src={badge1}
                           alt={`badge-${index}`}
                         />
                         <div className="flex flex-col w-80 h-20 absolute left-24 p-2">
@@ -101,9 +90,9 @@ function Stats() {
                       <>
                         <img
                           className={`${
-                            badgeStyles[index % badgeStyles.length]
+                            badgeStyles[(index - 1) % badgeStyles.length]
                           } ${ach.isCompleted ? "opacity-100" : "opacity-50"}`}
-                          src={badgeImages[index % badgeImages.length]}
+                          src={badgeImages[(index - 1) % badgeImages.length]}
                           alt={`badge-${index}`}
                         />
                         <div className="flex flex-col w-80 h-20 absolute left-24 p-2">
