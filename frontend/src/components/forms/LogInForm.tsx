@@ -35,29 +35,31 @@ const LoginForm: React.FC = () => {
   }, [success, navigate]); // Run effect only when success changes
 
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col items-start">
-      <h2 className="font-pixel text-2xl pb-2">Log In</h2>
+    <form onSubmit={handleSubmit} className="flex flex-col items-start w-3/5">
+      <h2 className="ml-2 font-pixel text-5xl pb-2">Log In</h2>
+      <h3 className="ml-2 text-xl text-gray-700 mt-2">Email (or Username) </h3>
       <input
-        className="border-2 p-2 my-2"
+        className="border-2 p-2 m-2"
         name="login"
         value={formData.login}
         onChange={handleChange}
         placeholder="Login"
         required
       />
+      <h3 className="ml-2 text-xl text-gray-700 mt-2">Password</h3>
       <input
-        className="border-2 p-2 my-2"
+        className="border-2 p-2 m-2"
         name="password"
         value={formData.password}
         onChange={handleChange}
-        placeholder="Password"
+        placeholder="p@ssw0rd"
         type="password"
         required
       />
       <button
         type="submit"
         disabled={loading}
-        className="bg-primary p-2 text-white rounded-xl px-4 mt-3"
+        className="bg-primary p-2 text-white rounded-xl px-5 py-3 mt-3 ml-2 text-xl"
       >
         {/* Text changes while the API loads */}
         {loading ? "Logging in..." : "Login"}

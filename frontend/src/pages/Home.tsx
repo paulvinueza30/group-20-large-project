@@ -70,10 +70,7 @@ function Home() {
         </h2>
         <TeamCards />
       </div>
-      <div className="col-span-8 row-span-2 row-start-14 pt-20 text-center">
-        {" "}
-        Possible Footer
-      </div>
+      <div className="col-span-8 row-span-2 row-start-14 pt-20 text-center"></div>
     </div>
   );
 }

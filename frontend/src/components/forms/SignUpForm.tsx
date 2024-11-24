@@ -31,46 +31,51 @@ const SignUpForm: React.FC = () => {
   }, [success, navigate]);
 
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col items-start">
-      <h2 className="ml-2 font-pixel text-2xl pb-2">Sign Up</h2>
+    <form onSubmit={handleSubmit} className="flex flex-col items-start w-3/5">
+      <h1 className="ml-2 font-pixel text-5xl pb-2">Sign Up</h1>
+
+      <h3 className="ml-2 text-xl text-gray-700 mt-5">Name</h3>
       <input
         className="border-2 p-2 m-2"
         name="name"
         value={formData.name}
         onChange={handleChange}
-        placeholder="Name"
+        placeholder="First Last name"
         required
       />
+      <h3 className="ml-2 text-xl text-gray-700 mt-2">Username</h3>
       <input
         className="border-2 p-2 m-2"
         name="userName"
         value={formData.userName}
         onChange={handleChange}
-        placeholder="Username"
+        placeholder="e.g., atamaLover"
         required
       />
+      <h3 className="ml-2 text-xl text-gray-700 mt-2">Email</h3>
       <input
         className="border-2 p-2 m-2"
         name="email"
         value={formData.email}
         onChange={handleChange}
-        placeholder="Email"
+        placeholder="e.g., newuser@atama.com"
         type="email"
         required
       />
+      <h3 className="ml-2 text-xl text-gray-700 mt-2">Password</h3>
       <input
         className="border-2 p-2 m-2"
         name="password"
         value={formData.password}
         onChange={handleChange}
-        placeholder="Password"
+        placeholder="p@ssw0rd"
         type="password"
         required
       />
       <button
         type="submit"
         disabled={loading}
-        className="bg-primary p-2 text-white rounded-xl px-4 mt-3 ml-2"
+        className="bg-primary p-2 text-white rounded-xl px-5 py-3 mt-3 ml-2 text-xl"
       >
         {loading ? "Signing Up..." : "Sign Up"}
       </button>
