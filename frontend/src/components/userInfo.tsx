@@ -21,8 +21,6 @@ interface UserInfoProps {
 const UserInfo: React.FC<UserInfoProps> = ({ Pcolor, Scolor, frame }) => {
   const [isHover, setIsHover] = useState(false);
   const { userProfile, updateProfilePic } = useUserProfile();
-  const textStyle =
-    "rounded-xl mb-2 bg-white p-5 m-4 dark:bg-dark-secondary dark:text-white text-xl z-10";
 
   // Handle the file input change
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -126,7 +124,7 @@ const UserInfo: React.FC<UserInfoProps> = ({ Pcolor, Scolor, frame }) => {
           <img
             src={profilePicUrl}
             alt="User Profile"
-            className="w-64 h-64 object-cover rounded-full z-10" // Ensures the image fills the wrapper
+            className="w-full h-full object-cover rounded-full z-10" // Ensures the image fills the wrapper
           />
         </div>
         <div className="flex flex-col justify-start w-full relative -top-32 min-h-full overflow-hidden">
