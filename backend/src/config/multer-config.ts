@@ -1,6 +1,7 @@
 import fs from "fs";
 import multer from "multer";
 import path from "path";
+import sharp from "sharp";
 
 // Get the directory name of the current module using import.meta.url
 const __dirname = path.dirname(new URL(import.meta.url).pathname);
@@ -13,16 +14,7 @@ if (!fs.existsSync(uploadPath)) {
 }
 
 // Configure storage (for local storage in this example)
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    // Use the already defined uploadPath here
-    cb(null, uploadPath);
-  },
-  filename: (req, file, cb) => {
-    const uniqueSuffix = Date.now() + path.extname(file.originalname); // Add unique suffix to prevent overwrites
-    cb(null, uniqueSuffix);
-  },
-});
+const storage = multer.memoryStorage(); // Use memory storage for buffering image
 
 // File validation to ensure only images are uploaded
 const fileFilter = (req: any, file: any, cb: any) => {
@@ -39,4 +31,30 @@ const upload = multer({
   limits: { fileSize: 5 * 1024 * 1024 }, // 5MB
 }).single("profilePic"); // 'profilePic' is the field name in the form
 
-export default upload;
+// Resize the image directly in the storage engine using sharp
+const resizeImage = (req: any, res: any, next: any) => {
+  if (req.file) {
+    const resizedFilePath = path.join(
+      uploadPath,
+      "resized-" + Date.now() + path.extname(req.file.originalname)
+    );
+
+    // Resize the image using sharp to 318x400
+    sharp(req.file.buffer)
+      .resize(318, 400) // Resize to 318px width and 400px height
+      .toFile(resizedFilePath, (err, info) => {
+        if (err) {
+          return next(err); // Handle error during resizing
+        }
+
+        // Update the file path in the request object to the resized image
+        req.file.path = resizedFilePath;
+        req.file.filename = path.basename(resizedFilePath); // Ensure filename is set
+        next();
+      });
+  } else {
+    next();
+  }
+};
+
+export { upload, resizeImage };

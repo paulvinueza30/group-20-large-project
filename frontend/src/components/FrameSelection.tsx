@@ -3,6 +3,7 @@ import level2 from "../assets/level2.png";
 import level5 from "../assets/level5.png";
 import level10 from "../assets/level10.png";
 import level20 from "../assets/level20.png";
+import noBorder from "../assets/noBorder.webp";
 import { useUserProfile } from "../context/UserProfileContext";
 
 interface Props {
@@ -31,6 +32,11 @@ function FrameSelection({ frame: _, setFrame }: Props) {
     { name: level5, lvl: 5, style: "w-50 h-40 z-50 cursor-pointer" },
     { name: level10, lvl: 10, style: "w-50 h-40 z-50 cursor-pointer" },
     { name: level20, lvl: 20, style: "w-50 h-40 z-50 cursor-pointer" },
+    {
+      name: noBorder,
+      lvl: 0,
+      style: "w-50 h-40 z-50 cursor-pointer relative -left-10 ",
+    },
   ];
 
   const handleFrameSelection = (name: string) => {
@@ -45,7 +51,6 @@ function FrameSelection({ frame: _, setFrame }: Props) {
       <div className="flex flex-wrap justify-center items-center relative">
         {frames.map(({ name, lvl, style }) => {
           const isUnavailable = playerLevel < lvl;
-
           return (
             <div key={lvl} className="relative m-2">
               <img
@@ -60,6 +65,11 @@ function FrameSelection({ frame: _, setFrame }: Props) {
                   <h3>Requires level {lvl}</h3>
                 </div>
               )}
+              {name === noBorder ? (
+                <div className="absolute top-5 -left-10 rounded-full w-full h-full flex justify-center items-center flex-col ">
+                  <h3 className="text-md">No border</h3>
+                </div>
+              ) : null}
             </div>
           );
         })}
