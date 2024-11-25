@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useParams } from "react-router-dom";
 import Confetti from "react-confetti";
 import { useGetNextFlashcard } from "../hooks/flashcard/useGetNextFlashcard";
@@ -13,13 +13,15 @@ import ErrorFeedback from "../components/flashcard/ErrorFeedback";
 
 type Feedback = "Forgot" | "Hard" | "Good" | "Easy";
 
-const Flashcard: React.FC<{ onFlashcardAdded: () => void }> = ({ onFlashcardAdded }) => {
+const Flashcard: React.FC = () => {
   const { userProfile } = useUserProfile();
   const Pcolor = userProfile ? userProfile.colorPreferences.primary : "#5C0B86";
 
   const [showBackCard, setShowBackCard] = useState(false);
   const { categoryId } = useParams<{ categoryId: string }>();
-  const { flashcard, loading, error, refetch } = useGetNextFlashcard(categoryId || "");
+  const { flashcard, loading, error, refetch } = useGetNextFlashcard(
+    categoryId || ""
+  );
   const { review, errorFeedback } = useReviewFlashcard();
 
   const { experienceNumbers, addFloatingNumber } = useFloatingNumbers();
@@ -28,7 +30,7 @@ const Flashcard: React.FC<{ onFlashcardAdded: () => void }> = ({ onFlashcardAdde
     const flashcardId = flashcard?._id;
     if (flashcardId) {
       try {
-        await review(flashcardId, feedback);
+        await review(flashcardId, feedback); // Submit review to the API
         if (feedback === "Forgot") {
           addFloatingNumber(0.25);
         } else if (feedback === "Hard") {
@@ -38,18 +40,13 @@ const Flashcard: React.FC<{ onFlashcardAdded: () => void }> = ({ onFlashcardAdde
         } else if (feedback === "Easy") {
           addFloatingNumber(1);
         }
-        setShowBackCard(false);
-        refetch();
+        setShowBackCard(false); // Flip back to the front side
+        await refetch(); // Fetch the next flashcard
       } catch (err) {
         console.error("Error during review:", err);
       }
     }
   };
-
-  // Refetch flashcards when `onFlashcardAdded` is triggered
-  useEffect(() => {
-    refetch();
-  }, [onFlashcardAdded, refetch]);
 
   if (loading) return <Loader />;
   if (error === "No flashcards left in this category") {
@@ -84,7 +81,7 @@ const Flashcard: React.FC<{ onFlashcardAdded: () => void }> = ({ onFlashcardAdde
           <div className="flex justify-center">
             <Button
               text="Show Answer"
-              onClick={() => setShowBackCard(!showBackCard)}
+              onClick={() => setShowBackCard(true)} // Flip to show back
               style={{ backgroundColor: Pcolor }}
             />
           </div>

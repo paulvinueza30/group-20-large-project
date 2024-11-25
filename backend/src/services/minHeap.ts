@@ -1,4 +1,5 @@
-export class MinHeap<T extends { dueDate: Date }> {
+import {Types} from "mongoose";
+export class MinHeap<T extends { _id: Types.ObjectId; dueDate: Date }> {
     private heap: T[];
 
     constructor() {
@@ -62,10 +63,12 @@ export class MinHeap<T extends { dueDate: Date }> {
 
     // Update an item within the heap
     update(item: T): void {
-        const index = this.heap.findIndex(c => c === item);
+        const index = this.heap.findIndex(c => c._id === item._id);
         if (index > -1) {
             this.heapifyDown(index);
             this.heapifyUp(index);
+        } else {
+            console.error("Card not found in heap during update:", item);
         }
     }
 }

@@ -16,6 +16,7 @@ export const useGetNextFlashcard = (category: string) => {
   const fetchFlashcard = useCallback(async () => {
     setLoading(true);
     setError(null); // Reset error before fetching
+    setFlashcard(null); // Clear the current flashcard to prevent showing the same one
     try {
       const data = await getNextFlashcard(category);
       if (data.message) {
@@ -30,15 +31,17 @@ export const useGetNextFlashcard = (category: string) => {
     } finally {
       setLoading(false);
     }
-  }, [category]); // Memoize based on category
+  }, [category]);
 
   useEffect(() => {
     if (category) {
       fetchFlashcard(); // Fetch the next flashcard when category changes
     }
-  }, [category, fetchFlashcard]); // Add fetchFlashcard as a dependency
+  }, [category, fetchFlashcard]);
 
-  const refetch = fetchFlashcard; // Alias for manual refetching
+  const refetch = async () => {
+    await fetchFlashcard(); // Allow manual refetching
+  };
 
   return { flashcard, loading, error, refetch };
 };

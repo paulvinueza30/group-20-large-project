@@ -51,6 +51,7 @@ class QueueController {
         console.log("Due flashcards found:", dueCards);
 
         // Insert each due flashcard into the queue
+        this.queue = new MinHeap<IFlashcard>(); // Reset the heap
         dueCards.forEach(card => this.queue.insert(card));
     }
 
@@ -62,11 +63,15 @@ class QueueController {
     // Review a flashcard, update its due date and experience based on feedback
     async reviewCard(id: string, feedback: 'Forgot' | 'Hard' | 'Good' | 'Easy'): Promise<void> {
         const card = await flashcard.findById(id);
-        const category = await Category.findById(card.category)
+        const category = await Category.findById(card.category);
         if (card) {
             await card.updateDueDate(feedback);  // Adjusts dueDate and interval based on feedback
             await category.updateExperience(feedback);
-            this.queue.update(card);  // Update or reposition the card in the heap
+
+            // Reinitialize the queue to reflect updated flashcard ordering
+            const userId = card.userId.toString();
+            const categoryId = card.category.toString();
+            await this.initializeQueue(categoryId, userId);
         }
     }
 }

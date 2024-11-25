@@ -1,6 +1,7 @@
 import { Document, Types } from "mongoose";
 
 export interface IFlashcard extends Document {
+    _id: Types.ObjectId;
     userId: Types.ObjectId;
     frontSide: string;
     backSide: string;

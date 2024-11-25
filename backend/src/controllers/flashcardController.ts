@@ -179,6 +179,7 @@ export const getNextFlashcard = async (
 };
 
 // Review Flashcard
+
 export const reviewFlashcard = async (req: Request, res: Response): Promise<void> => {
   const { id } = req.params; // Flashcard ID
   const { feedback } = req.body; // User's feedback
@@ -187,47 +188,52 @@ export const reviewFlashcard = async (req: Request, res: Response): Promise<void
 
   // Validate feedback
   const xpMap = {
-    Forgot: 0.25,
-    Hard: 0.5,
-    Good: 0.75,
-    Easy: 1,
+      Forgot: 0.25,
+      Hard: 0.5,
+      Good: 0.75,
+      Easy: 1,
   };
   if (!xpMap[feedback]) {
-    res.status(400).json({ message: "Invalid feedback" });
-    return;
+      res.status(400).json({ message: "Invalid feedback" });
+      return;
   }
   const xpGain = xpMap[feedback];
 
   try {
-    // Fetch the flashcard and category
-    const card = await flashcard.findOne({ _id: id, userId });
-    const categoryDoc = await Category.findOne({ _id: card.category, userId });
+      // Fetch the flashcard and category
+      const card = await flashcard.findOne({ _id: id, userId });
+      const categoryDoc = await Category.findOne({ _id: card?.category, userId });
 
-    if (!card || !categoryDoc) {
-      res.status(404).json({ message: "Flashcard or category not found" });
-      return;
-    }
+      if (!card || !categoryDoc) {
+          res.status(404).json({ message: "Flashcard or category not found" });
+          return;
+      }
 
-    // Increment user XP and category XP
-    user.userExperience += xpGain;
-    categoryDoc.categoryExperience += xpGain;
+      // Increment user XP and category XP
+      user.userExperience += xpGain;
+      categoryDoc.categoryExperience += xpGain;
 
-    // Save user and category updates
-    await user.levelUp(); // Preserve the levelUp function call
-    await incrementUserAchievement(userId.toString(), "Player", user.userLevel); // Increment Player achievements based on user level
-    await user.save();
-    await categoryDoc.save();
+      // Save user and category updates
+      await user.levelUp(); // Preserve the levelUp function call
+      await incrementUserAchievement(userId.toString(), "Player", user.userLevel); // Increment Player achievements based on user level
+      await user.save();
+      await categoryDoc.save();
 
-    // Increment progress for Deck achievements
-    await incrementUserAchievement(userId.toString(), "Deck", xpGain, { categoryId: categoryDoc._id.toString() });
+      // Increment progress for Deck achievements
+      await incrementUserAchievement(userId.toString(), "Deck", xpGain, { categoryId: categoryDoc._id.toString() });
 
-    // Update the due date for the flashcard
-    await card.updateDueDate(feedback);
+      // Update the due date for the flashcard
+      await card.updateDueDate(feedback);
 
-    res.status(200).json({ message: "Flashcard reviewed successfully" });
+      // Reinitialize the queue to ensure it reflects the changes
+      const strUserId = userId.toString();
+      const categoryId = categoryDoc._id.toString();
+      await queueController.initializeQueue(categoryId, strUserId);
+
+      res.status(200).json({ message: "Flashcard reviewed successfully" });
   } catch (error) {
-    console.error("Error reviewing flashcard:", error);
-    res.status(500).json({ message: "Error reviewing flashcard", error });
+      console.error("Error reviewing flashcard:", error);
+      res.status(500).json({ message: "Error reviewing flashcard", error });
   }
 };
 

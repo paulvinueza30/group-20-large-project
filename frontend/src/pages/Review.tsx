@@ -16,10 +16,6 @@ function Review() {
   const location = useLocation();
   const categoryName = location.state?.categoryName || "Default Category"; // Fallback for categoryName
 
-  const handleFlashcardAdded = () => {
-    console.log("Flashcard added!");
-  };
-
   return (
     <div className="flex">
       <SideGrid color={Pcolor} />
@@ -32,7 +28,7 @@ function Review() {
             <h1 className="font-bold text-2xl dark:text-white">Reviewing {categoryName}</h1>
           </div>
           <div className="col-span-4 col-start-2 row-span-5 row-start-3 w-full">
-            <Flashcard onFlashcardAdded={handleFlashcardAdded} />
+            <Flashcard />
           </div>
         </div>
       </div>
