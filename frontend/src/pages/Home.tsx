@@ -64,7 +64,7 @@ function Home() {
           </div>
         </div>
       </div>
-      <div className="col-span-8 row-span-4 row-start-12">
+      <div className="col-span-8 row-span-4 row-start-12" id="teams">
         <h2 className="text-center text-5xl text-bold font-pixel pt-10 pb-20 hue-rotate-[210deg]">
           Team
         </h2>

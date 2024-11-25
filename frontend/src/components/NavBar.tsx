@@ -1,39 +1,42 @@
+import { Link, useLocation } from "react-router-dom";
+
 function NavBar() {
+  const location = useLocation(); // Get the current location
+
   return (
     <nav className="bg-white border-gray-200 pt-5">
-      <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto py-4">
+      <div className="min-w-screen flex flex-wrap items-center justify-between mx-auto py-4">
         <a href="#" className="flex items-center space-x-3 rtl:space-x-reverse">
           <span className="self-center text-2xl font-pixel whitespace-nowrap hue-rotate-[210deg]">
             Atama
           </span>
         </a>
-        <div className="lock w-auto " id="navbar-default">
-          <ul className="font-medium flex flex-col p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 rtl:space-x-reverse md:mt-0 md:border-0 md:bg-white ">
+        <div className="lock w-auto" id="navbar-default">
+          <ul className="font-medium flex flex-col p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 rtl:space-x-reverse md:mt-0 md:border-0 md:bg-white">
             <li>
-              <a
-                href="/"
-                className="block py-2 px-3 text-blue bg-blue-700 mr-4 rounded md:bg-transparent md:text-blue-700 md:p-0 "
+              <Link
+                to="/"
+                className={`block py-2 px-3 rounded mr-4 md:p-0 ${
+                  location.pathname === "/"
+                    ? "text-blue" // Active state for Home
+                    : "text-gray-900 hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700"
+                }`}
                 aria-current="page"
               >
                 Home
-              </a>
+              </Link>
             </li>
             <li>
-              <a
-                href="/"
-                className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 mr-4  md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 "
-              >
-                About
-              </a>
-            </li>
-
-            <li>
-              <a
-                href="/login"
-                className="block px-6 text-white rounded-md md:border-0 md:hover:text-blue-700 bg-secondary hover:bg-primary"
+              <Link
+                to="/login"
+                className={`block px-6 rounded-md md:border-0 md:hover:text-blue-700 ${
+                  location.pathname === "/login"
+                    ? "bg-blue text-white"
+                    : "bg-secondary hover:bg-primary text-gray-800"
+                }`}
               >
                 Log In
-              </a>
+              </Link>
             </li>
           </ul>
         </div>
