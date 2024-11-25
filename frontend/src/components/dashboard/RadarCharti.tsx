@@ -19,7 +19,7 @@ const RadarCharti: React.FC<RadarProps> = ({ Pcolor, categories }: any) => {
   return (
     <div className=" w-42 h-42 flex flex-col items-center">
       <h3 className="text-center p-2 text-lg font-bold dark:text-white">
-        Current Level
+        Decks Experience
       </h3>
       <RadarChart
         width={350}

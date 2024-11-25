@@ -66,6 +66,12 @@ function Decks() {
             <h1 className="font-bold text-3xl dark:text-white">Decks</h1>
           </div>
           <div className="col-span-8 col-start-1 row-span-5 row-start-2 flex flex-row flex-wrap w-full justify-center">
+            {categories?.length === 0 && (
+              <div className="text-xl p-10">
+                No decks created, head to the dashboard to create a new one
+              </div>
+            )}
+
             {categories?.map((category, index) => (
               <div
                 key={category._id}
