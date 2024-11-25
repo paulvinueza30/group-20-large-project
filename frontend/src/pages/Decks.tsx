@@ -1,37 +1,29 @@
 import { useState } from "react";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { deleteCategory, editCategory } from "../services/categoryApi";
 import SideGrid from "../components/sidebar/SideGrid";
 import { useUserProfile } from "../context/UserProfileContext";
 import { GoTrash, GoPencil } from "react-icons/go";
-import { useCategories } from "../hooks/category/useCategories"; // Import updated useCategories hook
+import { useCategories } from "../hooks/category/useCategories";
 import "../index.css";
 import { HomeIcon } from "@heroicons/react/24/outline";
 
 function Decks() {
   const { userProfile } = useUserProfile();
   const Pcolor = userProfile ? userProfile.colorPreferences.primary : "#5C0B86";
-  const Scolor = userProfile
-    ? userProfile.colorPreferences.secondary
-    : "#BA72E2";
+  const Scolor = userProfile ? userProfile.colorPreferences.secondary : "#BA72E2";
 
-  const [editingCategoryId, setEditingCategoryId] = useState<string | null>(
-    null
-  );
+  const [editingCategoryId, setEditingCategoryId] = useState<string | null>(null);
   const [editedCategoryName, setEditedCategoryName] = useState<string>("");
-  const [refreshToken, setRefreshToken] = useState(0); // Initialize refreshToken state
+  const [refreshToken, setRefreshToken] = useState(0);
 
-  const {
-    data: categories,
-    loading,
-    error,
-  } = useCategories(!!userProfile, refreshToken);
+  const { data: categories, loading, error } = useCategories(!!userProfile, refreshToken);
   const navigate = useNavigate();
 
   const handleDeleteCategory = async (categoryId: string) => {
     try {
       await deleteCategory(categoryId);
-      setRefreshToken((prev) => prev + 1); // Trigger re-fetch
+      setRefreshToken((prev) => prev + 1);
     } catch (error) {
       console.error("Error deleting category:", error);
     }
@@ -40,15 +32,15 @@ function Decks() {
   const handleEditCategorySave = async (categoryId: string) => {
     try {
       await editCategory(categoryId, editedCategoryName);
-      setRefreshToken((prev) => prev + 1); // Trigger re-fetch
+      setRefreshToken((prev) => prev + 1);
       setEditingCategoryId(null);
     } catch (error) {
       console.error("Error editing category:", error);
     }
   };
 
-  const handleReviewClick = (categoryId: string, categoryName: string) => {
-    navigate(`/review/${categoryId}`, { state: { categoryName } });
+  const handleViewDetails = (categoryId: string) => {
+    navigate(`/decks/${categoryId}`); // Navigate to DeckDetails
   };
 
   if (loading) return <div>Loading...</div>;
@@ -110,19 +102,17 @@ function Decks() {
                       {category.name}
                     </h3>
                     <div className="flex justify-start ml-6 absolute bottom-6">
-                      <Link
-                        to={`/decks/${category._id}`}
-                        style={{ backgroundColor: Pcolor }}
-                        className="text-white text-xl rounded-xl px-5 py-2"
-                      >
-                        View All
-                      </Link>
                       <button
                         style={{ backgroundColor: Pcolor }}
+                        className="text-white text-xl rounded-xl px-5 py-2"
+                        onClick={() => handleViewDetails(category._id)} // View Details
+                      >
+                        View All
+                      </button>
+                      <button
+                        style={{ backgroundColor: Scolor }}
                         className="ml-2 text-white text-xl rounded-xl px-5 py-2"
-                        onClick={() =>
-                          handleReviewClick(category._id, category.name)
-                        }
+                        onClick={() => navigate(`/review/${category._id}`, { state: { categoryName: category.name } })}
                       >
                         Review
                       </button>

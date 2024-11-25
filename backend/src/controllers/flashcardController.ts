@@ -259,7 +259,10 @@ export const getAllFlashcards = async (
     // Find all flashcards in the category
     const flashcards = await flashcard.find({ category: categoryId, userId });
     console.log("Flashcards found for category:", flashcards); // Log the retrieved flashcards
-    res.status(200).json(flashcards);
+    res.status(200).json({
+      categoryName: categoryDoc.name,
+      flashcards
+    });
   } catch (error) {
     res.status(500).json({ message: "Failed to fetch flashcards", error });
   }

@@ -51,7 +51,6 @@ app.use(
     cookie: {
       httpOnly: true,
       secure: NODE_ENV === "production",
-      sameSite: "Lax",
     },
   })
 );

@@ -1,42 +1,28 @@
 import { useState } from "react";
 import { createFlashcard } from "../../services/flashCardApi";
+import { IFlashcard } from "../../interfaces/IFlashcard";
 
-interface UseCreateFlashcardResult {
-  loading: boolean;
-  error: string | null;
-  success: boolean;
-  create: (flashcardData: {
-    frontSide: string;
-    backSide: string;
-    categoryId: string;
-  }) => Promise<void>;
-}
-
-export const useCreateFlashcard = (): UseCreateFlashcardResult => {
+export const useCreateFlashcard = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [success, setSuccess] = useState<boolean>(false);
 
   const create = async (flashcardData: {
     frontSide: string;
     backSide: string;
     categoryId: string;
-  }) => {
+  }): Promise<IFlashcard> => {
     setLoading(true);
     setError(null);
-    setSuccess(false);
-
     try {
-      // Gets the response back from the API
-      const response = await createFlashcard(flashcardData);
-      setSuccess(true); // Set success only if login is successful
-      return response; // Return response for further handling if needed
-    } catch (error: any) {
-      setError(error.message || "Create failed");
-    } finally {
+      const newFlashcard = await createFlashcard(flashcardData); // Assume API returns the created flashcard
       setLoading(false);
+      return newFlashcard; // Return the created flashcard
+    } catch (err: any) {
+      setLoading(false);
+      setError(err.message || "An error occurred while creating the flashcard");
+      throw err; // Re-throw the error for handling
     }
   };
 
-  return { create, loading, error, success };
+  return { create, loading, error };
 };

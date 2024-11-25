@@ -1,5 +1,4 @@
-// src/components/Flashcard.tsx
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import Confetti from "react-confetti";
 import { useGetNextFlashcard } from "../hooks/flashcard/useGetNextFlashcard";
@@ -14,15 +13,13 @@ import ErrorFeedback from "../components/flashcard/ErrorFeedback";
 
 type Feedback = "Forgot" | "Hard" | "Good" | "Easy";
 
-const Flashcard: React.FC = () => {
+const Flashcard: React.FC<{ onFlashcardAdded: () => void }> = ({ onFlashcardAdded }) => {
   const { userProfile } = useUserProfile();
   const Pcolor = userProfile ? userProfile.colorPreferences.primary : "#5C0B86";
 
   const [showBackCard, setShowBackCard] = useState(false);
   const { categoryId } = useParams<{ categoryId: string }>();
-  const { flashcard, loading, error, refetch } = useGetNextFlashcard(
-    categoryId || ""
-  );
+  const { flashcard, loading, error, refetch } = useGetNextFlashcard(categoryId || "");
   const { review, errorFeedback } = useReviewFlashcard();
 
   const { experienceNumbers, addFloatingNumber } = useFloatingNumbers();
@@ -48,6 +45,11 @@ const Flashcard: React.FC = () => {
       }
     }
   };
+
+  // Refetch flashcards when `onFlashcardAdded` is triggered
+  useEffect(() => {
+    refetch();
+  }, [onFlashcardAdded, refetch]);
 
   if (loading) return <Loader />;
   if (error === "No flashcards left in this category") {
@@ -79,14 +81,12 @@ const Flashcard: React.FC = () => {
         )}
 
         {!showBackCard && (
-          <div className="flex justify-between">
-            <Button text="Edit" style={{ backgroundColor: Pcolor }} />
+          <div className="flex justify-center">
             <Button
               text="Show Answer"
               onClick={() => setShowBackCard(!showBackCard)}
               style={{ backgroundColor: Pcolor }}
             />
-            <Button text="Delete" style={{ backgroundColor: Pcolor }} />
           </div>
         )}
 
