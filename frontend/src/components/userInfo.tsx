@@ -221,7 +221,7 @@ const UserInfo: React.FC<UserInfoProps> = ({ Pcolor, Scolor, frame }) => {
           <div className="w-5/6 bg-gray-200 rounded-full h-4 dark:bg-gray-700 self-center relative bottom-12 z-20">
             <div
               className="bg-purple-600 h-4 rounded-full dark:bg-purple-500 mb-2"
-              style={{ width: w, backgroundColor: Pcolor }}
+              style={{ width: w }}
             ></div>
           </div>
           <div className="rounded-xl bg-white w-[90%] self-center h-40 dark:bg-dark-secondary flex content-center items-center justify-between">

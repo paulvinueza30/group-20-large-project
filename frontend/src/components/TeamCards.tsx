@@ -6,6 +6,7 @@ import trevor from "../assets/Trevor pic.jpg";
 import paul from "../assets/paul_pick.jpg";
 import alex from "../assets/alex_pfp.jpg";
 import maria from "../assets/Maria pic.png";
+import caleb from "../assets/caleb-profilepic.jpg";
 
 function PauseOnHover() {
   const cardStyle = "w-[250px] p-0 rounded-2xl overflow-hidden";
@@ -49,7 +50,7 @@ function PauseOnHover() {
         </div>
         <div>
           <div className={`${cardStyle} bg-purple-700`}>
-            <img src={team} alt="" className="self-end  relative top-4" />
+            <img src={caleb} alt="" className="self-end  relative top-4" />
           </div>
           <div className="pt-2 pl-4 leading-3">
             <h3 className="text-2xl font-bold">Caleb Mackenzie</h3>
