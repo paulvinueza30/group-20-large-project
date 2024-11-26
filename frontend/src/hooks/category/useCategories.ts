@@ -4,7 +4,7 @@ import { getAllCategories } from "../../services/categoryApi";
 export interface Category {
   _id: string;
   name: string;
-  experience: number;
+  categoryExperience: number;
   cardCount: number;
   streakCount: number;
 }

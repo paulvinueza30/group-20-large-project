@@ -37,15 +37,22 @@ export const createCategory = async (req: Request, res: Response): Promise<void>
 // Get All Categories for the Logged-In User
 export const getAllCategories = async (req: Request, res: Response): Promise<void> => {
     try {
-        const user = req.user as IUser;
-        const userId = user._id;  // Retrieve userId from req.user
-
-        const categories = await Category.find({ userId });
-        res.status(200).json(categories);
+      const user = req.user as IUser;
+      const userId = user._id; // Retrieve userId from req.user
+  
+      // Fetch necessary fields
+      const categories = await Category.find(
+        { userId },
+        { name: 1, categoryExperience: 1, cardCount: 1, streakCount: 1 }
+      );
+  
+      res.status(200).json(categories);
     } catch (error) {
-        res.status(500).json({ message: "Failed to fetch categories", error });
+      res.status(500).json({ message: "Failed to fetch categories", error });
     }
-};
+  };
+  
+  
 
 // Delete Category and associated flashcards
 export const deleteCategory = async (req: Request, res: Response): Promise<void> => {
