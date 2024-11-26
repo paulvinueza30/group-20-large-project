@@ -32,8 +32,8 @@ function StreaksDisplay() {
   return (
     <div className="grid grid-cols-3 row-span-4 h-full">
       <div className="col-span-3 auto-rows-[50px] row-start-1 ">
-        <h2 className="text-center font-bold text-xl py-4 dark:text-white">
-          Top 3 Streaks Display (WIP)
+        <h2 className="text-center font-bold text-xl pt-4 dark:text-white">
+          Top 3 Streaks Display
         </h2>
       </div>
 
@@ -41,9 +41,15 @@ function StreaksDisplay() {
       {streakCounts.topCategories.map((category, index) => (
         <div
           key={index}
-          className="col-span-1 row-span-8 row-start-2 flex flex-col items-center"
+          className="col-span-1 row-span-5 row-start-2 flex flex-col items-center justify-center"
         >
-          <img src={Streak} alt="Streak icon" className="relative w-[10rem]" />
+          <img
+            src={Streak}
+            alt="Streak icon"
+            className={`self-center w-[13rem] relative bottom-10 ${
+              index === 1 ? "w-[14rem]" : "w-[12rem]"
+            }`}
+          />
           <h1 className="text-2xl font-bold relative bottom-10 dark:text-white">
             {category.streakCount} days
           </h1>

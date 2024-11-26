@@ -6,7 +6,7 @@ function NavBar() {
   return (
     <nav className="bg-white border-gray-200 pt-5">
       <div className="min-w-screen flex flex-wrap items-center justify-between mx-auto py-4">
-        <a href="#" className="flex items-center space-x-3 rtl:space-x-reverse">
+        <a href="/" className="flex items-center space-x-3 rtl:space-x-reverse">
           <span className="self-center text-2xl font-pixel whitespace-nowrap hue-rotate-[210deg]">
             Atama
           </span>
@@ -32,7 +32,7 @@ function NavBar() {
                 className={`block px-6 rounded-md md:border-0 md:hover:text-blue-700 ${
                   location.pathname === "/login"
                     ? "bg-blue text-white"
-                    : "bg-secondary hover:bg-primary text-gray-800"
+                    : "bg-secondary hover:bg-primary text-white"
                 }`}
               >
                 Log In

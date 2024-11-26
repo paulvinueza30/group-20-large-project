@@ -42,22 +42,24 @@ function Home() {
             <FaBookOpen className="text-white" size={30} />
             <h3 className="text-2xl font-bold">Spaced Repetition</h3>
             <p className="text-balance text-lg">
-              The study system is specialized to show a flashcard once a day 
-              and in the order of how well it was remembered the previous day
+              The study system is specialized to show a flashcard once a day and
+              in the order of how well it was remembered the previous day
             </p>
           </div>
-          <div className="px-4">
+          <div className="px-4 relative -left-16">
             <IoExtensionPuzzle className="text-white" size={30} />
             <h3 className="text-2xl font-bold">Levels</h3>
-            <p className="text-balance text-lg">
-              Gain levels the more you study and quantify just how far you've come
+            <p className="text-lg">
+              Gain levels the more you study and quantify just how far you've
+              come
             </p>
           </div>
           <div className="">
             <FaGamepad className="text-white relative" size={30} />
             <h3 className="text-2xl font-bold ">Streaks and Badges</h3>
-            <p className="text-balance text-lg">
-              Earn bonus Experience points for gaining a streak through studying everyday
+            <p className=" text-lg">
+              Earn bonus Experience points for gaining a streak through studying
+              everyday
             </p>
           </div>
         </div>

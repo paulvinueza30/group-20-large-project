@@ -5,7 +5,7 @@ import Image from "../assets/pageBG.png";
 // TODO: Add picture, improve loginform styling
 function Login() {
   return (
-    <div className="grid grid-cols-8 auto-rows-[100px] max-h-svh">
+    <div className="grid grid-cols-8 auto-rows-[100px] max-h-svh dark:bg-white">
       <div className="col-span-6 col-start-2 row-span-1 row-start-1 z-50">
         <NavBar />
       </div>

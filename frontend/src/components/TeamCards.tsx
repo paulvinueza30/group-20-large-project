@@ -5,6 +5,7 @@ import anthony from "../assets/anthonys pfp.jpg";
 import trevor from "../assets/Trevor pic.jpg";
 import paul from "../assets/paul_pick.jpg";
 import alex from "../assets/alex_pfp.jpg";
+import maria from "../assets/Maria pic.png";
 
 function PauseOnHover() {
   const cardStyle = "w-[250px] p-0 rounded-2xl overflow-hidden";
@@ -15,7 +16,7 @@ function PauseOnHover() {
     slidesToScroll: 1,
     autoplay: true,
     autoplaySpeed: 2000,
-    pauseOnHover: false,
+    pauseOnHover: true,
   };
   return (
     <div className="slider-container">
@@ -35,7 +36,11 @@ function PauseOnHover() {
         </div>
         <div>
           <div className={`${cardStyle} bg-purple-900`}>
-            <img src={alex} alt="" className="self-end  relative top-0" />
+            <img
+              src={alex}
+              alt=""
+              className="w-[250px] h-[320px] object-cover"
+            />
           </div>
           <div className="pt-2 pl-4 leading-3">
             <h3 className="text-2xl font-bold">Alex Leventis</h3>
@@ -53,7 +58,11 @@ function PauseOnHover() {
         </div>
         <div>
           <div className={`${cardStyle} bg-purple-600`}>
-            <img src={team} alt="" className="self-end  relative top-4" />
+            <img
+              src={maria}
+              alt=""
+              className="w-[250px] h-[320px] object-cover"
+            />
           </div>
           <div className="pt-2 pl-4 leading-3">
             <h3 className="text-2xl font-bold">Maria Artur</h3>
